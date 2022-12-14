@@ -2,10 +2,10 @@ package pl.tp;
 
 public class VersionPicker implements VersionFactoryInterface {
     @Override
-    public GameVersion getGame(int versionNr) {
+    public GameController getGame(int versionNr) {
         switch (versionNr) {
             case 1:
-                return new BasicVersion();
+                return new ClassicGameController();
             default:
                 return null;
         }

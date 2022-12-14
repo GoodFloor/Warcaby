@@ -1,10 +1,10 @@
 package pl.tp;
 
 public class Controller {
-    private GameVersion game;
+    private GameController game;
     private GameView view;
 
-    public void setGame(GameVersion game) {
+    public void setGame(GameController game) {
         this.game = game;
     }
 

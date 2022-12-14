@@ -1,7 +1,7 @@
 package pl.tp;
 
-public abstract class GameVersion {
-    protected ClassicBoard board;
+public abstract class GameController {
+    protected BoardController boardController;
     abstract void setBoard();
     void start() {
         setBoard();

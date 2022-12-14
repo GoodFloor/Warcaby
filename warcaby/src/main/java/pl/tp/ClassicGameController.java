@@ -1,10 +1,10 @@
 package pl.tp;
 
-public class BasicVersion extends GameVersion {
+public class ClassicGameController extends GameController {
     @Override
     void setBoard() {
-        board = new ClassicBoard();
-        board.resetBoard();
+        boardController = new ClassicBoardController();
+        boardController.resetBoard();
     }
     @Override
     public void start() {

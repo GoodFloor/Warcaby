@@ -1,5 +1,5 @@
 package pl.tp;
 
 public interface VersionFactoryInterface {
-    public GameVersion getGame(int versionNr);
+    public GameController getGame(int versionNr);
 }
