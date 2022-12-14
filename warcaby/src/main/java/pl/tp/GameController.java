@@ -13,5 +13,6 @@ public abstract class GameController {
     public void run() {
         // setBoard();
         gameView.showMessage("The Game is on");
+
     }
 }
