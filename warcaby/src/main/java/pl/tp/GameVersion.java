@@ -1,6 +1,8 @@
 package pl.tp;
 
-public interface GameVersion {
+public abstract class GameVersion {
 
-    void run();
+    void run() {
+        System.out.println("The Game is on.");
+    };
 }

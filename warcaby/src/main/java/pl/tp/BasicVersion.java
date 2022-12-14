@@ -1,9 +1,9 @@
 package pl.tp;
 
-public class BasicVersion implements GameVersion {
-
+public class BasicVersion extends GameVersion {
+    @Override
     public void run() {
-        System.out.println("The Game is on.");
+        System.out.println("The Basic Game is on.");
     }
 
 }
