@@ -6,8 +6,12 @@ public abstract class GameController {
 
     abstract void setBoard();
 
-    void run() {
-        setBoard();
-        System.out.println("The Game is on.");
+    public GameController() {
+        this.gameView = new TerminalView();
+    }
+
+    public void run() {
+        // setBoard();
+        gameView.showMessage("The Game is on");
     }
 }
