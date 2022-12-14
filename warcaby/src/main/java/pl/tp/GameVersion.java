@@ -1,8 +1,10 @@
 package pl.tp;
 
 public abstract class GameVersion {
-
-    void run() {
+    protected ClassicBoard board;
+    abstract void setBoard();
+    void start() {
+        setBoard();
         System.out.println("The Game is on.");
-    };
+    }
 }
