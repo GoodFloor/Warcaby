@@ -1,5 +1,5 @@
 package pl.tp;
 
-public class GameView {
+public interface GameView {
 
 }

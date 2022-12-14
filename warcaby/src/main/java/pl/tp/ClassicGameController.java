@@ -6,8 +6,9 @@ public class ClassicGameController extends GameController {
         boardController = new ClassicBoardController();
         boardController.resetBoard();
     }
+
     @Override
-    public void start() {
+    public void run() {
         System.out.println("The Basic Game is on.");
     }
 
