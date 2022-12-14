@@ -9,7 +9,7 @@ public class ClassicGameController extends GameController {
 
     // @Override
     // public void run() {
-    //     System.out.println("The Basic Game is on.");
+    // gameView.showMessage("The Classic Game is on");
     // }
 
 }
