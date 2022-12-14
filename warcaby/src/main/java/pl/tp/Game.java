@@ -1,19 +1,18 @@
 package pl.tp;
 
-public class Game {
+public class Game implements GameInterface {
     GameVersion gameVersion;
 
-    public Game(int versionNr) {
+    public void run() {
+        gameVersion.run();
+    }
 
+    @Override
+    public void setGameVersion(int versionNr) {
         switch (versionNr) {
             case 1:
                 this.gameVersion = new BasicVersion();
         }
-
-    }
-
-    public void run() {
-        gameVersion.run();
     }
 
 }

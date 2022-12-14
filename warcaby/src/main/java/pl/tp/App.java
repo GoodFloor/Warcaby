@@ -7,7 +7,8 @@ package pl.tp;
 public class App {
 
     public static void main(String[] args) {
-        Game game = new Game(1);
+        GameInterface game = new Game();
+        game.setGameVersion(1);
         game.run();
     }
 }
