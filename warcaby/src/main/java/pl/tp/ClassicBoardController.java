@@ -23,16 +23,16 @@ public class ClassicBoardController extends BoardController {
         board.setBoard(temp);
     }
 
-    // private int getPositionX(String position) {
-    //     position.charAt(0);
-    // }
-    // private int getPositionY(String position) {
-
-    // }
+    private int getPositionX(String position) {
+        return (int)position.charAt(0) - 65;
+    }
+    private int getPositionY(String position) {
+        return Integer.parseInt(position.substring(1, position.length())) - 49;
+    }
     // public boolean isWhite(String position) {
 
     // }
-    // public boolean isRed(String position) {
+    // // public boolean isRed(String position) {
 
     // }
     // public boolean canKill(String position) {
