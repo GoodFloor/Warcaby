@@ -11,9 +11,11 @@ public class ClassicBoardController extends BoardController {
                 }
                 else if(i < 3) {
                     temp[i][j] = new Piece();
+                    temp[i][j].type = "White";
                 }
                 else if(i > 4) {
                     temp[i][j] = new Piece();
+                    temp[i][j].type = "Red";
                 }
                 else {
                     temp[i][j] = null;
@@ -27,15 +29,21 @@ public class ClassicBoardController extends BoardController {
         return (int)position.charAt(0) - 65;
     }
     private int getPositionY(String position) {
-        return Integer.parseInt(position.substring(1, position.length())) - 49;
+        return Integer.parseInt(position.substring(1, position.length())) - 1;
     }
-    // public boolean isWhite(String position) {
-
-    // }
-    // // public boolean isRed(String position) {
-
-    // }
-    // public boolean canKill(String position) {
-    //     if()
-    // }
+    public boolean isWhite(String position) {
+        return board.getBoard()[this.getPositionX(position)][this.getPositionY(position)].type == "White";
+    }
+    public boolean isRed(String position) {
+        return board.getBoard()[this.getPositionX(position)][this.getPositionY(position)].type == "Red";
+    }
+    public boolean canKill(String position) {
+        Piece[][] tempBoard = board.getBoard();
+        int posX = this.getPositionX(position);
+        int posY = this.getPositionY(position);
+        if(tempBoard[posX][posY].getClass() == Piece.class) {
+            return true;
+        }
+        return false;
+    }
 }
