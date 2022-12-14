@@ -11,13 +11,11 @@ public class ClassicBoardController extends BoardController {
                     temp[i][j] = null;
                 } else if (i < 3) {
                     temp[i][j] = new Piece();
-                    temp[i][j].type = "White";
-                }
-                else if(i > 4) {
+                    temp[i][j].setType("White");
+                } else if (i > 4) {
                     temp[i][j] = new Piece();
-                    temp[i][j].type = "Red";
-                }
-                else {
+                    temp[i][j].setType("Red");
+                } else {
                     temp[i][j] = null;
                 }
             }
@@ -39,17 +37,18 @@ public class ClassicBoardController extends BoardController {
         return result;
     }
     public boolean isWhite(String position) {
-        return board.getBoard()[this.getPositionX(position)][this.getPositionY(position)].type == "White";
+        return board.getBoard()[this.getPositionX(position)][this.getPositionY(position)].getType() == "White";
     }
+
     public boolean isRed(String position) {
-        return board.getBoard()[this.getPositionX(position)][this.getPositionY(position)].type == "Red";
+        return board.getBoard()[this.getPositionX(position)][this.getPositionY(position)].getType() == "Red";
     }
     private boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getBoard();
-        if(posX > 1 && posY < 6 && tempBoard[posX - 1][posY - 1].getClass() == Piece.class && tempBoard[posX][posY].type != tempBoard[posX - 1][posY - 1].type && tempBoard[posX - 2][posY - 2] == null) {
+        if(posX > 1 && posY < 6 && tempBoard[posX - 1][posY - 1].getClass() == Piece.class && tempBoard[posX][posY].getType() != tempBoard[posX - 1][posY - 1].getType() && tempBoard[posX - 2][posY - 2] == null) {
             return true;
         }
-        else if(posX < 6 && posY < 6 && tempBoard[posX + 1][posY + 1].getClass() == Piece.class && tempBoard[posX][posY].type != tempBoard[posX + 1][posY + 1].type && tempBoard[posX + 2][posY + 2] == null) {
+        else if(posX < 6 && posY < 6 && tempBoard[posX + 1][posY + 1].getClass() == Piece.class && tempBoard[posX][posY].getType() != tempBoard[posX + 1][posY + 1].getType() && tempBoard[posX + 2][posY + 2] == null) {
             return true;
         }
         else return false;
@@ -59,7 +58,7 @@ public class ClassicBoardController extends BoardController {
         String result = "";
         for (int i = 0; i < tempBoard.length; i++) {
             for (int j = 0; j < tempBoard[i].length; j++) {
-                if(tempBoard[i][j].type == type && canKill(i, j)) {
+                if(tempBoard[i][j].getType() == type && canKill(i, j)) {
                     result += this.codePosition(i, j) + ";";
                 }
             }
@@ -67,15 +66,19 @@ public class ClassicBoardController extends BoardController {
         return result;
     }
     public SquareStateEnum[][] translateBoard() {
-        SquareStateEnum[][] result = new SquareStateEnum[board.getWidth()][board.getHeight()];
+        SquareStateEnum[][] result = new SquareStateEnum[8][8];
         Piece[][] boardContent = board.getBoard();
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (boardContent[i][j] == null) {
-                    result[i][j] = SquareStateEnum.White;
-                } else {
-                    result[i][j] = SquareStateEnum.BlackEmpty;
+                if ((i + j) % 2 == 1) {
+                    result[7 - i][j] = SquareStateEnum.White;
+                } else if (boardContent[i][j] == null) {
+                    result[7 - i][j] = SquareStateEnum.BlackEmpty;
+                } else if (boardContent[i][j].getType() == "White") {
+                    result[7 - i][j] = SquareStateEnum.BlackWhite;
+                } else if (boardContent[i][j].getType() == "Red") {
+                    result[7 - i][j] = SquareStateEnum.BlackRed;
                 }
             }
         }
