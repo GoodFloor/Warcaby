@@ -7,9 +7,8 @@ public class ClassicGameController extends GameController {
         boardController.resetBoard();
     }
 
-    // @Override
-    // public void run() {
-    // gameView.showMessage("The Classic Game is on");
-    // }
-
+    @Override
+    void setStartMessage() {
+        startMessage = "The Classic game is on";
+    }
 }
