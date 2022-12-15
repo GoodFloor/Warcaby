@@ -73,16 +73,18 @@ public class ClassicBoardController extends BoardController {
         return result;
     }
 
-    public void movePiece(String pos1, String pos2) {
+    public String movePiece(String pos1, String pos2) {
         int posX1 = this.decodePositionX(pos1);
         int posY1 = this.decodePositionY(pos1);
         int posX2 = this.decodePositionX(pos2);
-        int posY2 = this.decodePositionX(pos2);
+        int posY2 = this.decodePositionY(pos2);
+
         Piece[][] tempBoard = board.getBoard();
         Piece tempPiece = tempBoard[posX1][posY1];
         tempBoard[posX1][posY1] = tempBoard[posX2][posY2];
         tempBoard[posX2][posY2] = tempPiece;
         board.setBoard(tempBoard);
+        return "Ok";
     }
 
     public SquareStateEnum[][] translateBoard() {

@@ -1,14 +1,21 @@
 package pl.tp;
 
 public class Piece {
-    private String type;
+    private String color;
+    private PieceState state;
 
-    public String getType() {
-        return type;
+    Piece() {
+        this.state = new ClassicPawnState();
     }
-
+    public String getType() {
+        return color;
+    }
     public void setType(String type) {
-        this.type = type;
+        if(type == "Red")
+            state.setShift(8);
+        else
+            state.setShift(0);
+        this.color = type;
     }
 
 }
