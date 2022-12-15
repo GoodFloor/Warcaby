@@ -5,16 +5,10 @@ package pl.tp;
  */
 public abstract class PieceState {
     protected int shift;
-    public abstract String canGo(String position1, String position2);
+    public abstract int[] canGo(int posX1, int posY1, int posX2, int posY2);
     
     public void setShift(int s) {
         this.shift = s;
-    }
-    protected int decodePositionX(String position) {
-        return (int) position.charAt(0) - 65;
-    }
-    protected int decodePositionY(String position) {
-        return Integer.parseInt(position.substring(1, position.length())) - 1;
     }
     protected String codePosition(int posX, int posY) {
         String result = "";

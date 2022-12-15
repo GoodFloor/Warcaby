@@ -3,16 +3,20 @@ package pl.tp;
 public class ClassicPawnState extends PieceState {
 
     @Override
-    public String canGo(String position1, String position2) {
-        int posX1 = this.decodePositionX(position1);
-        int posY1 = this.decodePositionY(position1);
-        int posX2 = this.decodePositionX(position2);
-        int posY2 = this.decodePositionY(position2);
-        String result = "";
-
-        // posX > 1 && posY < 6 && tempBoard[posX - 1][posY - 1].getClass() == Piece.class
-        //         && tempBoard[posX][posY].getType() != tempBoard[posX - 1][posY - 1].getType()
-        //         && tempBoard[posX - 2][posY - 2] == null
+    public int[] canGo(int posX1, int posY1, int posX2, int posY2) {
+        int shifter;
+        if(shift == 0)
+            shifter = 1;
+        else 
+            shifter = -1;
+        if(Math.abs(posX2 - posX1) == 1 && shifter * (posY2 - posY1) == 1)
+            return new int[0];
+        else if(Math.abs(posX2 - posX1) == 2 && shifter * (posY2 - posY1) == 2) {
+            int[] neededEnemyPosition = new int[2];
+            neededEnemyPosition[0] = (posX2 + posX1) / 2;
+            neededEnemyPosition[1] = (posY2 + posY1) / 2;
+            return neededEnemyPosition;
+        }
         return null;
     }
     

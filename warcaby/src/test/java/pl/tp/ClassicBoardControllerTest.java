@@ -7,6 +7,12 @@ import org.junit.Test;
 
 public class ClassicBoardControllerTest {
 
+    @Test
+    public void testName() {
+        int[] test = new int[0];
+        assertEquals(0, test.length);
+    }
+
     
     
 }
