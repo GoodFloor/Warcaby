@@ -1,9 +1,21 @@
 package pl.tp;
 
+import java.util.Scanner;
+
 public class TerminalView implements GameView {
 
+    private Scanner scanner;
+
+    public void closeScanner() {
+        this.scanner.close();
+    }
+
+    public void openScanner() {
+        this.scanner = new Scanner(System.in);
+    }
+
     @Override
-    public void showMessage(String message) {
+    public void printMessage(String message) {
         System.out.println("The Game is on.");
     }
 
@@ -42,6 +54,24 @@ public class TerminalView implements GameView {
         }
         System.out.print("\n");
 
+    }
+
+    @Override
+    public String[] getMove() {
+        String result[] = new String[2];
+
+        try {
+
+            System.out.println("Wybierz pionek do ruchu:");
+            result[0] = scanner.nextLine();
+            System.out.println("Wybierz miejsce do postawienia pionka:");
+            result[1] = scanner.nextLine();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return result;
     }
 
 }
