@@ -36,7 +36,7 @@ public abstract class GameController {
             try {
                 boardController.movePiece(move[0], move[1]);
             } catch (IncorrectPositionException e) {
-                gameView.printException(e);
+                gameView.printMessage("Błędny ruch - spróbuj ponownie");
                 continue;
             }
             if(boardController.isGameOver() != null) {
