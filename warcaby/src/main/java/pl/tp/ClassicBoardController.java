@@ -4,6 +4,7 @@ public class ClassicBoardController extends BoardController {
     int whiteRemaining;
     int redRemaining;
     int[][] mandatoryUsePieces;
+    boolean whiteTurn;
     public void resetBoard() {
         // board[0][0] to lewy dolny róg, pierwsza współrzędna to wiersz, druga to
         // kolumna ale to i tak tylko tymczasowe
@@ -28,6 +29,7 @@ public class ClassicBoardController extends BoardController {
         mandatoryUsePieces = new int[0][0];
         whiteRemaining = 12;
         redRemaining = 12;
+        whiteTurn = true;
     }
 
     private int decodePositionX(String position) throws IncorrectPositionException {
@@ -67,30 +69,55 @@ public class ClassicBoardController extends BoardController {
 
     private boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getBoard();
-        if (posX > 1 && posY < 6 && tempBoard[posX - 1][posY - 1].getClass() == Piece.class
-                && tempBoard[posX][posY].getColor() != tempBoard[posX - 1][posY - 1].getColor()
-                && tempBoard[posX - 2][posY - 2] == null) {
-            return true;
-        } else if (posX < 6 && posY < 6 && tempBoard[posX + 1][posY + 1].getClass() == Piece.class
-                && tempBoard[posX][posY].getColor() != tempBoard[posX + 1][posY + 1].getColor()
-                && tempBoard[posX + 2][posY + 2] == null) {
-            return true;
-        } else
-            return false;
-    }
-
-    public String whoCanKill(String type) {
-        Piece[][] tempBoard = board.getBoard();
-        String result = "";
-        for (int i = 0; i < tempBoard.length; i++) {
-            for (int j = 0; j < tempBoard[i].length; j++) {
-                if (tempBoard[i][j].getColor() == type && canKill(i, j)) {
-                    result += this.codePosition(i, j) + ";";
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                int tempX = i * 4 - 2 + posX;
+                int tempY = j * 4 - 2 + posY;
+                if(tempX < 0 || tempX >= tempBoard.length || tempY < 0 || tempY >= tempBoard.length) {
+                    continue;
+                }
+                if(tempBoard[tempY][tempX] != null) {
+                    continue;
+                }
+                int[] killableEnemyPlace;
+                try {
+                    killableEnemyPlace = tempBoard[posY][posX].canGoTo(posX, posY, tempX, tempY);
+                } catch (IncorrectPositionException e) {
+                    continue;
+                }
+                int enemyX = killableEnemyPlace[0];
+                int enemyY = killableEnemyPlace[1];
+                if (tempBoard[enemyY][enemyX] != null && tempBoard[enemyY][enemyX].getColor() != tempBoard[posY][posX].getColor() ) {
+                    return true;
                 }
             }
         }
-        return result;
+        return false;
+
+        // if (posX > 1 && posY < 6 && tempBoard[posX - 1][posY - 1].getClass() == Piece.class
+        //         && tempBoard[posX][posY].getColor() != tempBoard[posX - 1][posY - 1].getColor()
+        //         && tempBoard[posX - 2][posY - 2] == null) {
+        //     return true;
+        // } else if (posX < 6 && posY < 6 && tempBoard[posX + 1][posY + 1].getClass() == Piece.class
+        //         && tempBoard[posX][posY].getColor() != tempBoard[posX + 1][posY + 1].getColor()
+        //         && tempBoard[posX + 2][posY + 2] == null) {
+        //     return true;
+        // } else
+        //     return false;
     }
+
+    // public String whoCanKill(String type) {
+    //     Piece[][] tempBoard = board.getBoard();
+    //     String result = "";
+    //     for (int i = 0; i < tempBoard.length; i++) {
+    //         for (int j = 0; j < tempBoard[i].length; j++) {
+    //             if (tempBoard[i][j].getColor() == type && canKill(i, j)) {
+    //                 result += this.codePosition(i, j) + ";";
+    //             }
+    //         }
+    //     }
+    //     return result;
+    // }
 
     public void movePiece(String pos1, String pos2) throws IncorrectPositionException {
 
@@ -103,6 +130,16 @@ public class ClassicBoardController extends BoardController {
 
             //Pobieramy zawartość planszy
             Piece[][] tempBoard = board.getBoard();
+
+            
+            //Sprawdzamy czy na miejscu źródłowym jest pionek i czy miejsce docelowe jest puste 
+            if(tempBoard[posY1][posX1] == null || tempBoard[posY2][posX2] != null) {
+                throw new IncorrectPositionException();
+            }
+            //Sprawdzamy czy pionek źródłowy jest w dobrym kolorze
+            if((whiteTurn && tempBoard[posY1][posX1].getColor() != "White") || (!whiteTurn && tempBoard[posY1][posX1].getColor() != "Red")) {
+                throw new IncorrectPositionException();
+            }
             //Sprawdzamy czy podany pionek jest pośród pionków którymi trzeba się ruszyć
             if(mandatoryUsePieces.length > 0) {
                 boolean isPieceInMandatory = false;
@@ -116,15 +153,10 @@ public class ClassicBoardController extends BoardController {
                     throw new IncorrectPositionException();
                 }
             }
-
+            //Sprawdzamy czy podany ruch jest możliwy i czy aby go wykonać musimy zbić przeciwnika
             int[] neededEnemyPosition;
-            //Sprawdzamy czy na miejscu źródłowym jest pionek i czy miejsce docelowe jest puste 
-            if(tempBoard[posY1][posX1] == null || tempBoard[posY2][posX2] != null) {
-                throw new IncorrectPositionException();
-            }
-            else {
-                neededEnemyPosition = tempBoard[posY1][posX1].canGoTo(posX1, posY1, posX2, posY2);
-            }
+            neededEnemyPosition = tempBoard[posY1][posX1].canGoTo(posX1, posY1, posX2, posY2);
+            
             //Jeżeli przeskakujemy o 2 pola to sprawdzamy czy pomiędzy nimi jest przeciwnik, jeśli tak to go usuwamy
             if(neededEnemyPosition.length > 0) {
                 int enemyX = neededEnemyPosition[0];
@@ -148,33 +180,10 @@ public class ClassicBoardController extends BoardController {
 
             //Jeśli zbiliśmy pionka to sprawdzamy czy ten pionek może wykonać jeszcze jakiś ruch
             if(neededEnemyPosition.length > 0) {
-                for (int i = 0; i < 2; i++) {
-                    for (int j = 0; j < 2; j++) {
-                        int tempX = i * 4 - 2 + posX2;
-                        int tempY = j * 4 - 2 + posY2;
-                        if(tempX < 0 || tempX >= tempBoard.length || tempY < 0 || tempY >= tempBoard.length) {
-                            continue;
-                        }
-                        if(tempBoard[tempY][tempX] != null) {
-                            continue;
-                        }
-                        int[] killableEnemyPlace;
-                        try {
-                            killableEnemyPlace = tempBoard[posY2][posX2].canGoTo(posX2, posY2, tempX, tempY);
-                        } catch (IncorrectPositionException e) {
-                            System.out.println("pos2");
-                            continue;
-                        }
-                        int enemyX = killableEnemyPlace[0];
-                        int enemyY = killableEnemyPlace[1];
-                        if (tempBoard[enemyY][enemyX] != null && tempBoard[enemyY][enemyX].getColor() != tempBoard[posY2][posX2].getColor() ) {
-                            isTurnOver = false;
-                            mandatoryUsePieces = new int[1][2];
-                            mandatoryUsePieces[0][0] = posX2;
-                            mandatoryUsePieces[0][1] = posY2;
-                            break;
-                        }
-                    }
+                if(this.canKill(posX2, posY2)) {
+                    mandatoryUsePieces = new int[1][2];
+                    mandatoryUsePieces[0][0] = posX2;
+                    mandatoryUsePieces[0][1] = posY2;
                 }
             }
         } catch (IncorrectPositionException e) {
@@ -206,11 +215,28 @@ public class ClassicBoardController extends BoardController {
         return result;
     }
 
+    private void addMandatory(int posX, int posY) {
+        int[][] tempArr = new int[mandatoryUsePieces.length + 1][2];
+        for (int i = 0; i < mandatoryUsePieces.length; i++) {
+            tempArr[i] = mandatoryUsePieces[i];
+        }
+        tempArr[mandatoryUsePieces.length][0] = posX;
+        tempArr[mandatoryUsePieces.length][1] = posY;
+        mandatoryUsePieces = tempArr;
+    }
     @Override
     public void startNextTurn() {
         isTurnOver = false;
         mandatoryUsePieces = new int[0][0];
-
+        whiteTurn = !whiteTurn;
+        Piece[][] tempBoard = board.getBoard();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if(tempBoard[i][j] != null && ((whiteTurn && tempBoard[i][j].getColor() == "White") || (!whiteTurn && tempBoard[i][j].getColor() == "Red")) && this.canKill(j, i)) {
+                    this.addMandatory(j, i);
+                }
+            }
+        }
     }
 
     @Override
