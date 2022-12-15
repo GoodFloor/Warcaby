@@ -3,7 +3,7 @@ package pl.tp;
 public class ClassicPawnState extends PieceState {
 
     @Override
-    public int[] canGo(int posX1, int posY1, int posX2, int posY2) {
+    public int[] canGo(int posX1, int posY1, int posX2, int posY2) throws IncorrectPositionException {
         int shifter;
         if(shift == 0)
             shifter = 1;
@@ -13,11 +13,11 @@ public class ClassicPawnState extends PieceState {
             return new int[0];
         else if(Math.abs(posX2 - posX1) == 2 && shifter * (posY2 - posY1) == 2) {
             int[] neededEnemyPosition = new int[2];
-            neededEnemyPosition[0] = (posX2 + posX1) / 2;
-            neededEnemyPosition[1] = (posY2 + posY1) / 2;
+            neededEnemyPosition[0] = (posY2 + posY1) / 2;
+            neededEnemyPosition[1] = (posX2 + posX1) / 2;
             return neededEnemyPosition;
         }
-        return null;
+        throw new IncorrectPositionException();
     }
     
 }

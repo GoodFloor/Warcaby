@@ -5,7 +5,7 @@ package pl.tp;
  */
 public abstract class PieceState {
     protected int shift;
-    public abstract int[] canGo(int posX1, int posY1, int posX2, int posY2);
+    public abstract int[] canGo(int posX1, int posY1, int posX2, int posY2) throws IncorrectPositionException;
     
     public void setShift(int s) {
         this.shift = s;

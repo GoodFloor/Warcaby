@@ -94,8 +94,23 @@ public class ClassicBoardController extends BoardController {
             int posY2 = this.decodePositionY(pos2);
 
             Piece[][] tempBoard = board.getBoard();
+            int[] neededEnemyPosition;
+            if(tempBoard[posY1][posX1] == null || tempBoard[posY2][posX2] != null) {
+                throw new IncorrectPositionException();
+            }
+            else {
+                neededEnemyPosition = tempBoard[posY1][posX1].canGoTo(posX1, posY1, posX2, posY2);
+            }
+            if(neededEnemyPosition.length > 0) {
+                if (tempBoard[neededEnemyPosition[0]][neededEnemyPosition[1]] == null) {
+                    throw new IncorrectPositionException();                    
+                } else {
+                    tempBoard[neededEnemyPosition[0]][neededEnemyPosition[1]] = null;
+                }
+            }
             tempBoard[posY2][posX2] = tempBoard[posY1][posX1];
             tempBoard[posY1][posX1] = null;
+
             board.setBoard(tempBoard);
         } catch (IncorrectPositionException e) {
             throw e;
