@@ -1,7 +1,5 @@
 package pl.tp;
 
-import java.util.Scanner;
-
 public abstract class GameController {
     protected BoardController boardController;
     protected GameView gameView;
@@ -23,7 +21,8 @@ public abstract class GameController {
 
         while (isGameRunning) {
             gameView.printBoard(boardController.translateBoard());
-            gameView.getMove();
+            String move[] = gameView.getMove();
+            boardController.movePiece(move[0], move[1]);
         }
 
         gameView.closeScanner();

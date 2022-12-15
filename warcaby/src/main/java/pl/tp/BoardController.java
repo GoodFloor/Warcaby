@@ -7,6 +7,8 @@ public abstract class BoardController {
 
     public abstract SquareStateEnum[][] translateBoard();
 
+    public abstract void movePiece(String pos1, String pos2);
+
     BoardController() {
         board = new Board();
     }

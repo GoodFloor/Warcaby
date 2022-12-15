@@ -77,11 +77,11 @@ public class ClassicBoardController extends BoardController {
         int posX1 = this.decodePositionX(pos1);
         int posY1 = this.decodePositionY(pos1);
         int posX2 = this.decodePositionX(pos2);
-        int posY2 = this.decodePositionX(pos2);
+        int posY2 = this.decodePositionY(pos2);
+
         Piece[][] tempBoard = board.getBoard();
-        Piece tempPiece = tempBoard[posX1][posY1];
-        tempBoard[posX1][posY1] = tempBoard[posX2][posY2];
-        tempBoard[posX2][posY2] = tempPiece;
+        tempBoard[posY2][posX2] = tempBoard[posY1][posX1];
+        tempBoard[posY1][posX1] = null;
         board.setBoard(tempBoard);
     }
 
