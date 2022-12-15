@@ -23,11 +23,11 @@ public class ClassicBoardController extends BoardController {
         board.setBoard(temp);
     }
 
-    private int getPositionX(String position) {
+    private int decodePositionX(String position) {
         return (int) position.charAt(0) - 65;
     }
 
-    private int getPositionY(String position) {
+    private int decodePositionY(String position) {
         return Integer.parseInt(position.substring(1, position.length())) - 1;
     }
     private String codePosition(int posX, int posY) {
@@ -37,11 +37,11 @@ public class ClassicBoardController extends BoardController {
         return result;
     }
     public boolean isWhite(String position) {
-        return board.getBoard()[this.getPositionX(position)][this.getPositionY(position)].getType() == "White";
+        return board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getType() == "White";
     }
 
     public boolean isRed(String position) {
-        return board.getBoard()[this.getPositionX(position)][this.getPositionY(position)].getType() == "Red";
+        return board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getType() == "Red";
     }
     private boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getBoard();
@@ -64,6 +64,17 @@ public class ClassicBoardController extends BoardController {
             }
         }
         return result;
+    }
+    public void movePiece(String pos1, String pos2) {
+        int posX1 = this.decodePositionX(pos1);
+        int posY1 = this.decodePositionY(pos1);
+        int posX2 = this.decodePositionX(pos2);
+        int posY2 = this.decodePositionX(pos2);
+        Piece[][] tempBoard = board.getBoard();
+        Piece tempPiece = tempBoard[posX1][posY1];
+        tempBoard[posX1][posY1] = tempBoard[posX2][posY2];
+        tempBoard[posX2][posY2] = tempPiece;
+        board.setBoard(tempBoard);
     }
     public SquareStateEnum[][] translateBoard() {
         SquareStateEnum[][] result = new SquareStateEnum[8][8];
