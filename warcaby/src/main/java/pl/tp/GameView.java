@@ -1,7 +1,14 @@
 package pl.tp;
 
 public interface GameView {
-    void showMessage(String message);
+    void printMessage(String message);
 
     void printBoard(SquareStateEnum[][] boardContent);
+
+    String[] getMove();
+
+    public void closeScanner();
+
+    public void openScanner();
+
 }
