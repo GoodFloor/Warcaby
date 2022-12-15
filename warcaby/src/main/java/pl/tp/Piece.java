@@ -7,15 +7,15 @@ public class Piece {
     Piece() {
         this.state = new ClassicPawnState();
     }
-    public String getType() {
+    public String getColor() {
         return color;
     }
-    public void setType(String type) {
-        if(type == "Red")
-            state.setShift(8);
+    public void setColor(String color) {
+        if(color == "Red")
+            state.setBoardSide(8);
         else
-            state.setShift(0);
-        this.color = type;
+            state.setBoardSide(0);
+        this.color = color;
     }
     public int[] canGoTo(int posX1, int posY1, int posX2, int posY2) throws IncorrectPositionException {
         try {

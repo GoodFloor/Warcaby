@@ -23,6 +23,7 @@ public abstract class GameController {
         isWhiteTurn = true;
         gameView.printMessage(startMessage);
         gameView.start();
+        boardController.startNextTurn();
 
         while (isGameRunning) {
             gameView.printBoard(boardController.translateBoard());
@@ -38,7 +39,13 @@ public abstract class GameController {
                 gameView.printException(e);
                 continue;
             }
-            isWhiteTurn = !isWhiteTurn;
+            if(boardController.isGameOver() != null) {
+                break;
+            }
+            else if(boardController.isTurnOver()) {
+                isWhiteTurn = !isWhiteTurn;
+                boardController.startNextTurn();
+            }
         }
 
         gameView.end();
