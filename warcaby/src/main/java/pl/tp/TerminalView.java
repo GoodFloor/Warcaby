@@ -10,7 +10,16 @@ public class TerminalView implements GameView {
     // TODO tu nie powinna być pętla do 8
     @Override
     public void printBoard(SquareStateEnum[][] boardContent) {
+        System.out.print("   ");
         for (int i = 0; i < 8; i++) {
+            System.out.printf(" %c ", (char) (i + 65));
+        }
+        System.out.print("\n");
+
+        for (int i = 0; i < 8; i++) {
+
+            System.out.printf(" %d ", (8 - i));
+
             for (int j = 0; j < 8; j++) {
                 if (boardContent[i][j] == SquareStateEnum.White) {
                     System.out.print("\033[97;107m   ");
@@ -24,8 +33,14 @@ public class TerminalView implements GameView {
                 }
             }
 
-            System.out.print("\033[0m\n");
+            System.out.printf("\033[0m %d \n", (8 - i));
         }
+
+        System.out.print("   ");
+        for (int i = 0; i < 8; i++) {
+            System.out.printf(" %c ", (char) (i + 65));
+        }
+        System.out.print("\n");
 
     }
 

@@ -30,12 +30,14 @@ public class ClassicBoardController extends BoardController {
     private int decodePositionY(String position) {
         return Integer.parseInt(position.substring(1, position.length())) - 1;
     }
+
     private String codePosition(int posX, int posY) {
         String result = "";
         result += (char) (posX + 65);
         result += posY + 1;
         return result;
     }
+
     public boolean isWhite(String position) {
         return board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getType() == "White";
     }
@@ -43,28 +45,34 @@ public class ClassicBoardController extends BoardController {
     public boolean isRed(String position) {
         return board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getType() == "Red";
     }
+
     private boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getBoard();
-        if(posX > 1 && posY < 6 && tempBoard[posX - 1][posY - 1].getClass() == Piece.class && tempBoard[posX][posY].getType() != tempBoard[posX - 1][posY - 1].getType() && tempBoard[posX - 2][posY - 2] == null) {
+        if (posX > 1 && posY < 6 && tempBoard[posX - 1][posY - 1].getClass() == Piece.class
+                && tempBoard[posX][posY].getType() != tempBoard[posX - 1][posY - 1].getType()
+                && tempBoard[posX - 2][posY - 2] == null) {
             return true;
-        }
-        else if(posX < 6 && posY < 6 && tempBoard[posX + 1][posY + 1].getClass() == Piece.class && tempBoard[posX][posY].getType() != tempBoard[posX + 1][posY + 1].getType() && tempBoard[posX + 2][posY + 2] == null) {
+        } else if (posX < 6 && posY < 6 && tempBoard[posX + 1][posY + 1].getClass() == Piece.class
+                && tempBoard[posX][posY].getType() != tempBoard[posX + 1][posY + 1].getType()
+                && tempBoard[posX + 2][posY + 2] == null) {
             return true;
-        }
-        else return false;
+        } else
+            return false;
     }
+
     public String whoCanKill(String type) {
         Piece[][] tempBoard = board.getBoard();
         String result = "";
         for (int i = 0; i < tempBoard.length; i++) {
             for (int j = 0; j < tempBoard[i].length; j++) {
-                if(tempBoard[i][j].getType() == type && canKill(i, j)) {
+                if (tempBoard[i][j].getType() == type && canKill(i, j)) {
                     result += this.codePosition(i, j) + ";";
                 }
             }
         }
         return result;
     }
+
     public void movePiece(String pos1, String pos2) {
         int posX1 = this.decodePositionX(pos1);
         int posY1 = this.decodePositionY(pos1);
@@ -76,6 +84,7 @@ public class ClassicBoardController extends BoardController {
         tempBoard[posX2][posY2] = tempPiece;
         board.setBoard(tempBoard);
     }
+
     public SquareStateEnum[][] translateBoard() {
         SquareStateEnum[][] result = new SquareStateEnum[8][8];
         Piece[][] boardContent = board.getBoard();
