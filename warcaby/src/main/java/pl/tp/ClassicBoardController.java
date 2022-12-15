@@ -23,12 +23,20 @@ public class ClassicBoardController extends BoardController {
         board.setBoard(temp);
     }
 
-    private int decodePositionX(String position) {
-        return (int) position.charAt(0) - 65;
+    private int decodePositionX(String position) throws IncorrectPositionException {
+        try {
+            return (int) position.charAt(0) - 65;
+        } catch (Exception e) {
+            throw new IncorrectPositionException();
+        }
     }
 
-    private int decodePositionY(String position) {
-        return Integer.parseInt(position.substring(1, position.length())) - 1;
+    private int decodePositionY(String position) throws IncorrectPositionException {
+        try {
+            return Integer.parseInt(position.substring(1, position.length())) - 1;
+        } catch (Exception e) {
+            throw new IncorrectPositionException();
+        }
     }
 
     private String codePosition(int posX, int posY) {
@@ -38,13 +46,17 @@ public class ClassicBoardController extends BoardController {
         return result;
     }
 
-    public boolean isWhite(String position) {
-        return board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getType() == "White";
-    }
+    // public boolean isWhite(String position) {
+    // return
+    // board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getType()
+    // == "White";
+    // }
 
-    public boolean isRed(String position) {
-        return board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getType() == "Red";
-    }
+    // public boolean isRed(String position) {
+    // return
+    // board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getType()
+    // == "Red";
+    // }
 
     private boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getBoard();
@@ -73,17 +85,24 @@ public class ClassicBoardController extends BoardController {
         return result;
     }
 
-    public String movePiece(String pos1, String pos2) {
-        int posX1 = this.decodePositionX(pos1);
-        int posY1 = this.decodePositionY(pos1);
-        int posX2 = this.decodePositionX(pos2);
-        int posY2 = this.decodePositionY(pos2);
+    public void movePiece(String pos1, String pos2) throws IncorrectPositionException {
 
-        Piece[][] tempBoard = board.getBoard();
-        tempBoard[posY2][posX2] = tempBoard[posY1][posX1];
-        tempBoard[posY1][posX1] = null;
-        board.setBoard(tempBoard);
-        return "Ok";
+        try {
+            int posX1 = this.decodePositionX(pos1);
+            int posY1 = this.decodePositionY(pos1);
+            int posX2 = this.decodePositionX(pos2);
+            int posY2 = this.decodePositionY(pos2);
+
+            Piece[][] tempBoard = board.getBoard();
+            tempBoard[posY2][posX2] = tempBoard[posY1][posX1];
+            tempBoard[posY1][posX1] = null;
+            board.setBoard(tempBoard);
+        } catch (IncorrectPositionException e) {
+            throw e;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new IncorrectPositionException();
+        }
+
     }
 
     public SquareStateEnum[][] translateBoard() {

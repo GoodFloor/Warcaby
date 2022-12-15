@@ -6,11 +6,11 @@ public class TerminalView implements GameView {
 
     private Scanner scanner;
 
-    public void closeScanner() {
+    public void end() {
         this.scanner.close();
     }
 
-    public void openScanner() {
+    public void start() {
         this.scanner = new Scanner(System.in);
     }
 
@@ -72,6 +72,11 @@ public class TerminalView implements GameView {
         }
 
         return result;
+    }
+
+    @Override
+    public void printException(Exception e) {
+        System.out.println(e);
     }
 
 }
