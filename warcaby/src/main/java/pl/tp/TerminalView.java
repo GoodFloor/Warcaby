@@ -16,7 +16,7 @@ public class TerminalView implements GameView {
 
     @Override
     public void printMessage(String message) {
-        System.out.println("The Game is on.");
+        System.out.println(message);
     }
 
     // TODO tu nie powinna być pętla do 8

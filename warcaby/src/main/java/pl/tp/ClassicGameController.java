@@ -9,6 +9,6 @@ public class ClassicGameController extends GameController {
 
     @Override
     void setStartMessage() {
-        startMessage = "The Classic game is on";
+        this.startMessage = "The Classic game is on";
     }
 }
