@@ -5,16 +5,21 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-
-
 public class App extends Application{
-    Pane pane;
+    Pane root;
 
     @Override
     public void start(Stage mainStage) throws Exception {
-        pane = new Pane();
+        root = new Pane();
+        BoardLayer board = new BoardLayer();
+        Pane pieces = new Pane();
+        Pane userInterface = new Pane();
         mainStage.setTitle("Warcaby");
-        Scene mainScene = new Scene(pane, 800, 800);
+        root.getChildren().addAll(board, pieces, userInterface);
+        board.drawNew(8, 8);
+        Scene mainScene = new Scene(root, 800, 800);
+        //userInterface.getChildren().add(new MyButton("Test"));
+        //pieces.getChildren().add(new MyButton("Testestest"));
         mainStage.setScene(mainScene);
         mainStage.show();
     }
