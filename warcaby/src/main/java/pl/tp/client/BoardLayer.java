@@ -8,7 +8,7 @@ public class BoardLayer extends GridPane{
         double fieldHeight = 800 / height;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                this.add(new Field(fieldWidth, fieldHeight, (i + j) % 2), i, j);
+                this.add(new Field(fieldWidth, fieldHeight, (i + j) % 2), j, i);
             }
         }
     }

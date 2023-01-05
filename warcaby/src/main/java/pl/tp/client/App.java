@@ -12,11 +12,12 @@ public class App extends Application{
     public void start(Stage mainStage) throws Exception {
         root = new Pane();
         BoardLayer board = new BoardLayer();
-        Pane pieces = new Pane();
+        PiecesLayer pieces = new PiecesLayer();
         Pane userInterface = new Pane();
         mainStage.setTitle("Warcaby");
         root.getChildren().addAll(board, pieces, userInterface);
         board.drawNew(8, 8);
+        pieces.drawNew(8, 8);
         Scene mainScene = new Scene(root, 800, 800);
         //userInterface.getChildren().add(new MyButton("Test"));
         //pieces.getChildren().add(new MyButton("Testestest"));
