@@ -12,6 +12,6 @@ public class Field extends Rectangle{
         else {
             setFill(Color.LIGHTYELLOW);
         }
-        setStroke(Color.BLACK);
+        //setStroke(Color.BLACK);
     }
 }
