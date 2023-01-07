@@ -11,6 +11,8 @@ public class Board {
     private Piece[][] pieces;
     private int noWhiteRemaining;
     private int noRedRemaining;
+    private boolean whiteTurn;
+    private int[][] mandatoryUsePieces;
 
     /**
      * Pobieranie informacji o szerokości planszy
@@ -66,20 +68,76 @@ public class Board {
         this.pieces = board;
     }
 
+    /**
+     * Pobieranie liczby pozostałych białych pionków z planszy
+     * 
+     * @return Zwraca liczbę pionków
+     */
     public int getNoWhiteRemaining() {
         return noWhiteRemaining;
     }
 
+    /**
+     * Ustawianie liczby białych pionków na planszy
+     * 
+     * @param noWhiteRemaining liczba pionków
+     */
     public void setNoWhiteRemaining(int noWhiteRemaining) {
         this.noWhiteRemaining = noWhiteRemaining;
     }
 
+    /**
+     * Pobieranie liczby pozostałych czerwonych pionków z planszy
+     * 
+     * @return Zwraca liczbę pionków
+     */
     public int getNoRedRemaining() {
         return noRedRemaining;
     }
 
+    /**
+     * Ustawianie liczby czerwonych pionków na planszy
+     * 
+     * @param noWhiteRemaining liczba pionków
+     */
     public void setNoRedRemaining(int noRedRemaining) {
         this.noRedRemaining = noRedRemaining;
+    }
+
+    /**
+     * Pobieranie informacji czy jest to tura białych czy czerwonych
+     * 
+     * @return Zwraca prawdę, jeśli obecnie jest tura białych.
+     */
+    public boolean isWhiteTurn() {
+        return whiteTurn;
+    }
+
+    /**
+     * Ustawianie czyja jest obecna tura
+     * 
+     * @param whiteTurn prawda, jeśli jest tura białych
+     */
+    public void setWhiteTurn(boolean whiteTurn) {
+        this.whiteTurn = whiteTurn;
+    }
+
+    /**
+     * Pobieranie listy pionków, którymi trzeba bić
+     * 
+     * @return Zwraca tablicę dwuwymiarową z pionkami.
+     */
+    public int[][] getMandatoryUsePieces() {
+        return mandatoryUsePieces;
+    }
+
+    /**
+     * Ustawianie listy pionków, którymi trzeba bić
+     * 
+     * @param mandatoryUsePieces tablica dwuwymiarowa z listą pionków
+     */
+    public void setMandatoryUsePieces(int[][] mandatoryUsePieces) {
+        this.mandatoryUsePieces = mandatoryUsePieces;
     }
 
 }

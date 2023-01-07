@@ -7,13 +7,11 @@ package pl.tp;
  */
 public class ClassicBoardController extends BoardController {
 
-    int[][] mandatoryUsePieces;
-    boolean whiteTurn;
-
-    public void resetBoard() {
+    protected void resetBoard() {
         // board[0][0] to lewy dolny róg, pierwsza współrzędna to wiersz, druga to
-        // kolumna ale to i tak tylko tymczasowe
+        // kolumna
         Piece[][] temp = new Piece[8][8];
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if ((i + j) % 2 == 1) {
@@ -29,50 +27,16 @@ public class ClassicBoardController extends BoardController {
                 }
             }
         }
+
         board.setPieces(temp);
-        isTurnOver = false;
-        mandatoryUsePieces = new int[0][0];
+        board.setMandatoryUsePieces(new int[0][0]);
         board.setNoWhiteRemaining(12);
         board.setNoRedRemaining(12);
-        whiteTurn = true;
+        board.setWhiteTurn(true);
     }
 
-    private int decodePositionX(String position) throws IncorrectPositionException {
-        try {
-            return (int) position.charAt(0) - 65;
-        } catch (Exception e) {
-            throw new IncorrectPositionException();
-        }
-    }
-
-    private int decodePositionY(String position) throws IncorrectPositionException {
-        try {
-            return Integer.parseInt(position.substring(1, position.length())) - 1;
-        } catch (Exception e) {
-            throw new IncorrectPositionException();
-        }
-    }
-
-    private String codePosition(int posX, int posY) {
-        String result = "";
-        result += (char) (posX + 65);
-        result += posY + 1;
-        return result;
-    }
-
-    // public boolean isWhite(String position) {
-    // return
-    // board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getColor()
-    // == "White";
-    // }
-
-    // public boolean isRed(String position) {
-    // return
-    // board.getBoard()[this.decodePositionX(position)][this.decodePositionY(position)].getColor()
-    // == "Red";
-    // }
-
-    private boolean canKill(int posX, int posY) {
+    // TODO: Obsługa dam
+    protected boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getPieces();
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
@@ -99,131 +63,24 @@ public class ClassicBoardController extends BoardController {
             }
         }
         return false;
-
-        // if (posX > 1 && posY < 6 && tempBoard[posX - 1][posY - 1].getClass() ==
-        // Piece.class
-        // && tempBoard[posX][posY].getColor() != tempBoard[posX - 1][posY -
-        // 1].getColor()
-        // && tempBoard[posX - 2][posY - 2] == null) {
-        // return true;
-        // } else if (posX < 6 && posY < 6 && tempBoard[posX + 1][posY + 1].getClass()
-        // == Piece.class
-        // && tempBoard[posX][posY].getColor() != tempBoard[posX + 1][posY +
-        // 1].getColor()
-        // && tempBoard[posX + 2][posY + 2] == null) {
-        // return true;
-        // } else
-        // return false;
-    }
-
-    // public String whoCanKill(String type) {
-    // Piece[][] tempBoard = board.getBoard();
-    // String result = "";
-    // for (int i = 0; i < tempBoard.length; i++) {
-    // for (int j = 0; j < tempBoard[i].length; j++) {
-    // if (tempBoard[i][j].getColor() == type && canKill(i, j)) {
-    // result += this.codePosition(i, j) + ";";
-    // }
-    // }
-    // }
-    // return result;
-    // }
-
-    public void movePiece(String pos1, String pos2) throws IncorrectPositionException {
-
-        try {
-            // Konwertujemy miejsce źródłowe pionka i miejsce docelowe pionka
-            int posX1 = this.decodePositionX(pos1);
-            int posY1 = this.decodePositionY(pos1);
-            int posX2 = this.decodePositionX(pos2);
-            int posY2 = this.decodePositionY(pos2);
-
-            // Pobieramy zawartość planszy
-            Piece[][] tempBoard = board.getPieces();
-
-            // Sprawdzamy czy na miejscu źródłowym jest pionek i czy miejsce docelowe jest
-            // puste
-            if (tempBoard[posY1][posX1] == null || tempBoard[posY2][posX2] != null) {
-                throw new IncorrectPositionException();
-            }
-            // Sprawdzamy czy pionek źródłowy jest w dobrym kolorze
-            if ((whiteTurn && tempBoard[posY1][posX1].getColor() != "White")
-                    || (!whiteTurn && tempBoard[posY1][posX1].getColor() != "Red")) {
-                throw new IncorrectPositionException();
-            }
-            // Sprawdzamy czy podany pionek jest pośród pionków którymi trzeba się ruszyć
-            if (mandatoryUsePieces.length > 0) {
-                boolean isPieceInMandatory = false;
-                for (int[] mandatoryPiece : mandatoryUsePieces) {
-                    if (mandatoryPiece[0] == posX1 && mandatoryPiece[1] == posY1 && Math.abs(posX1 - posX2) == 2
-                            && Math.abs(posY1 - posY2) == 2) {
-                        isPieceInMandatory = true;
-                        break;
-                    }
-                }
-                if (!isPieceInMandatory) {
-                    throw new IncorrectPositionException();
-                }
-            }
-            // Sprawdzamy czy podany ruch jest możliwy i czy aby go wykonać musimy zbić
-            // przeciwnika
-            int[] neededEnemyPosition;
-            neededEnemyPosition = tempBoard[posY1][posX1].canGoTo(posX1, posY1, posX2, posY2);
-
-            // Jeżeli przeskakujemy o 2 pola to sprawdzamy czy pomiędzy nimi jest
-            // przeciwnik, jeśli tak to go usuwamy
-            if (neededEnemyPosition.length > 0) {
-                int enemyX = neededEnemyPosition[0];
-                int enemyY = neededEnemyPosition[1];
-                if (tempBoard[enemyY][enemyX] == null
-                        || tempBoard[enemyY][enemyX].getColor() == tempBoard[posY1][posX1].getColor()) {
-                    throw new IncorrectPositionException();
-                } else {
-                    if (tempBoard[enemyY][enemyX].getColor() == "Red")
-                        board.setNoRedRemaining(board.getNoRedRemaining() - 1);
-                    else
-                        board.setNoWhiteRemaining(board.getNoWhiteRemaining() - 1);
-                    tempBoard[enemyY][enemyX] = null;
-                }
-            }
-            // Przesuwamy pionek
-            tempBoard[posY2][posX2] = tempBoard[posY1][posX1];
-            tempBoard[posY1][posX1] = null;
-            mandatoryUsePieces = new int[0][0];
-            board.setPieces(tempBoard);
-            isTurnOver = true;
-
-            // Jeśli zbiliśmy pionka to sprawdzamy czy ten pionek może wykonać jeszcze jakiś
-            // ruch
-            if (neededEnemyPosition.length > 0) {
-                if (this.canKill(posX2, posY2)) {
-                    mandatoryUsePieces = new int[1][2];
-                    mandatoryUsePieces[0][0] = posX2;
-                    mandatoryUsePieces[0][1] = posY2;
-                }
-            }
-        } catch (IncorrectPositionException e) {
-            throw e;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new IncorrectPositionException();
-        }
-
     }
 
     public SquareStateEnum[][] translateBoard() {
         SquareStateEnum[][] result = new SquareStateEnum[8][8];
         Piece[][] boardContent = board.getPieces();
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        int h = board.getHeight();
+
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
                 if ((i + j) % 2 == 1) {
-                    result[7 - i][j] = SquareStateEnum.White;
+                    result[h - i][j] = SquareStateEnum.White;
                 } else if (boardContent[i][j] == null) {
-                    result[7 - i][j] = SquareStateEnum.BlackEmpty;
+                    result[h - i][j] = SquareStateEnum.BlackEmpty;
                 } else if (boardContent[i][j].getColor() == "White") {
-                    result[7 - i][j] = SquareStateEnum.BlackWhite;
+                    result[h - i][j] = SquareStateEnum.BlackWhite;
                 } else if (boardContent[i][j].getColor() == "Red") {
-                    result[7 - i][j] = SquareStateEnum.BlackRed;
+                    result[h - i][j] = SquareStateEnum.BlackRed;
                 }
             }
         }
@@ -232,25 +89,30 @@ public class ClassicBoardController extends BoardController {
     }
 
     private void addMandatory(int posX, int posY) {
-        int[][] tempArr = new int[mandatoryUsePieces.length + 1][2];
-        for (int i = 0; i < mandatoryUsePieces.length; i++) {
-            tempArr[i] = mandatoryUsePieces[i];
+
+        int[][] mandatoryArr = board.getMandatoryUsePieces();
+        int[][] tempArr = new int[mandatoryArr.length + 1][2];
+
+        for (int i = 0; i < mandatoryArr.length; i++) {
+            tempArr[i] = mandatoryArr[i];
         }
-        tempArr[mandatoryUsePieces.length][0] = posX;
-        tempArr[mandatoryUsePieces.length][1] = posY;
-        mandatoryUsePieces = tempArr;
+
+        tempArr[mandatoryArr.length][0] = posX;
+        tempArr[mandatoryArr.length][1] = posY;
+
+        board.setMandatoryUsePieces(tempArr);
     }
 
     @Override
     public void startNextTurn() {
         isTurnOver = false;
-        mandatoryUsePieces = new int[0][0];
-        whiteTurn = !whiteTurn;
+        board.setMandatoryUsePieces(new int[0][0]);
+        board.setWhiteTurn(!board.isWhiteTurn());
         Piece[][] tempBoard = board.getPieces();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (tempBoard[i][j] != null && ((whiteTurn && tempBoard[i][j].getColor() == "White")
-                        || (!whiteTurn && tempBoard[i][j].getColor() == "Red")) && this.canKill(j, i)) {
+                if (tempBoard[i][j] != null && ((board.isWhiteTurn() && tempBoard[i][j].getColor() == "White")
+                        || (!board.isWhiteTurn() && tempBoard[i][j].getColor() == "Red")) && this.canKill(j, i)) {
                     this.addMandatory(j, i);
                 }
             }
