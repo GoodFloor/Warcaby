@@ -1,5 +1,12 @@
 package pl.tp;
 
+/**
+ * Klasa obsługująca konkretną rozgrywkę
+ * 
+ * Produkt we wzorcu Factory
+ * Klasa abstrakcyjna we wzorcu Template method
+ * Kontroler we wzorcu MVC
+ */
 public abstract class GameController {
     protected BoardController boardController;
     protected GameView gameView;
@@ -7,15 +14,27 @@ public abstract class GameController {
     protected Boolean isWhiteTurn;
     protected String startMessage;
 
+    /**
+     * Ustawienie konkretnego rodzaju planszy
+     */
     abstract void setBoard();
 
+    /**
+     * Ustawienie wiadomości początkowej
+     */
     abstract void setStartMessage();
 
+    /**
+     * Konstruktor ustawiający parametry początkowe
+     */
     public GameController() {
         this.gameView = new TerminalView();
         isGameRunning = false;
     }
 
+    /**
+     * Funkcja uruchamiająca rozgrywkę - główna pętla odpowiedzialna za grę
+     */
     public void run() {
         setBoard();
         setStartMessage();
@@ -38,10 +57,9 @@ public abstract class GameController {
                 gameView.printMessage("Błędny ruch - spróbuj ponownie");
                 continue;
             }
-            if(boardController.isGameOver() != null) {
+            if (boardController.isGameOver() != null) {
                 break;
-            }
-            else if(boardController.isTurnOver()) {
+            } else if (boardController.isTurnOver()) {
                 isWhiteTurn = !isWhiteTurn;
                 boardController.startNextTurn();
             }

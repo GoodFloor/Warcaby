@@ -6,12 +6,12 @@ package pl.tp;
 public class App {
 
     /**
-     * Funkcja main
+     * Uruchomienie aplikacji
      * 
      * @param args tablica argumentów przekazywanych do aplikacji
      */
     public static void main(String[] args) {
-        VersionPicker factory = new VersionPicker();
+        VersionFactoryInterface factory = new VersionFactory();
         GameController game = factory.getGame(1);
 
         game.run();

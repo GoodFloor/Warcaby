@@ -1,6 +1,9 @@
 package pl.tp;
 
-public class VersionPicker implements VersionFactoryInterface {
+/**
+ * Twórca konkretny we wzorcu Factory (jedyny)
+ */
+public class VersionFactory implements VersionFactoryInterface {
     @Override
     public GameController getGame(int versionNr) {
         switch (versionNr) {

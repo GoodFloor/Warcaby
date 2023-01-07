@@ -1,5 +1,11 @@
 package pl.tp;
 
+/**
+ * Klasa obsługująca konkretną rozgrywkę klasycznego typu
+ * 
+ * Produkt konkretny we wzorcu Factory
+ * Klasa konkretna we wzorcu Template method
+ */
 public class ClassicGameController extends GameController {
     @Override
     void setBoard() {
