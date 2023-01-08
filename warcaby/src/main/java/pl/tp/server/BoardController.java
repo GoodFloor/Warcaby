@@ -1,4 +1,7 @@
-package pl.tp;
+package pl.tp.server;
+
+import pl.tp.PieceColorEnum;
+import pl.tp.SquareStateEnum;
 
 /**
  * Klasa obsługująca działania na planszy

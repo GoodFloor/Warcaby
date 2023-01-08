@@ -1,4 +1,4 @@
-package pl.tp;
+package pl.tp.server;
 
 /**
  * Twórca we wzorcu Factory - wybiera konkretny rodzaj gry

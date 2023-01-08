@@ -1,4 +1,4 @@
-package pl.tp;
+package pl.tp.server;
 
 /**
  * Twórca konkretny we wzorcu Factory (jedyny)

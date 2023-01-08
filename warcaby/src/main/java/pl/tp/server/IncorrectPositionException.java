@@ -1,4 +1,4 @@
-package pl.tp;
+package pl.tp.server;
 
 /**
  * Błąd przesyłany w przypadku wybrania przez gracza nipoprawnej pozycji

@@ -1,4 +1,6 @@
-package pl.tp;
+package pl.tp.server;
+
+import pl.tp.SquareStateEnum;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package pl.tp;
+package pl.tp.server;
 
 /**
  * Klasa podstawowego pionka
