@@ -11,6 +11,7 @@ public class Board {
     private Piece[][] pieces;
     private int noWhiteRemaining;
     private int noRedRemaining;
+    private boolean isTurnOver;
     private boolean whiteTurn;
     private int[][] mandatoryUsePieces;
 
@@ -98,10 +99,28 @@ public class Board {
     /**
      * Ustawianie liczby czerwonych pionków na planszy
      * 
-     * @param noWhiteRemaining liczba pionków
+     * @param noRedRemaining liczba pionków
      */
     public void setNoRedRemaining(int noRedRemaining) {
         this.noRedRemaining = noRedRemaining;
+    }
+
+    /**
+     * Pobieranie informacji czy tura się zakończyła
+     * 
+     * @return Zwraca prawdę, jeśli tura się skończyła.
+     */
+    public boolean isTurnOver() {
+        return isTurnOver;
+    }
+
+    /**
+     * Ustawianie informacji o końcu tury
+     * 
+     * @param isTurnOver prawda, jeśli tura się skończyła
+     */
+    public void setTurnOver(boolean isTurnOver) {
+        this.isTurnOver = isTurnOver;
     }
 
     /**
@@ -139,5 +158,4 @@ public class Board {
     public void setMandatoryUsePieces(int[][] mandatoryUsePieces) {
         this.mandatoryUsePieces = mandatoryUsePieces;
     }
-
 }

@@ -7,6 +7,7 @@ package pl.tp;
  */
 public class ClassicBoardController extends BoardController {
 
+    @Override
     protected void resetBoard() {
         // board[0][0] to lewy dolny róg, pierwsza współrzędna to wiersz, druga to
         // kolumna
@@ -38,6 +39,7 @@ public class ClassicBoardController extends BoardController {
     }
 
     // TODO: Obsługa dam, wielokrotne bicia
+    @Override
     protected boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getPieces();
         for (int i = 0; i < 2; i++) {

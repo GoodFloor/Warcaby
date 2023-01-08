@@ -8,24 +8,51 @@ package pl.tp;
  */
 public abstract class BoardController {
     protected Board board;
-    protected boolean isTurnOver;
 
+    /**
+     * Ustawienie początkowych parametrów planszy
+     */
     protected abstract void resetBoard();
 
+    /**
+     * Sprawdzenie czy dany pionek ma możliwość jakiegokolwiek bicia
+     * 
+     * @param posX pozycja x pionka do sprawdzenia
+     * @param posY pozycja x pionka do sprawdzenia
+     * @return Zwraca prawdę, jeśli pionek ma możliwość bicia.
+     */
     protected abstract boolean canKill(int posX, int posY);
 
+    /**
+     * Aktualizowanie listy pionków, które mają obowiązek bicia
+     */
     protected abstract void calculateMandatory();
 
+    /**
+     * Konstruktor ustawiający początkowe parametry i resetujący planszę
+     */
     public BoardController() {
         board = new Board();
-        isTurnOver = false;
+        board.setTurnOver(false);
         resetBoard();
     }
 
+    /**
+     * Informacja o końcu tury
+     * 
+     * @return Zwraca prawdę, jeśli tura się zakończyła.
+     */
     public boolean isTurnOver() {
-        return isTurnOver;
+        return board.isTurnOver();
     }
 
+    /**
+     * Wyciąganie informacji o pozycji x pionka z odebranego stringa
+     * 
+     * @param position informacja do rozkodowania
+     * @return numer pozycji x
+     * @throws IncorrectPositionException podano błędną pozycję
+     */
     protected int decodePositionX(String position) throws IncorrectPositionException {
         try {
             return (int) position.charAt(0) - 65;
@@ -34,6 +61,13 @@ public abstract class BoardController {
         }
     }
 
+    /**
+     * Wyciąganie informacji o pozycji y pionka z odebranego stringa
+     * 
+     * @param position informacja do rozkodowania
+     * @return numer pozycji y
+     * @throws IncorrectPositionException podano błędną pozycję
+     */
     protected int decodePositionY(String position) throws IncorrectPositionException {
         try {
             return Integer.parseInt(position.substring(1, position.length())) - 1;
@@ -42,6 +76,13 @@ public abstract class BoardController {
         }
     }
 
+    /**
+     * Zakodowanie informacji o pozycji
+     * 
+     * @param posX numer pozycji x
+     * @param posY numer pozycji y
+     * @return zakodowana pozycja
+     */
     protected String codePosition(int posX, int posY) {
         String result = "";
         result += (char) (posX + 65);
@@ -49,6 +90,13 @@ public abstract class BoardController {
         return result;
     }
 
+    /**
+     * Przesunięcie pionka na planszy
+     * 
+     * @param pos1 pozycja początkowa
+     * @param pos2 pozycja docelowa
+     * @throws IncorrectPositionException któraś z podanych pozycji jest błędna
+     */
     public void movePiece(String pos1, String pos2) throws IncorrectPositionException {
 
         try {
@@ -111,7 +159,7 @@ public abstract class BoardController {
             tempBoard[posY1][posX1] = null;
             board.setMandatoryUsePieces(new int[0][0]);
             board.setPieces(tempBoard);
-            isTurnOver = true;
+            board.setTurnOver(true);
 
             // Jeśli zbiliśmy pionka to sprawdzamy czy ten pionek może wykonać jeszcze jakiś
             // ruch
@@ -132,6 +180,12 @@ public abstract class BoardController {
 
     }
 
+    /**
+     * Dodanie pionka który ma obowiązek bicia do listy
+     * 
+     * @param posX pozycja x pionka
+     * @param posY pozycja y pionka
+     */
     protected void addMandatory(int posX, int posY) {
 
         int[][] mandatoryArr = board.getMandatoryUsePieces();
@@ -147,13 +201,21 @@ public abstract class BoardController {
         board.setMandatoryUsePieces(tempArr);
     }
 
+    /**
+     * Rozpoczęcie nowej tury - ustawienie odpowiednich parametrów
+     */
     public void startNextTurn() {
-        isTurnOver = false;
+        board.setTurnOver(false);
         board.setMandatoryUsePieces(new int[0][0]);
         board.setWhiteTurn(!board.isWhiteTurn());
         calculateMandatory();
     }
 
+    /**
+     * Tworzenie stanu planszy do przesłania na podstawie układu pionków
+     * 
+     * @return tablica dwuwymiarowa z układem planszy
+     */
     public SquareStateEnum[][] translateBoard() {
         SquareStateEnum[][] result = new SquareStateEnum[board.getHeight()][board.getWidth()];
         Piece[][] boardContent = board.getPieces();
@@ -177,6 +239,11 @@ public abstract class BoardController {
         return result;
     }
 
+    /**
+     * Pobieranie rezultatu gry
+     * 
+     * @return Zwraca wygranego lub null w przypadku niezakończenia gry.
+     */
     public String isGameOver() {
         if (board.getNoWhiteRemaining() == 0) {
             return "White win!";
