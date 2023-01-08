@@ -77,20 +77,6 @@ public abstract class BoardController {
     }
 
     /**
-     * Zakodowanie informacji o pozycji
-     * 
-     * @param posX numer pozycji x
-     * @param posY numer pozycji y
-     * @return zakodowana pozycja
-     */
-    protected String codePosition(int posX, int posY) {
-        String result = "";
-        result += (char) (posX + 65);
-        result += posY + 1;
-        return result;
-    }
-
-    /**
      * Przesunięcie pionka na planszy
      * 
      * @param pos1 pozycja początkowa
@@ -115,8 +101,8 @@ public abstract class BoardController {
                 throw new IncorrectPositionException();
             }
             // Sprawdzamy czy pionek źródłowy jest w dobrym kolorze
-            if ((board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != "White")
-                    || (!board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != "Red")) {
+            if ((board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.White)
+                    || (!board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.Red)) {
                 throw new IncorrectPositionException();
             }
             // Sprawdzamy czy podany pionek jest pośród pionków którymi trzeba się ruszyć
@@ -147,7 +133,7 @@ public abstract class BoardController {
                         || tempBoard[enemyY][enemyX].getColor() == tempBoard[posY1][posX1].getColor()) {
                     throw new IncorrectPositionException();
                 } else {
-                    if (tempBoard[enemyY][enemyX].getColor() == "Red")
+                    if (tempBoard[enemyY][enemyX].getColor() == PieceColorEnum.Red)
                         board.setNoRedRemaining(board.getNoRedRemaining() - 1);
                     else
                         board.setNoWhiteRemaining(board.getNoWhiteRemaining() - 1);
@@ -228,9 +214,9 @@ public abstract class BoardController {
                     result[h - 1 - i][j] = SquareStateEnum.White;
                 } else if (boardContent[i][j] == null) {
                     result[h - 1 - i][j] = SquareStateEnum.BlackEmpty;
-                } else if (boardContent[i][j].getColor() == "White") {
+                } else if (boardContent[i][j].getColor() == PieceColorEnum.White) {
                     result[h - 1 - i][j] = SquareStateEnum.BlackWhite;
-                } else if (boardContent[i][j].getColor() == "Red") {
+                } else if (boardContent[i][j].getColor() == PieceColorEnum.Red) {
                     result[h - 1 - i][j] = SquareStateEnum.BlackRed;
                 }
             }

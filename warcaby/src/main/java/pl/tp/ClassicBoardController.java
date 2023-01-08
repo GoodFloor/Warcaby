@@ -74,8 +74,10 @@ public class ClassicBoardController extends BoardController {
         Piece[][] tempBoard = board.getPieces();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (tempBoard[i][j] != null && ((board.isWhiteTurn() && tempBoard[i][j].getColor() == "White")
-                        || (!board.isWhiteTurn() && tempBoard[i][j].getColor() == "Red")) && this.canKill(j, i)) {
+                if (tempBoard[i][j] != null
+                        && ((board.isWhiteTurn() && tempBoard[i][j].getColor() == PieceColorEnum.White)
+                                || (!board.isWhiteTurn() && tempBoard[i][j].getColor() == PieceColorEnum.Red))
+                        && this.canKill(j, i)) {
                     this.addMandatory(j, i);
                 }
             }
