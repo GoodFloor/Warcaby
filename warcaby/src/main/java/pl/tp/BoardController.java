@@ -14,11 +14,7 @@ public abstract class BoardController {
 
     protected abstract boolean canKill(int posX, int posY);
 
-    public abstract void startNextTurn();
-
-    public abstract String isGameOver();
-
-    public abstract SquareStateEnum[][] translateBoard();
+    protected abstract void calculateMandatory();
 
     public BoardController() {
         board = new Board();
@@ -136,4 +132,58 @@ public abstract class BoardController {
 
     }
 
+    protected void addMandatory(int posX, int posY) {
+
+        int[][] mandatoryArr = board.getMandatoryUsePieces();
+        int[][] tempArr = new int[mandatoryArr.length + 1][2];
+
+        for (int i = 0; i < mandatoryArr.length; i++) {
+            tempArr[i] = mandatoryArr[i];
+        }
+
+        tempArr[mandatoryArr.length][0] = posX;
+        tempArr[mandatoryArr.length][1] = posY;
+
+        board.setMandatoryUsePieces(tempArr);
+    }
+
+    public void startNextTurn() {
+        isTurnOver = false;
+        board.setMandatoryUsePieces(new int[0][0]);
+        board.setWhiteTurn(!board.isWhiteTurn());
+        calculateMandatory();
+    }
+
+    public SquareStateEnum[][] translateBoard() {
+        SquareStateEnum[][] result = new SquareStateEnum[board.getHeight()][board.getWidth()];
+        Piece[][] boardContent = board.getPieces();
+
+        int h = board.getHeight();
+
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                if ((i + j) % 2 == 1) {
+                    result[h - 1 - i][j] = SquareStateEnum.White;
+                } else if (boardContent[i][j] == null) {
+                    result[h - 1 - i][j] = SquareStateEnum.BlackEmpty;
+                } else if (boardContent[i][j].getColor() == "White") {
+                    result[h - 1 - i][j] = SquareStateEnum.BlackWhite;
+                } else if (boardContent[i][j].getColor() == "Red") {
+                    result[h - 1 - i][j] = SquareStateEnum.BlackRed;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public String isGameOver() {
+        if (board.getNoWhiteRemaining() == 0) {
+            return "White win!";
+        } else if (board.getNoRedRemaining() == 0) {
+            return "Red win!";
+        } else {
+            return null;
+        }
+    }
 }

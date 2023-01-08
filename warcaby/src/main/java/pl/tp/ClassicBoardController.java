@@ -28,6 +28,8 @@ public class ClassicBoardController extends BoardController {
             }
         }
 
+        board.setHeight(8);
+        board.setWidth(8);
         board.setPieces(temp);
         board.setMandatoryUsePieces(new int[0][0]);
         board.setNoWhiteRemaining(12);
@@ -35,7 +37,7 @@ public class ClassicBoardController extends BoardController {
         board.setWhiteTurn(true);
     }
 
-    // TODO: Obsługa dam
+    // TODO: Obsługa dam, wielokrotne bicia
     protected boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getPieces();
         for (int i = 0; i < 2; i++) {
@@ -65,49 +67,8 @@ public class ClassicBoardController extends BoardController {
         return false;
     }
 
-    public SquareStateEnum[][] translateBoard() {
-        SquareStateEnum[][] result = new SquareStateEnum[8][8];
-        Piece[][] boardContent = board.getPieces();
-
-        int h = board.getHeight();
-
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                if ((i + j) % 2 == 1) {
-                    result[h - i][j] = SquareStateEnum.White;
-                } else if (boardContent[i][j] == null) {
-                    result[h - i][j] = SquareStateEnum.BlackEmpty;
-                } else if (boardContent[i][j].getColor() == "White") {
-                    result[h - i][j] = SquareStateEnum.BlackWhite;
-                } else if (boardContent[i][j].getColor() == "Red") {
-                    result[h - i][j] = SquareStateEnum.BlackRed;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private void addMandatory(int posX, int posY) {
-
-        int[][] mandatoryArr = board.getMandatoryUsePieces();
-        int[][] tempArr = new int[mandatoryArr.length + 1][2];
-
-        for (int i = 0; i < mandatoryArr.length; i++) {
-            tempArr[i] = mandatoryArr[i];
-        }
-
-        tempArr[mandatoryArr.length][0] = posX;
-        tempArr[mandatoryArr.length][1] = posY;
-
-        board.setMandatoryUsePieces(tempArr);
-    }
-
     @Override
-    public void startNextTurn() {
-        isTurnOver = false;
-        board.setMandatoryUsePieces(new int[0][0]);
-        board.setWhiteTurn(!board.isWhiteTurn());
+    protected void calculateMandatory() {
         Piece[][] tempBoard = board.getPieces();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -116,17 +77,6 @@ public class ClassicBoardController extends BoardController {
                     this.addMandatory(j, i);
                 }
             }
-        }
-    }
-
-    @Override
-    public String isGameOver() {
-        if (board.getNoWhiteRemaining() == 0) {
-            return "White win!";
-        } else if (board.getNoRedRemaining() == 0) {
-            return "Red win!";
-        } else {
-            return null;
         }
     }
 }
