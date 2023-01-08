@@ -5,7 +5,7 @@ package pl.tp.server;
  * 
  * Stan (abstrakcyjny) we wzorcu state
  */
-public abstract class PieceState {
+public abstract class AbstractPieceState {
     protected boolean isStartingAtBottom;
 
     /**
