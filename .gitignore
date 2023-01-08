@@ -1,2 +1,6 @@
 # compiled .class files
-/warcaby/target
+/warcaby/target/*
+!/warcaby/target/site
+
+/warcaby/target/site/*
+!/warcaby/target/site/apidocs

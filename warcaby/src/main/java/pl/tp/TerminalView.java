@@ -2,14 +2,19 @@ package pl.tp;
 
 import java.util.Scanner;
 
+/**
+ * Klasa implementująca podstawowy widok terminalowy
+ */
 public class TerminalView implements GameView {
 
     private Scanner scanner;
 
+    @Override
     public void end() {
         this.scanner.close();
     }
 
+    @Override
     public void start() {
         this.scanner = new Scanner(System.in);
     }
@@ -22,17 +27,18 @@ public class TerminalView implements GameView {
     // TODO tu nie powinna być pętla do 8
     @Override
     public void printBoard(SquareStateEnum[][] boardContent) {
+        int size = boardContent.length;
         System.out.print("   ");
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.printf(" %c ", (char) (i + 65));
         }
         System.out.print("\n");
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < size; i++) {
 
-            System.out.printf(" %d ", (8 - i));
+            System.out.printf(" %d ", (size - i));
 
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < size; j++) {
                 if (boardContent[i][j] == SquareStateEnum.White) {
                     System.out.print("\033[97;107m   ");
                 } else if (boardContent[i][j] == SquareStateEnum.BlackEmpty) {
@@ -45,11 +51,11 @@ public class TerminalView implements GameView {
                 }
             }
 
-            System.out.printf("\033[0m %d \n", (8 - i));
+            System.out.printf("\033[0m %d \n", (size - i));
         }
 
         System.out.print("   ");
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < size; i++) {
             System.out.printf(" %c ", (char) (i + 65));
         }
         System.out.print("\n");
