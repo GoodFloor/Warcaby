@@ -49,4 +49,7 @@ public abstract class AbstractPieceState {
     public void setStartingAtBottom(boolean isStartingAtBottom) {
         this.isStartingAtBottom = isStartingAtBottom;
     }
+    public boolean getIsStartingAtBottom() {
+        return this.isStartingAtBottom;
+    }
 }

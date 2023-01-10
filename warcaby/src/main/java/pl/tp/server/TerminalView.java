@@ -50,6 +50,10 @@ public class TerminalView implements GameView {
                     System.out.print("\033[91;40m 0 ");
                 } else if (boardContent[i][j] == SquareStateEnum.BlackWhite) {
                     System.out.print("\033[97;40m 0 ");
+                } else if (boardContent[i][j] == SquareStateEnum.BlackRedQueen) {
+                    System.out.print("\033[91;40m H ");
+                } else if (boardContent[i][j] == SquareStateEnum.BlackWhiteQueen) {
+                    System.out.print("\033[97;40m H ");
                 }
             }
 

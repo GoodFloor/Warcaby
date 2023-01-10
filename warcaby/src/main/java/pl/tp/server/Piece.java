@@ -15,7 +15,7 @@ public class Piece {
      * Konstruktor ustawiający początkowy stan pionka na zwykły
      */
     Piece() {
-        this.state = new QueenState();
+        this.state = new PawnState();
     }
 
     /**
@@ -67,4 +67,12 @@ public class Piece {
         return state.getState();
     }
 
+    public boolean isStartingAtBottom() {
+        return state.getIsStartingAtBottom();
+    }
+    public void upgradePiece() {
+        if(state.getState() == "P") {
+            state = new QueenState();
+        }
+    }
 }

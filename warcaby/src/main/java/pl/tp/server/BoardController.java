@@ -60,6 +60,7 @@ public abstract class BoardController {
         try {
             return (int) position.charAt(0) - 65;
         } catch (Exception e) {
+            System.out.println("Niezgodny X");
             throw new IncorrectPositionException();
         }
     }
@@ -75,6 +76,7 @@ public abstract class BoardController {
         try {
             return Integer.parseInt(position.substring(1, position.length())) - 1;
         } catch (Exception e) {
+            System.out.println("Niezgodny Y");
             throw new IncorrectPositionException();
         }
     }
@@ -101,24 +103,30 @@ public abstract class BoardController {
             // Sprawdzamy czy na miejscu źródłowym jest pionek i czy miejsce docelowe jest
             // puste
             if (tempBoard[posY1][posX1] == null || tempBoard[posY2][posX2] != null) {
+                System.out.println("Miejsce źródłowe puste lub docelowe zajęte");
                 throw new IncorrectPositionException();
             }
             // Sprawdzamy czy pionek źródłowy jest w dobrym kolorze
             if ((board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.White)
                     || (!board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.Red)) {
+                System.out.println("Wybrany pionek nie należy do gracza");
                 throw new IncorrectPositionException();
             }
             // Sprawdzamy czy podany pionek jest pośród pionków którymi trzeba się ruszyć
+            boolean isPieceInMandatory = false;
             if (board.getMandatoryUsePieces().length > 0) {
-                boolean isPieceInMandatory = false;
                 for (int[] mandatoryPiece : board.getMandatoryUsePieces()) {
-                    if (mandatoryPiece[0] == posX1 && mandatoryPiece[1] == posY1 && Math.abs(posX1 - posX2) == 2
-                            && Math.abs(posY1 - posY2) == 2) {
+                    if (mandatoryPiece[0] == posY1 && mandatoryPiece[1] == posX1) {
                         isPieceInMandatory = true;
                         break;
                     }
                 }
                 if (!isPieceInMandatory) {
+                    String mandatory = "";
+                    for (int[] mandatoryPiece : board.getMandatoryUsePieces()) {
+                        mandatory+= "(" + mandatoryPiece[0] + "; " + mandatoryPiece[1] + "), ";
+                    }
+                    System.out.println("Wybrany pionek (" + posY1 + "; " + posX1 + ") nie należy do pionków które mogą bić: " + mandatory);
                     throw new IncorrectPositionException();
                 }
             }
@@ -127,7 +135,7 @@ public abstract class BoardController {
             int[][] neededEnemyPosition;
             neededEnemyPosition = tempBoard[posY1][posX1].canGoTo(posX1, posY1, posX2, posY2);
 
-            // Jeżeli przeskakujemy o 2 pola to sprawdzamy czy pomiędzy nimi jest
+            // Jeżeli przeskakujemy o więcej niż 1 pole to sprawdzamy czy pomiędzy nimi jest
             // przeciwnik, jeśli tak to go usuwamy
             int enemiesCount = 0;
             int enemyX = 0;
@@ -135,13 +143,21 @@ public abstract class BoardController {
             for (int[] possibleEnemy : neededEnemyPosition) {
                 int possibleEnemyX = possibleEnemy[0];
                 int possibleEnemyY = possibleEnemy[1];
+                if(tempBoard[possibleEnemyY][possibleEnemyX] != null && tempBoard[possibleEnemyY][possibleEnemyX].getColor() == tempBoard[posY1][posX1].getColor()) {
+                    System.out.println("Między wybranym pionkiem a miejscem docelowym znajduje się pionek sojusznika");
+                    throw new IncorrectPositionException();
+                }
                 if(tempBoard[possibleEnemyY][possibleEnemyX] != null && tempBoard[possibleEnemyY][possibleEnemyX].getColor() != tempBoard[posY1][posX1].getColor()) {
                     enemiesCount++;
                     enemyX = possibleEnemyX;
                     enemyY = possibleEnemyY;
                 } 
             }
-            if (enemiesCount == 1) {
+            if(enemiesCount == 0 && isPieceInMandatory) {
+                System.out.println("Wybrany ruch nie wykorzystuje bicia");
+                throw new IncorrectPositionException();
+            }
+            else if (enemiesCount == 1) {
                 if (tempBoard[enemyY][enemyX].getColor() == PieceColorEnum.Red) {
                         board.setNoRedRemaining(board.getNoRedRemaining() - 1);
                     }
@@ -152,6 +168,7 @@ public abstract class BoardController {
             }
             else if((enemiesCount == 0 && tempBoard[posY1][posX1].getStateName() == "P" && neededEnemyPosition.length > 0) 
                     || enemiesCount > 1) { 
+                System.out.println("164");
                 throw new IncorrectPositionException();
             }
             // Przesuwamy pionek
@@ -163,18 +180,28 @@ public abstract class BoardController {
 
             // Jeśli zbiliśmy pionka to sprawdzamy czy ten pionek może wykonać jeszcze jakiś
             // ruch
-            if (neededEnemyPosition.length > 0) {
+            if (enemiesCount == 1) {
                 if (this.canKill(posX2, posY2)) {
                     int[][] temp = new int[1][2];
-                    temp[0][0] = posX2;
-                    temp[0][1] = posY2;
+                    temp[0][0] = posY2;
+                    temp[0][1] = posX2;
+                    System.out.println("Poruszaj się nadal pionkiem (" + posY2 + "; " + posX2 + ")");
 
                     board.setMandatoryUsePieces(temp);
+                    board.setTurnOver(false);
                 }
+            }
+            int sideToBecomeQueen = 0;
+            if(tempBoard[posY2][posX2].isStartingAtBottom()) {
+                sideToBecomeQueen = board.getHeight() - 1;
+            }
+            if(board.isTurnOver() && posY2 == sideToBecomeQueen) {
+                tempBoard[posY2][posX2].upgradePiece();
             }
         } catch (IncorrectPositionException e) {
             throw e;
         } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("188");
             throw new IncorrectPositionException();
         }
 
@@ -195,8 +222,8 @@ public abstract class BoardController {
             tempArr[i] = mandatoryArr[i];
         }
 
-        tempArr[mandatoryArr.length][0] = posX;
-        tempArr[mandatoryArr.length][1] = posY;
+        tempArr[mandatoryArr.length][0] = posY;
+        tempArr[mandatoryArr.length][1] = posX;
 
         board.setMandatoryUsePieces(tempArr);
     }
@@ -230,8 +257,14 @@ public abstract class BoardController {
                     result[h - 1 - i][j] = SquareStateEnum.BlackEmpty;
                 } else if (boardContent[i][j].getColor() == PieceColorEnum.White) {
                     result[h - 1 - i][j] = SquareStateEnum.BlackWhite;
+                    if (boardContent[i][j].getStateName() == "Q") {
+                        result[h - 1 - i][j] = SquareStateEnum.BlackWhiteQueen;
+                    }
                 } else if (boardContent[i][j].getColor() == PieceColorEnum.Red) {
                     result[h - 1 - i][j] = SquareStateEnum.BlackRed;
+                    if (boardContent[i][j].getStateName() == "Q") {
+                        result[h - 1 - i][j] = SquareStateEnum.BlackRedQueen;
+                    }
                 }
             }
         }

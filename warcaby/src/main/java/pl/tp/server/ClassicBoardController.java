@@ -17,19 +17,47 @@ public class ClassicBoardController extends BoardController {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if ((i + j) % 2 == 1) {
-                    temp[i][j] = null;
-                } else if (i < 3) {
-                    temp[i][j] = new Piece();
-                    temp[i][j].setColor("White");
-                } else if (i > 4) {
-                    temp[i][j] = new Piece();
-                    temp[i][j].setColor("Red");
-                } else {
-                    temp[i][j] = null;
-                }
+                // if ((i + j) % 2 == 1) {
+                //     temp[i][j] = null;
+                // } else if (i < 3) {
+                //     temp[i][j] = new Piece();
+                //     temp[i][j].setColor("White");
+                // } else if (i > 4) {
+                //     temp[i][j] = new Piece();
+                //     temp[i][j].setColor("Red");
+                // } else {
+                //     temp[i][j] = null;
+                // }
+                temp[i][j] = null;
             }
         }
+        temp[0][0] = new Piece();
+        temp[0][0].setColor("White");
+        temp[0][4] = new Piece();
+        temp[0][4].setColor("White");
+        temp[1][1] = new Piece();
+        temp[1][1].setColor("White");
+        temp[1][3] = new Piece();
+        temp[1][3].setColor("White");
+        temp[4][0] = new Piece();
+        temp[4][0].setColor("White");
+        temp[3][3] = new Piece();
+        temp[3][3].setColor("White");
+
+        temp[7][7] = new Piece();
+        temp[7][7].setColor("Red");
+        temp[7][5] = new Piece();
+        temp[7][5].setColor("Red");
+        temp[7][3] = new Piece();
+        temp[7][3].setColor("Red");
+        temp[6][2] = new Piece();
+        temp[6][2].setColor("Red");
+        temp[6][4] = new Piece();
+        temp[6][4].setColor("Red");
+        temp[3][7] = new Piece();
+        temp[3][7].setColor("Red");
+        temp[4][2] = new Piece();
+        temp[4][2].setColor("Red");
 
         board.setHeight(8);
         board.setWidth(8);
@@ -44,10 +72,10 @@ public class ClassicBoardController extends BoardController {
     @Override
     protected boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getPieces();
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                int tempX = i * 4 - 2 + posX;
-                int tempY = j * 4 - 2 + posY;
+        for (int i = -8; i < 8; i++) {
+            for (int j = -8; j < 8; j++) {
+                int tempX = i + posX;
+                int tempY = j + posY;
                 if (tempX < 0 || tempX >= tempBoard.length || tempY < 0 || tempY >= tempBoard.length) {
                     continue;
                 }
@@ -60,9 +88,12 @@ public class ClassicBoardController extends BoardController {
                 } catch (IncorrectPositionException e) {
                     continue;
                 }
+                catch (Exception e) {
+                    continue;
+                }
                 for (int k = 0; k < killableEnemyPlace.length; k++) {
-                    int enemyX = killableEnemyPlace[i][0];
-                    int enemyY = killableEnemyPlace[i][1];
+                    int enemyX = killableEnemyPlace[k][0];
+                    int enemyY = killableEnemyPlace[k][1];
                     if (tempBoard[enemyY][enemyX] != null
                             && tempBoard[enemyY][enemyX].getColor() != tempBoard[posY][posX].getColor()) {
                         return true;
@@ -83,6 +114,7 @@ public class ClassicBoardController extends BoardController {
                                 || (!board.isWhiteTurn() && tempBoard[i][j].getColor() == PieceColorEnum.Red))
                         && this.canKill(j, i)) {
                     this.addMandatory(j, i);
+                    System.out.println("Mandatory: " + i + "; " + j);
                 }
             }
         }
