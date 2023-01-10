@@ -7,6 +7,7 @@ package pl.tp.server;
  */
 public abstract class AbstractPieceState {
     protected boolean isStartingAtBottom;
+    protected String stateName;
 
     /**
      * Pobieranie informacji czy dany ruch jest możliwy
@@ -20,7 +21,11 @@ public abstract class AbstractPieceState {
      * @throws IncorrectPositionException Zwraca błąd w przypadku podania
      *                                    niepoprawnych pozycji
      */
-    public abstract int[] canGoTo(int posX1, int posY1, int posX2, int posY2) throws IncorrectPositionException;
+    public abstract int[][] canGoTo(int posX1, int posY1, int posX2, int posY2) throws IncorrectPositionException;
+
+    public String getState() {
+        return stateName;
+    }
 
     /**
      * Zakodowanie informacji o pozycji pionka

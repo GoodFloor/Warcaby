@@ -124,24 +124,35 @@ public abstract class BoardController {
             }
             // Sprawdzamy czy podany ruch jest możliwy i czy aby go wykonać musimy zbić
             // przeciwnika
-            int[] neededEnemyPosition;
+            int[][] neededEnemyPosition;
             neededEnemyPosition = tempBoard[posY1][posX1].canGoTo(posX1, posY1, posX2, posY2);
 
             // Jeżeli przeskakujemy o 2 pola to sprawdzamy czy pomiędzy nimi jest
             // przeciwnik, jeśli tak to go usuwamy
-            if (neededEnemyPosition.length > 0) {
-                int enemyX = neededEnemyPosition[0];
-                int enemyY = neededEnemyPosition[1];
-                if (tempBoard[enemyY][enemyX] == null
-                        || tempBoard[enemyY][enemyX].getColor() == tempBoard[posY1][posX1].getColor()) {
-                    throw new IncorrectPositionException();
-                } else {
-                    if (tempBoard[enemyY][enemyX].getColor() == PieceColorEnum.Red)
+            int enemiesCount = 0;
+            int enemyX = 0;
+            int enemyY = 0;
+            for (int[] possibleEnemy : neededEnemyPosition) {
+                int possibleEnemyX = possibleEnemy[0];
+                int possibleEnemyY = possibleEnemy[1];
+                if(tempBoard[possibleEnemyY][possibleEnemyX] != null && tempBoard[possibleEnemyY][possibleEnemyX].getColor() != tempBoard[posY1][posX1].getColor()) {
+                    enemiesCount++;
+                    enemyX = possibleEnemyX;
+                    enemyY = possibleEnemyY;
+                } 
+            }
+            if (enemiesCount == 1) {
+                if (tempBoard[enemyY][enemyX].getColor() == PieceColorEnum.Red) {
                         board.setNoRedRemaining(board.getNoRedRemaining() - 1);
-                    else
+                    }
+                    else {
                         board.setNoWhiteRemaining(board.getNoWhiteRemaining() - 1);
+                    }
                     tempBoard[enemyY][enemyX] = null;
-                }
+            }
+            else if((enemiesCount == 0 && tempBoard[posY1][posX1].getStateName() == "P" && neededEnemyPosition.length > 0) 
+                    || enemiesCount > 1) { 
+                throw new IncorrectPositionException();
             }
             // Przesuwamy pionek
             tempBoard[posY2][posX2] = tempBoard[posY1][posX1];

@@ -15,7 +15,7 @@ public class Piece {
      * Konstruktor ustawiający początkowy stan pionka na zwykły
      */
     Piece() {
-        this.state = new PawnState();
+        this.state = new QueenState();
     }
 
     /**
@@ -33,14 +33,12 @@ public class Piece {
      * @param color kolor pionka
      */
     public void setColor(String color) {
-        if (color == "Red") {
+        if ("Red".equals(color)) {
             this.color = PieceColorEnum.Red;
             state.setStartingAtBottom(false);
-            ;
         } else {
             this.color = PieceColorEnum.White;
             state.setStartingAtBottom(true);
-            ;
         }
     }
 
@@ -53,17 +51,20 @@ public class Piece {
      * @param posY2 docelowa pozycja y
      * 
      * @return Zwraca pustą tablicę jeżeli ruch jest możliwy bez dodatkowych
-     *         warunków lub tablicę z pozycją przeciwnika którego trzeba zbić aby
+     *         warunków lub tablicę z możliwymi pozycjami przeciwnika którego trzeba zbić aby
      *         móc się poruszyć
      * @throws IncorrectPositionException Zwraca błąd w przypadku podania
      *                                    niepoprawnych pozycji
      */
-    public int[] canGoTo(int posX1, int posY1, int posX2, int posY2) throws IncorrectPositionException {
+    public int[][] canGoTo(int posX1, int posY1, int posX2, int posY2) throws IncorrectPositionException {
         try {
             return state.canGoTo(posX1, posY1, posX2, posY2);
         } catch (IncorrectPositionException e) {
             throw e;
         }
+    }
+    public String getStateName() {
+        return state.getState();
     }
 
 }

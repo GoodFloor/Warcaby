@@ -54,17 +54,19 @@ public class ClassicBoardController extends BoardController {
                 if (tempBoard[tempY][tempX] != null) {
                     continue;
                 }
-                int[] killableEnemyPlace;
+                int[][] killableEnemyPlace;
                 try {
                     killableEnemyPlace = tempBoard[posY][posX].canGoTo(posX, posY, tempX, tempY);
                 } catch (IncorrectPositionException e) {
                     continue;
                 }
-                int enemyX = killableEnemyPlace[0];
-                int enemyY = killableEnemyPlace[1];
-                if (tempBoard[enemyY][enemyX] != null
-                        && tempBoard[enemyY][enemyX].getColor() != tempBoard[posY][posX].getColor()) {
-                    return true;
+                for (int k = 0; k < killableEnemyPlace.length; k++) {
+                    int enemyX = killableEnemyPlace[i][0];
+                    int enemyY = killableEnemyPlace[i][1];
+                    if (tempBoard[enemyY][enemyX] != null
+                            && tempBoard[enemyY][enemyX].getColor() != tempBoard[posY][posX].getColor()) {
+                        return true;
+                    }
                 }
             }
         }
