@@ -6,6 +6,7 @@ import pl.tp.PieceStateEnum;
  * Klasa abstrakcyjna rodzaju pionka (zwykły / dama)
  * 
  * Stan (abstrakcyjny) we wzorcu state
+ * Twórca abstrakcyjny we wzorcu Factory
  */
 public abstract class AbstractPieceState {
     protected boolean isStartingAtBottom;

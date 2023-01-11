@@ -99,7 +99,7 @@ public abstract class BoardController {
             int posY2 = this.decodePositionY(pos2);
 
             // Pobieramy zawartość planszy
-            Piece[][] tempBoard = board.getPieces();
+            AbstractPiece[][] tempBoard = board.getPieces();
 
             // Sprawdzamy czy na miejscu źródłowym jest pionek i czy miejsce docelowe jest
             // puste
@@ -247,7 +247,7 @@ public abstract class BoardController {
      */
     public SquareStateEnum[][] translateBoard() {
         SquareStateEnum[][] result = new SquareStateEnum[board.getHeight()][board.getWidth()];
-        Piece[][] boardContent = board.getPieces();
+        AbstractPiece[][] boardContent = board.getPieces();
 
         int h = board.getHeight();
 

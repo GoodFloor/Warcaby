@@ -8,16 +8,29 @@ import pl.tp.PieceStateEnum;
  * 
  * Context we wzorcu State
  */
-public class Piece {
+public abstract class AbstractPiece {
     private PieceColorEnum color;
-    private AbstractPieceState state;
+    protected AbstractPieceState state;
+
+    // /**
+    // * Konstruktor ustawiający początkowy stan pionka na zwykły
+    // */
+    // Piece() {
+    // this.state = new PawnState();
+    // }
+
+    // /**
+    // * Konstruktor ustawiający kolor pionka i jego początkowy stan na zwykły
+    // */
+    // Piece(PieceColorEnum color) {
+    // this.state = new PawnState();
+    // this.color = color;
+    // }
 
     /**
-     * Konstruktor ustawiający początkowy stan pionka na zwykły
+     * Zmiana stanu pionka z klasycznego pionka na damę
      */
-    Piece() {
-        this.state = new PawnState();
-    }
+    public abstract void upgradePiece();
 
     /**
      * Pobieranie informacji o kolorze pionka
@@ -33,12 +46,11 @@ public class Piece {
      * 
      * @param color kolor pionka
      */
-    public void setColor(String color) {
-        if ("Red".equals(color)) {
-            this.color = PieceColorEnum.Red;
+    public void setColor(PieceColorEnum color) {
+        this.color = color;
+        if (color.equals(PieceColorEnum.Red)) {
             state.setStartingAtBottom(false);
         } else {
-            this.color = PieceColorEnum.White;
             state.setStartingAtBottom(true);
         }
     }
@@ -84,12 +96,4 @@ public class Piece {
         return state.getIsStartingAtBottom();
     }
 
-    /**
-     * Zmiana stanu pionka z klasycznego pionka na damę
-     */
-    public void upgradePiece() {
-        if (state.getState() == PieceStateEnum.Pawn) {
-            state = new QueenState();
-        }
-    }
 }
