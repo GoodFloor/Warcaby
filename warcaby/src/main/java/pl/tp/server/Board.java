@@ -8,7 +8,7 @@ package pl.tp.server;
 public class Board {
     private int width;
     private int height;
-    private Piece[][] pieces;
+    private AbstractPiece[][] pieces;
     private int noWhiteRemaining;
     private int noRedRemaining;
     private boolean isTurnOver;
@@ -56,7 +56,7 @@ public class Board {
      * 
      * @return Zwraca dwuwymiarową tablicę z pionkami.
      */
-    public Piece[][] getPieces() {
+    public AbstractPiece[][] getPieces() {
         return pieces;
     }
 
@@ -65,7 +65,7 @@ public class Board {
      * 
      * @param board tablica dwuwymiarowa z pionkami
      */
-    public void setPieces(Piece[][] board) {
+    public void setPieces(AbstractPiece[][] board) {
         this.pieces = board;
     }
 

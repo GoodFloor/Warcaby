@@ -1,22 +1,36 @@
 package pl.tp.server;
 
 import pl.tp.PieceColorEnum;
+import pl.tp.PieceStateEnum;
 
 /**
  * Klasa przechowująca informacje o pionku
  * 
  * Context we wzorcu State
  */
-public class Piece {
+public abstract class AbstractPiece {
     private PieceColorEnum color;
-    private AbstractPieceState state;
+    protected AbstractPieceState state;
+
+    // /**
+    // * Konstruktor ustawiający początkowy stan pionka na zwykły
+    // */
+    // Piece() {
+    // this.state = new PawnState();
+    // }
+
+    // /**
+    // * Konstruktor ustawiający kolor pionka i jego początkowy stan na zwykły
+    // */
+    // Piece(PieceColorEnum color) {
+    // this.state = new PawnState();
+    // this.color = color;
+    // }
 
     /**
-     * Konstruktor ustawiający początkowy stan pionka na zwykły
+     * Zmiana stanu pionka z klasycznego pionka na damę
      */
-    Piece() {
-        this.state = new PawnState();
-    }
+    public abstract void upgradePiece();
 
     /**
      * Pobieranie informacji o kolorze pionka
@@ -32,12 +46,11 @@ public class Piece {
      * 
      * @param color kolor pionka
      */
-    public void setColor(String color) {
-        if ("Red".equals(color)) {
-            this.color = PieceColorEnum.Red;
+    public void setColor(PieceColorEnum color) {
+        this.color = color;
+        if (color.equals(PieceColorEnum.Red)) {
             state.setStartingAtBottom(false);
         } else {
-            this.color = PieceColorEnum.White;
             state.setStartingAtBottom(true);
         }
     }
@@ -51,7 +64,8 @@ public class Piece {
      * @param posY2 docelowa pozycja y
      * 
      * @return Zwraca pustą tablicę jeżeli ruch jest możliwy bez dodatkowych
-     *         warunków lub tablicę z możliwymi pozycjami przeciwnika którego trzeba zbić aby
+     *         warunków lub tablicę z możliwymi pozycjami przeciwnika którego trzeba
+     *         zbić aby
      *         móc się poruszyć
      * @throws IncorrectPositionException Zwraca błąd w przypadku podania
      *                                    niepoprawnych pozycji
@@ -63,16 +77,23 @@ public class Piece {
             throw e;
         }
     }
-    public String getStateName() {
+
+    /**
+     * Pobranie informacji o nazwie stanu
+     * 
+     * @return nazwa stanu
+     */
+    public PieceStateEnum getStateName() {
         return state.getState();
     }
 
+    /**
+     * Pobranie informacji o stronie z której rozpoczyna grę pionek
+     * 
+     * @return prawda, jeśli zaczyna na dole planszy
+     */
     public boolean isStartingAtBottom() {
         return state.getIsStartingAtBottom();
     }
-    public void upgradePiece() {
-        if(state.getState() == "P") {
-            state = new QueenState();
-        }
-    }
+
 }
