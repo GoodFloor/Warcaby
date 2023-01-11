@@ -6,29 +6,14 @@ import pl.tp.PieceStateEnum;
 /**
  * Klasa przechowująca informacje o pionku
  * 
- * Context we wzorcu State
+ * Twórca abstrakcyjny we wzorcu Abstract Factory
  */
 public abstract class AbstractPiece {
     private PieceColorEnum color;
     protected AbstractPieceState state;
 
-    // /**
-    // * Konstruktor ustawiający początkowy stan pionka na zwykły
-    // */
-    // Piece() {
-    // this.state = new PawnState();
-    // }
-
-    // /**
-    // * Konstruktor ustawiający kolor pionka i jego początkowy stan na zwykły
-    // */
-    // Piece(PieceColorEnum color) {
-    // this.state = new PawnState();
-    // this.color = color;
-    // }
-
     /**
-     * Zmiana stanu pionka z klasycznego pionka na damę
+     * Zmiana stanu pionka ze zwykłego pionka na damę
      */
     public abstract void upgradePiece();
 

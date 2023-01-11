@@ -1,11 +1,11 @@
 package pl.tp.server;
 
 /**
- * Klasa podstawowego pionka
+ * Klasa podstawowego pionka w angielskiej wersji
  * 
- * Jeden ze stanów we wzorcu State
+ * Produkt konkretny we wzorcu Abstract Factory
  */
-public class EnglishPawnState extends PawnState {
+public class EnglishPawnState extends AbstractPawnState {
 
     /**
      * Konstruktor ustalający nazwę stanu

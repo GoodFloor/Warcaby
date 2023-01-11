@@ -1,9 +1,9 @@
 package pl.tp.server;
 
 /**
- * Klasa damy
+ * Klasa damy w angielskiej wersji gry
  * 
- * Jeden ze stanów we wzorcu State
+ * Produkt konkretny we wzorcu Abstract Factory
  */
 public class EnglishQueenState extends AbstractPieceState {
     /**

@@ -1,11 +1,11 @@
 package pl.tp.server;
 
 /**
- * Klasa damy
+ * Klasa damy w klasycznej wersji
  * 
- * Jeden ze stanów we wzorcu State
+ * Produkt konkretny we wzorcu Abstract Factory
  */
-public class ClassicQueenState extends QueenState {
+public class ClassicQueenState extends AbstractQueenState {
     /**
      * Konstruktor ustawiający nazwę stanu
      */
