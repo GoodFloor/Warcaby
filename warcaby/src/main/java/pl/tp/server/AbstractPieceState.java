@@ -16,7 +16,9 @@ public abstract class AbstractPieceState {
      * @param posX2 docelowa pozycja x
      * @param posY2 docelowa pozycja y
      * 
-     * @return Zwraca tablicę możliwych ruchów
+     * @return Zwraca pustą tablicę jeżeli ruch jest możliwy bez dodatkowych
+     *         warunków lub tablicę z pozycją przeciwnika którego trzeba zbić aby
+     *         móc się poruszyć
      * @throws IncorrectPositionException Zwraca błąd w przypadku podania
      *                                    niepoprawnych pozycji
      */

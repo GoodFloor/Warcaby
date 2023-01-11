@@ -33,6 +33,15 @@ public abstract class GameController {
     }
 
     /**
+     * Pobiera informację czy gra jest włączona
+     * 
+     * @return Zwraca prawdę, jeśli gra jest włączona
+     */
+    public Boolean getIsGameRunning() {
+        return isGameRunning;
+    }
+
+    /**
      * Funkcja uruchamiająca rozgrywkę - główna pętla odpowiedzialna za grę
      */
     public void run() {
