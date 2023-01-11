@@ -26,7 +26,6 @@ public class TerminalView implements GameView {
         System.out.println(message);
     }
 
-    // TODO tu nie powinna być pętla do 8
     @Override
     public void printBoard(SquareStateEnum[][] boardContent) {
         int size = boardContent.length;

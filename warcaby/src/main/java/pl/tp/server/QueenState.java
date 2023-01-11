@@ -1,8 +1,18 @@
 package pl.tp.server;
 
-public class QueenState extends AbstractPieceState{
+import pl.tp.PieceStateEnum;
+
+/**
+ * Klasa damy
+ * 
+ * Jeden ze stanów we wzorcu State
+ */
+public class QueenState extends AbstractPieceState {
+    /**
+     * Konstruktor ustawiający nazwę stanu
+     */
     QueenState() {
-        stateName = "Q";
+        stateName = PieceStateEnum.Queen;
     }
 
     @Override
@@ -11,10 +21,10 @@ public class QueenState extends AbstractPieceState{
             int[][] neededEnemyPosition = new int[Math.abs(posX2 - posX1) - 1][2];
             int tx = 1;
             int ty = 1;
-            if(posX2 < posX1) {
+            if (posX2 < posX1) {
                 tx = -1;
             }
-            if(posY2 < posY1) {
+            if (posY2 < posY1) {
                 ty = -1;
             }
             for (int i = 0; i < Math.abs(posX2 - posX1) - 1; i++) {
@@ -25,5 +35,5 @@ public class QueenState extends AbstractPieceState{
         }
         throw new IncorrectPositionException();
     }
-    
+
 }

@@ -1,5 +1,7 @@
 package pl.tp.server;
 
+import pl.tp.PieceStateEnum;
+
 /**
  * Klasa podstawowego pionka
  * 
@@ -7,8 +9,11 @@ package pl.tp.server;
  */
 public class PawnState extends AbstractPieceState {
 
+    /**
+     * Konstruktor ustawiający nazwę stanu
+     */
     PawnState() {
-        stateName = "P";
+        stateName = PieceStateEnum.Pawn;
     }
 
     @Override
@@ -16,14 +21,12 @@ public class PawnState extends AbstractPieceState {
         int shifter;
         if (isStartingAtBottom) {
             shifter = 1;
-        }
-        else {
+        } else {
             shifter = -1;
         }
         if (Math.abs(posX2 - posX1) == 1 && shifter * (posY2 - posY1) == 1) {
             return new int[0][0];
-        }
-        else if (Math.abs(posX2 - posX1) == 2 && Math.abs(posY2 - posY1) == 2) {
+        } else if (Math.abs(posX2 - posX1) == 2 && Math.abs(posY2 - posY1) == 2) {
             int[][] neededEnemyPosition = new int[1][2];
             neededEnemyPosition[0][0] = (posX2 + posX1) / 2;
             neededEnemyPosition[0][1] = (posY2 + posY1) / 2;

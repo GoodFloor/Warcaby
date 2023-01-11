@@ -1,6 +1,7 @@
 package pl.tp.server;
 
 import pl.tp.PieceColorEnum;
+import pl.tp.PieceStateEnum;
 import pl.tp.SquareStateEnum;
 
 /**
@@ -124,9 +125,10 @@ public abstract class BoardController {
                 if (!isPieceInMandatory) {
                     String mandatory = "";
                     for (int[] mandatoryPiece : board.getMandatoryUsePieces()) {
-                        mandatory+= "(" + mandatoryPiece[0] + "; " + mandatoryPiece[1] + "), ";
+                        mandatory += "(" + mandatoryPiece[0] + "; " + mandatoryPiece[1] + "), ";
                     }
-                    System.out.println("Wybrany pionek (" + posY1 + "; " + posX1 + ") nie należy do pionków które mogą bić: " + mandatory);
+                    System.out.println("Wybrany pionek (" + posY1 + "; " + posX1
+                            + ") nie należy do pionków które mogą bić: " + mandatory);
                     throw new IncorrectPositionException();
                 }
             }
@@ -143,31 +145,31 @@ public abstract class BoardController {
             for (int[] possibleEnemy : neededEnemyPosition) {
                 int possibleEnemyX = possibleEnemy[0];
                 int possibleEnemyY = possibleEnemy[1];
-                if(tempBoard[possibleEnemyY][possibleEnemyX] != null && tempBoard[possibleEnemyY][possibleEnemyX].getColor() == tempBoard[posY1][posX1].getColor()) {
+                if (tempBoard[possibleEnemyY][possibleEnemyX] != null
+                        && tempBoard[possibleEnemyY][possibleEnemyX].getColor() == tempBoard[posY1][posX1].getColor()) {
                     System.out.println("Między wybranym pionkiem a miejscem docelowym znajduje się pionek sojusznika");
                     throw new IncorrectPositionException();
                 }
-                if(tempBoard[possibleEnemyY][possibleEnemyX] != null && tempBoard[possibleEnemyY][possibleEnemyX].getColor() != tempBoard[posY1][posX1].getColor()) {
+                if (tempBoard[possibleEnemyY][possibleEnemyX] != null
+                        && tempBoard[possibleEnemyY][possibleEnemyX].getColor() != tempBoard[posY1][posX1].getColor()) {
                     enemiesCount++;
                     enemyX = possibleEnemyX;
                     enemyY = possibleEnemyY;
-                } 
+                }
             }
-            if(enemiesCount == 0 && isPieceInMandatory) {
+            if (enemiesCount == 0 && isPieceInMandatory) {
                 System.out.println("Wybrany ruch nie wykorzystuje bicia");
                 throw new IncorrectPositionException();
-            }
-            else if (enemiesCount == 1) {
+            } else if (enemiesCount == 1) {
                 if (tempBoard[enemyY][enemyX].getColor() == PieceColorEnum.Red) {
-                        board.setNoRedRemaining(board.getNoRedRemaining() - 1);
-                    }
-                    else {
-                        board.setNoWhiteRemaining(board.getNoWhiteRemaining() - 1);
-                    }
-                    tempBoard[enemyY][enemyX] = null;
-            }
-            else if((enemiesCount == 0 && tempBoard[posY1][posX1].getStateName() == "P" && neededEnemyPosition.length > 0) 
-                    || enemiesCount > 1) { 
+                    board.setNoRedRemaining(board.getNoRedRemaining() - 1);
+                } else {
+                    board.setNoWhiteRemaining(board.getNoWhiteRemaining() - 1);
+                }
+                tempBoard[enemyY][enemyX] = null;
+            } else if ((enemiesCount == 0 && tempBoard[posY1][posX1].getStateName() == PieceStateEnum.Pawn
+                    && neededEnemyPosition.length > 0)
+                    || enemiesCount > 1) {
                 System.out.println("164");
                 throw new IncorrectPositionException();
             }
@@ -192,10 +194,10 @@ public abstract class BoardController {
                 }
             }
             int sideToBecomeQueen = 0;
-            if(tempBoard[posY2][posX2].isStartingAtBottom()) {
+            if (tempBoard[posY2][posX2].isStartingAtBottom()) {
                 sideToBecomeQueen = board.getHeight() - 1;
             }
-            if(board.isTurnOver() && posY2 == sideToBecomeQueen) {
+            if (board.isTurnOver() && posY2 == sideToBecomeQueen) {
                 tempBoard[posY2][posX2].upgradePiece();
             }
         } catch (IncorrectPositionException e) {
@@ -257,12 +259,12 @@ public abstract class BoardController {
                     result[h - 1 - i][j] = SquareStateEnum.BlackEmpty;
                 } else if (boardContent[i][j].getColor() == PieceColorEnum.White) {
                     result[h - 1 - i][j] = SquareStateEnum.BlackWhite;
-                    if (boardContent[i][j].getStateName() == "Q") {
+                    if (boardContent[i][j].getStateName() == PieceStateEnum.Queen) {
                         result[h - 1 - i][j] = SquareStateEnum.BlackWhiteQueen;
                     }
                 } else if (boardContent[i][j].getColor() == PieceColorEnum.Red) {
                     result[h - 1 - i][j] = SquareStateEnum.BlackRed;
-                    if (boardContent[i][j].getStateName() == "Q") {
+                    if (boardContent[i][j].getStateName() == PieceStateEnum.Queen) {
                         result[h - 1 - i][j] = SquareStateEnum.BlackRedQueen;
                     }
                 }

@@ -1,5 +1,7 @@
 package pl.tp.server;
 
+import pl.tp.PieceStateEnum;
+
 /**
  * Klasa abstrakcyjna rodzaju pionka (zwykły / dama)
  * 
@@ -7,7 +9,7 @@ package pl.tp.server;
  */
 public abstract class AbstractPieceState {
     protected boolean isStartingAtBottom;
-    protected String stateName;
+    protected PieceStateEnum stateName;
 
     /**
      * Pobieranie informacji czy dany ruch jest możliwy
@@ -23,7 +25,12 @@ public abstract class AbstractPieceState {
      */
     public abstract int[][] canGoTo(int posX1, int posY1, int posX2, int posY2) throws IncorrectPositionException;
 
-    public String getState() {
+    /**
+     * Pobieranie informacji o stanie
+     * 
+     * @return nazwa stanu pionka
+     */
+    public PieceStateEnum getState() {
         return stateName;
     }
 
@@ -42,13 +49,19 @@ public abstract class AbstractPieceState {
     }
 
     /**
-     * Ustawieni informacji o stronie z której rozpoczyna grę pionek
+     * Ustawienie informacji o stronie z której rozpoczyna grę pionek
      * 
      * @param isStartingAtBottom prawda, jeśli zaczyna na dole planszy
      */
     public void setStartingAtBottom(boolean isStartingAtBottom) {
         this.isStartingAtBottom = isStartingAtBottom;
     }
+
+    /**
+     * Pobranie informacji o stronie z której rozpoczyna grę pionek
+     * 
+     * @return prawda, jeśli zaczyna na dole planszy
+     */
     public boolean getIsStartingAtBottom() {
         return this.isStartingAtBottom;
     }

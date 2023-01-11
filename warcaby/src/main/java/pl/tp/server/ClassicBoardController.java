@@ -18,15 +18,15 @@ public class ClassicBoardController extends BoardController {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 // if ((i + j) % 2 == 1) {
-                //     temp[i][j] = null;
+                // temp[i][j] = null;
                 // } else if (i < 3) {
-                //     temp[i][j] = new Piece();
-                //     temp[i][j].setColor("White");
+                // temp[i][j] = new Piece();
+                // temp[i][j].setColor("White");
                 // } else if (i > 4) {
-                //     temp[i][j] = new Piece();
-                //     temp[i][j].setColor("Red");
+                // temp[i][j] = new Piece();
+                // temp[i][j].setColor("Red");
                 // } else {
-                //     temp[i][j] = null;
+                // temp[i][j] = null;
                 // }
                 temp[i][j] = null;
             }
@@ -68,7 +68,6 @@ public class ClassicBoardController extends BoardController {
         board.setWhiteTurn(true);
     }
 
-    // TODO: Obsługa dam, wielokrotne bicia
     @Override
     protected boolean canKill(int posX, int posY) {
         Piece[][] tempBoard = board.getPieces();
@@ -87,8 +86,7 @@ public class ClassicBoardController extends BoardController {
                     killableEnemyPlace = tempBoard[posY][posX].canGoTo(posX, posY, tempX, tempY);
                 } catch (IncorrectPositionException e) {
                     continue;
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     continue;
                 }
                 for (int k = 0; k < killableEnemyPlace.length; k++) {

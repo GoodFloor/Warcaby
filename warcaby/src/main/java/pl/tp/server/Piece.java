@@ -1,6 +1,7 @@
 package pl.tp.server;
 
 import pl.tp.PieceColorEnum;
+import pl.tp.PieceStateEnum;
 
 /**
  * Klasa przechowująca informacje o pionku
@@ -51,7 +52,8 @@ public class Piece {
      * @param posY2 docelowa pozycja y
      * 
      * @return Zwraca pustą tablicę jeżeli ruch jest możliwy bez dodatkowych
-     *         warunków lub tablicę z możliwymi pozycjami przeciwnika którego trzeba zbić aby
+     *         warunków lub tablicę z możliwymi pozycjami przeciwnika którego trzeba
+     *         zbić aby
      *         móc się poruszyć
      * @throws IncorrectPositionException Zwraca błąd w przypadku podania
      *                                    niepoprawnych pozycji
@@ -63,15 +65,30 @@ public class Piece {
             throw e;
         }
     }
-    public String getStateName() {
+
+    /**
+     * Pobranie informacji o nazwie stanu
+     * 
+     * @return nazwa stanu
+     */
+    public PieceStateEnum getStateName() {
         return state.getState();
     }
 
+    /**
+     * Pobranie informacji o stronie z której rozpoczyna grę pionek
+     * 
+     * @return prawda, jeśli zaczyna na dole planszy
+     */
     public boolean isStartingAtBottom() {
         return state.getIsStartingAtBottom();
     }
+
+    /**
+     * Zmiana stanu pionka z klasycznego pionka na damę
+     */
     public void upgradePiece() {
-        if(state.getState() == "P") {
+        if (state.getState() == PieceStateEnum.Pawn) {
             state = new QueenState();
         }
     }
