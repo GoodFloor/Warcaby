@@ -28,7 +28,7 @@ public abstract class GameController {
      * Konstruktor ustawiający parametry początkowe
      */
     public GameController() {
-        this.gameView = new TerminalView();
+        this.gameView = new SocketView();
         isGameRunning = false;
     }
 
@@ -50,7 +50,7 @@ public abstract class GameController {
             else
                 gameView.printMessage("Ruch czarnych");
 
-            String move[] = gameView.getMove();
+            String move[] = gameView.getMove(isWhiteTurn);
             try {
                 boardController.movePiece(move[0], move[1]);
             } catch (IncorrectPositionException e) {

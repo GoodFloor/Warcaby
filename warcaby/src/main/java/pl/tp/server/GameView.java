@@ -35,7 +35,7 @@ public interface GameView {
      * 
      * @return tablica zawierająca pozycję początkową i docelową pionka
      */
-    String[] getMove();
+    String[] getMove(boolean fromPlayer1);
 
     /**
      * Rozpoczęcie gry u użytkownika

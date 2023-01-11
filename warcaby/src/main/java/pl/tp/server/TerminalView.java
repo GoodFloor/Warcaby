@@ -68,7 +68,7 @@ public class TerminalView implements GameView {
     }
 
     @Override
-    public String[] getMove() {
+    public String[] getMove(boolean fromPlayer1) {
         String result[] = new String[2];
 
         try {
