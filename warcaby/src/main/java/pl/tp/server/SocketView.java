@@ -28,6 +28,7 @@ public class SocketView implements GameView{
             System.out.println("Server is listening on port 4444");
             boardNotDrawn = true;
             terminalView = new TerminalView();
+            System.out.println(SocketCommandsEnum.player1.toString());
         } catch (Exception e) {
             System.out.println("Błąd uruchomienia serwera");
         }
@@ -52,14 +53,14 @@ public class SocketView implements GameView{
         terminalView.printBoard(boardContent);
         int size = boardContent.length;
         if (boardNotDrawn) {
-            outputPlayer1.println(SocketCommandsEnum.drawBoard);
+            outputPlayer1.println(SocketCommandsEnum.drawBoard.toString());
             outputPlayer1.println(size);
-            outputPlayer2.println(SocketCommandsEnum.drawBoard);
+            outputPlayer2.println(SocketCommandsEnum.drawBoard.toString());
             outputPlayer2.println(size);
             boardNotDrawn = false;
         }
-        outputPlayer1.println(SocketCommandsEnum.printPieces);
-        outputPlayer2.println(SocketCommandsEnum.printPieces);
+        outputPlayer1.println(SocketCommandsEnum.printPieces.toString());
+        outputPlayer2.println(SocketCommandsEnum.printPieces.toString());
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 outputPlayer1.print(boardContent[i][j].ordinal());
@@ -75,14 +76,14 @@ public class SocketView implements GameView{
         String[] temp = new String[2];
         try {
             if(fromPlayer1) {
-                outputPlayer2.println(SocketCommandsEnum.wait);
-                outputPlayer1.println(SocketCommandsEnum.getMove);
+                outputPlayer2.println(SocketCommandsEnum.wait.toString());
+                outputPlayer1.println(SocketCommandsEnum.getMove.toString());
                 temp[0] = inputPlayer1.readLine();
                 temp[1] = inputPlayer1.readLine();
             }
             else {
-                outputPlayer1.println(SocketCommandsEnum.wait);
-                outputPlayer2.println(SocketCommandsEnum.getMove);
+                outputPlayer1.println(SocketCommandsEnum.wait.toString());
+                outputPlayer2.println(SocketCommandsEnum.getMove.toString());
                 temp[0] = inputPlayer2.readLine();
                 temp[1] = inputPlayer2.readLine();
             }
@@ -104,7 +105,7 @@ public class SocketView implements GameView{
             inputPlayer1 = new BufferedReader(new InputStreamReader(in1));
             OutputStream out1 = socketPlayer1.getOutputStream();
             outputPlayer1 = new PrintWriter(out1, true);
-            outputPlayer1.println(SocketCommandsEnum.player1);
+            outputPlayer1.println(SocketCommandsEnum.player1.toString());
 
 
             //Oczekiwanie na gracza 2
@@ -114,7 +115,7 @@ public class SocketView implements GameView{
             inputPlayer2 = new BufferedReader(new InputStreamReader(in2));
             OutputStream out2 = socketPlayer2.getOutputStream();
             outputPlayer2 = new PrintWriter(out2, true);
-            outputPlayer2.println(SocketCommandsEnum.player2);
+            outputPlayer2.println(SocketCommandsEnum.player2.toString());
         } catch (Exception e) {
             System.out.println("Błąd podłączenia klientów");
         }
