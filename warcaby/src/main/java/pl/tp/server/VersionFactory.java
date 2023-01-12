@@ -9,6 +9,8 @@ public class VersionFactory implements VersionFactoryInterface {
         switch (versionNr) {
             case 1:
                 return new ClassicGameController();
+            case 2:
+                return new EnglishGameController();
             default:
                 return null;
         }

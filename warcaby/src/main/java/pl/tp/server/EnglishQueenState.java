@@ -5,7 +5,7 @@ package pl.tp.server;
  * 
  * Produkt konkretny we wzorcu Abstract Factory
  */
-public class EnglishQueenState extends AbstractPieceState {
+public class EnglishQueenState extends AbstractQueenState {
     /**
      * Konstruktor ustawiający nazwę stanu
      */
@@ -15,23 +15,43 @@ public class EnglishQueenState extends AbstractPieceState {
 
     @Override
     public int[][] canGoTo(int posX1, int posY1, int posX2, int posY2) throws IncorrectPositionException {
-        if (Math.abs(posX2 - posX1) == Math.abs(posY2 - posY1)) {
-            int[][] neededEnemyPosition = new int[Math.abs(posX2 - posX1) - 1][2];
-            int tx = 1;
-            int ty = 1;
-            if (posX2 < posX1) {
-                tx = -1;
-            }
-            if (posY2 < posY1) {
-                ty = -1;
-            }
-            for (int i = 0; i < Math.abs(posX2 - posX1) - 1; i++) {
-                neededEnemyPosition[i][0] = posX1 + (i + 1) * tx;
-                neededEnemyPosition[i][1] = posY1 + (i + 1) * ty;
-            }
+        int shifter;
+        if (isStartingAtBottom) {
+            shifter = 1;
+        } else {
+            shifter = -1;
+        }
+        if (Math.abs(posX2 - posX1) == 1 && Math.abs(posY2 - posY1) == 1) {
+            return new int[0][0];
+        } else if (Math.abs(posX2 - posX1) == 2 && Math.abs(posY2 - posY1) == 2) {
+            int[][] neededEnemyPosition = new int[1][2];
+            neededEnemyPosition[0][0] = (posX2 + posX1) / 2;
+            neededEnemyPosition[0][1] = (posY2 + posY1) / 2;
             return neededEnemyPosition;
         }
         throw new IncorrectPositionException();
     }
+
+    // @Override
+    // public int[][] canGoTo(int posX1, int posY1, int posX2, int posY2) throws
+    // IncorrectPositionException {
+    // if (Math.abs(posX2 - posX1) == Math.abs(posY2 - posY1)) {
+    // int[][] neededEnemyPosition = new int[Math.abs(posX2 - posX1) - 1][2];
+    // int tx = 1;
+    // int ty = 1;
+    // if (posX2 < posX1) {
+    // tx = -1;
+    // }
+    // if (posY2 < posY1) {
+    // ty = -1;
+    // }
+    // for (int i = 0; i < Math.abs(posX2 - posX1) - 1; i++) {
+    // neededEnemyPosition[i][0] = posX1 + (i + 1) * tx;
+    // neededEnemyPosition[i][1] = posY1 + (i + 1) * ty;
+    // }
+    // return neededEnemyPosition;
+    // }
+    // throw new IncorrectPositionException();
+    // }
 
 }
