@@ -89,6 +89,68 @@ public abstract class BoardController {
         }
     }
 
+    protected int analyseMove(AbstractPiece[][] tempBoard, int posX1, int posY1, int posX2, int posY2)
+            throws IncorrectPositionException {
+        // Sprawdzamy czy na miejscu źródłowym jest pionek i czy miejsce docelowe jest
+        // puste
+        if (tempBoard[posY1][posX1] == null || tempBoard[posY2][posX2] != null) {
+            System.out.println("Miejsce źródłowe puste lub docelowe zajęte");
+            throw new IncorrectPositionException();
+        }
+        // Sprawdzamy czy pionek źródłowy jest w dobrym kolorze
+        if ((board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.White)
+                || (!board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.Red)) {
+            System.out.println("Wybrany pionek nie należy do gracza");
+            throw new IncorrectPositionException();
+        }
+        // Sprawdzamy czy podany pionek jest pośród pionków którymi trzeba się ruszyć
+        boolean isPieceInMandatory = false;
+        if (board.getMandatoryUsePieces().length > 0) {
+            for (int[] mandatoryPiece : board.getMandatoryUsePieces()) {
+                if (mandatoryPiece[0] == posY1 && mandatoryPiece[1] == posX1) {
+                    isPieceInMandatory = true;
+                    break;
+                }
+            }
+            if (!isPieceInMandatory) {
+                String mandatory = "";
+                for (int[] mandatoryPiece : board.getMandatoryUsePieces()) {
+                    mandatory += "(" + mandatoryPiece[0] + "; " + mandatoryPiece[1] + "), ";
+                }
+                System.out.println("Wybrany pionek (" + posY1 + "; " + posX1
+                        + ") nie należy do pionków które mogą bić: " + mandatory);
+                throw new IncorrectPositionException();
+            }
+        }
+        // Sprawdzamy czy podany ruch jest możliwy i czy aby go wykonać musimy zbić
+        // przeciwnika
+        int[][] neededEnemyPosition;
+        neededEnemyPosition = tempBoard[posY1][posX1].canGoTo(posX1, posY1, posX2, posY2);
+
+        // Jeżeli przeskakujemy o więcej niż 1 pole to sprawdzamy czy pomiędzy nimi jest
+        // przeciwnik, jeśli tak to go usuwamy
+        int enemiesCount = 0;
+        int enemyX = 0;
+        int enemyY = 0;
+        for (int[] possibleEnemy : neededEnemyPosition) {
+            int possibleEnemyX = possibleEnemy[0];
+            int possibleEnemyY = possibleEnemy[1];
+            if (tempBoard[possibleEnemyY][possibleEnemyX] != null
+                    && tempBoard[possibleEnemyY][possibleEnemyX].getColor() == tempBoard[posY1][posX1].getColor()) {
+                System.out.println("Między wybranym pionkiem a miejscem docelowym znajduje się pionek sojusznika");
+                throw new IncorrectPositionException();
+            }
+            if (tempBoard[possibleEnemyY][possibleEnemyX] != null
+                    && tempBoard[possibleEnemyY][possibleEnemyX].getColor() != tempBoard[posY1][posX1].getColor()) {
+                enemiesCount++;
+                enemyX = possibleEnemyX;
+                enemyY = possibleEnemyY;
+            }
+        }
+
+        return enemiesCount;
+    }
+
     /**
      * Przesunięcie pionka na planszy
      * 
@@ -108,78 +170,8 @@ public abstract class BoardController {
             // Pobieramy zawartość planszy
             AbstractPiece[][] tempBoard = board.getPieces();
 
-            // Sprawdzamy czy na miejscu źródłowym jest pionek i czy miejsce docelowe jest
-            // puste
-            if (tempBoard[posY1][posX1] == null || tempBoard[posY2][posX2] != null) {
-                System.out.println("Miejsce źródłowe puste lub docelowe zajęte");
-                throw new IncorrectPositionException();
-            }
-            // Sprawdzamy czy pionek źródłowy jest w dobrym kolorze
-            if ((board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.White)
-                    || (!board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.Red)) {
-                System.out.println("Wybrany pionek nie należy do gracza");
-                throw new IncorrectPositionException();
-            }
-            // Sprawdzamy czy podany pionek jest pośród pionków którymi trzeba się ruszyć
-            boolean isPieceInMandatory = false;
-            if (board.getMandatoryUsePieces().length > 0) {
-                for (int[] mandatoryPiece : board.getMandatoryUsePieces()) {
-                    if (mandatoryPiece[0] == posY1 && mandatoryPiece[1] == posX1) {
-                        isPieceInMandatory = true;
-                        break;
-                    }
-                }
-                if (!isPieceInMandatory) {
-                    String mandatory = "";
-                    for (int[] mandatoryPiece : board.getMandatoryUsePieces()) {
-                        mandatory += "(" + mandatoryPiece[0] + "; " + mandatoryPiece[1] + "), ";
-                    }
-                    System.out.println("Wybrany pionek (" + posY1 + "; " + posX1
-                            + ") nie należy do pionków które mogą bić: " + mandatory);
-                    throw new IncorrectPositionException();
-                }
-            }
-            // Sprawdzamy czy podany ruch jest możliwy i czy aby go wykonać musimy zbić
-            // przeciwnika
-            int[][] neededEnemyPosition;
-            neededEnemyPosition = tempBoard[posY1][posX1].canGoTo(posX1, posY1, posX2, posY2);
+            int enemiesCount = analyseMove(tempBoard, posX1, posY1, posX2, posY2);
 
-            // Jeżeli przeskakujemy o więcej niż 1 pole to sprawdzamy czy pomiędzy nimi jest
-            // przeciwnik, jeśli tak to go usuwamy
-            int enemiesCount = 0;
-            int enemyX = 0;
-            int enemyY = 0;
-            for (int[] possibleEnemy : neededEnemyPosition) {
-                int possibleEnemyX = possibleEnemy[0];
-                int possibleEnemyY = possibleEnemy[1];
-                if (tempBoard[possibleEnemyY][possibleEnemyX] != null
-                        && tempBoard[possibleEnemyY][possibleEnemyX].getColor() == tempBoard[posY1][posX1].getColor()) {
-                    System.out.println("Między wybranym pionkiem a miejscem docelowym znajduje się pionek sojusznika");
-                    throw new IncorrectPositionException();
-                }
-                if (tempBoard[possibleEnemyY][possibleEnemyX] != null
-                        && tempBoard[possibleEnemyY][possibleEnemyX].getColor() != tempBoard[posY1][posX1].getColor()) {
-                    enemiesCount++;
-                    enemyX = possibleEnemyX;
-                    enemyY = possibleEnemyY;
-                }
-            }
-            if (enemiesCount == 0 && isPieceInMandatory) {
-                System.out.println("Wybrany ruch nie wykorzystuje bicia");
-                throw new IncorrectPositionException();
-            } else if (enemiesCount == 1) {
-                if (tempBoard[enemyY][enemyX].getColor() == PieceColorEnum.Red) {
-                    board.setNoRedRemaining(board.getNoRedRemaining() - 1);
-                } else {
-                    board.setNoWhiteRemaining(board.getNoWhiteRemaining() - 1);
-                }
-                tempBoard[enemyY][enemyX] = null;
-            } else if ((enemiesCount == 0 && tempBoard[posY1][posX1].getStateName() == PieceStateEnum.Pawn
-                    && neededEnemyPosition.length > 0)
-                    || enemiesCount > 1) {
-                System.out.println("164");
-                throw new IncorrectPositionException();
-            }
             // Przesuwamy pionek
             tempBoard[posY2][posX2] = tempBoard[posY1][posX1];
             tempBoard[posY1][posX1] = null;

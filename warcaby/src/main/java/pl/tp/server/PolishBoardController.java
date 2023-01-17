@@ -120,6 +120,28 @@ public class PolishBoardController extends BoardController {
         return false;
     }
 
+    private void calculateBestMandatory(AbstractPiece[][] boardState, int posX, int posY, int size) {
+        System.out.println(size + ". " + posX + " " + posY);
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                try {
+                    int enemiesCount = analyseMove(boardState, posX, posY, i, j);
+
+                    if (enemiesCount == 1) {
+                        AbstractPiece[][] tempBoard = boardState;
+                        tempBoard[j][i] = tempBoard[posY][posX];
+                        tempBoard[posY][posX] = null;
+                        calculateBestMandatory(tempBoard, i, j, size);
+                    }
+                } catch (IncorrectPositionException e) {
+                    continue;
+                }
+            }
+        }
+
+    }
+
     @Override
     protected void calculateMandatory() {
         AbstractPiece[][] tempBoard = board.getPieces();
@@ -134,6 +156,13 @@ public class PolishBoardController extends BoardController {
                 }
             }
         }
+
+        for (int[] piece : board.getMandatoryUsePieces()) {
+            int posX = piece[0];
+            int posY = piece[1];
+            calculateBestMandatory(tempBoard, posX, posY, 1);
+        }
+
     }
 
     @Override
