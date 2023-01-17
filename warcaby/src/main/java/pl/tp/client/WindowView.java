@@ -44,8 +44,18 @@ public class WindowView extends Frame implements View{
         setSize(size * 50, size * 50 + 50);    
         board.setBounds(0, 50, size * 50, size * 50);
         board.drawNew(size);
-        board.renderBoard(new SquareStateEnum[8][8]);
         pieces.setBounds(0, 50, size * 50, size * 50);
         message.setBounds(0, 25, size * 50, 25);
     }
+
+    @Override
+    public void drawBoard(SquareStateEnum[][] pieces) {
+        board.renderBoard(pieces);
+    }
+
+    @Override
+    public void printMessage(String message) {
+        this.message.setText(message);
+    }
+    
 }
