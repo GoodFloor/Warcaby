@@ -1,57 +1,51 @@
 package pl.tp.client;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import pl.tp.SquareStateEnum;
 
 public class WindowView extends Frame implements View{
-    // private Pane root;
-    private BoardLayer board;
-    private PiecesLayer pieces;
-    // private Pane userInterface;
-    //private Stage mainStage;
-    //private int boardWidth;
-    public WindowView(int boardSize) {
-        pieces = new PiecesLayer(boardSize);
-        board = new BoardLayer(boardSize);
-        add(pieces);
-        add(board);
-        setSize(boardSize * 100, boardSize * 100);
+    BoardLayer board;
+    Panel pieces;
+    Label message;
+    public WindowView() {
+        setSize(200, 50);
         setTitle("Warcaby");
+        setLayout(null);
         setVisible(true);
+        board = new BoardLayer();
+        board.setBounds(0, 50, 200, 100);
+        pieces = new Panel();
+        pieces.setBounds(0, 50, 200, 100);
+        pieces.setBackground(Color.green);
+        message = new Label("Oczekiwanie na serwer");
+        message.setBounds(0, 25, 200, 25);
+        add(message);
+        //add(pieces);
+        add(board);
         addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
+            @Override
+            public void windowClosing(WindowEvent event) {
+                close();
             }
         });
     }
-    public void updatePieces(SquareStateEnum[][] currentPositions) {
-        pieces.drawPieces(currentPositions);
-    }
-    public void updateBoard(int boardSize) {
-        board.removeAll();
-        board = new BoardLayer(boardSize);
-        add(board);
-    }
+
     @Override
-    public void end() {
-        // TODO Auto-generated method stub
-        
+    public void close() {
+        dispose();        
     }
+
     @Override
-    public String[] getMove() {
-        // TODO Auto-generated method stub
-        return new String[2];
-    }
-    @Override
-    public void printMessage(String message) {
-        // TODO Auto-generated method stub
-        
-    }
-    @Override
-    public void printException(Exception e) {
-        // TODO Auto-generated method stub
-        
+    public void newBoard(int size) {
+        message.setText("Tworzenie nowej gry");
+        setSize(size * 50, size * 50 + 50);    
+        board.setBounds(0, 50, size * 50, size * 50);
+        board.drawNew(size);
+        board.renderBoard(new SquareStateEnum[8][8]);
+        pieces.setBounds(0, 50, size * 50, size * 50);
+        message.setBounds(0, 25, size * 50, 25);
     }
 }

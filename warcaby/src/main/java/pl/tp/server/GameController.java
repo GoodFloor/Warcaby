@@ -29,7 +29,7 @@ public abstract class GameController {
      */
     public GameController() {
         // this.gameView = new SocketView();
-        this.gameView = new TerminalView();
+        this.gameView = new SocketView();
         isGameRunning = false;
     }
 

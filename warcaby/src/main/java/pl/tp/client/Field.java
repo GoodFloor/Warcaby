@@ -1,17 +1,13 @@
-// package pl.tp.client;
+package pl.tp.client;
 
-// import javafx.scene.paint.Color;
-// import javafx.scene.shape.Rectangle;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
-// public class Field extends Rectangle{
-//     Field(double width, double height, int color) {
-//         super(width, height);
-//         if (color == 1) {
-//             setFill(Color.YELLOWGREEN);
-//         }
-//         else {
-//             setFill(Color.LIGHTYELLOW);
-//         }
-//         //setStroke(Color.BLACK);
-//     }
-// }
+import pl.tp.SquareStateEnum;
+
+public class Field extends JButton {
+    public Field(SquareStateEnum type) {
+        ImageIcon texture = new ImageIcon("White.png");
+        this.setIcon(texture);
+    }
+}
