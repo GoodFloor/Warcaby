@@ -25,7 +25,13 @@ public class App {
                     currentBoardSize = size;
                 }
                 else if(SocketCommandsEnum.printPieces.toString().equals(command)) {
-                    SquareStateEnum[][] pieces = server.getBoard();
+                    gui.drawBoard(server.getBoard());
+                }
+                else if(SocketCommandsEnum.getMove.toString().equals(command)) {
+                    gui.printMessage("Wykonaj ruch!");
+                }
+                else if(SocketCommandsEnum.wait.toString().equals(command)) {
+                    gui.printMessage("Oczekiwanie na drugiego gracza");
                 }
                 else {
                     System.out.println(command);

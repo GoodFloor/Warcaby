@@ -1,6 +1,6 @@
 package pl.tp.client;
 
-import java.awt.*;
+import javax.swing.ImageIcon;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -9,6 +9,24 @@ import pl.tp.SquareStateEnum;
 
 public class BoardLayer extends JPanel {
     private int size;
+    ImageIcon white;
+    ImageIcon blackEmpty;
+    ImageIcon blackRed;
+    ImageIcon blackWhite;
+    ImageIcon blackRedQueen;
+    ImageIcon blackWhiteQueen;
+
+
+    public BoardLayer() {
+        size = 0;
+        white = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/white.png");
+        blackEmpty = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackEmpty.png");
+        blackRed = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackRed.png");
+        blackWhite = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackWhite.png");
+        blackRedQueen = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackRedQueen.png");
+        blackWhiteQueen = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackWhiteQueen.png");
+    }
+
     public void drawNew(int size) {
         this.removeAll();
         this.size = size;
@@ -17,35 +35,30 @@ public class BoardLayer extends JPanel {
         this.removeAll();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                Field field = new Field(board[i][j]);
-                field.setBounds(j * 50, i * 50, 50, 50);
+                ImageIcon texture;
+                if (SquareStateEnum.BlackEmpty == board[i][j]) {
+                    texture = blackEmpty;
+                }
+                else if (SquareStateEnum.BlackRed == board[i][j]) {
+                    texture = blackRed;
+                }
+                else if (SquareStateEnum.BlackWhite == board[i][j]) {
+                    texture = blackWhite;
+                }
+                else if (SquareStateEnum.BlackRedQueen == board[i][j]) {
+                    texture = blackRedQueen;
+                }
+                else if (SquareStateEnum.BlackWhiteQueen == board[i][j]) {
+                    texture = blackWhiteQueen;
+                }
+                else {
+                    texture = white;
+                }
+                Field field = new Field(j, i);
+                field.setIcon(texture);
                 this.add(field);
             }
         }
         this.repaint();
     }
-
-
-    // public void drawRectangles(Graphics g) {
-    //     System.out.println("drawRectangles");
-    //     Graphics2D g2d = (Graphics2D) g;
-    //     int size = this.getWidth() / 50;
-    //     for (int i = 0; i < size; i++) {
-    //         for (int j = 0; j < size; j++) {
-    //             if ((i + j) % 2 == 0) {
-    //                 g2d.setColor(new Color(255, 255, 153));
-    //             }
-    //             else {
-    //                 g2d.setColor(new Color(52, 94, 0));
-    //             }
-    //             g2d.fillRect(i * 50, j * 50, 50, 50);
-    //         }
-    //     }
-    // }
-    // @Override
-    // public void paint(Graphics g) {
-    //     System.out.println("paint");
-    //     //super.paint(g);
-    //     drawRectangles(g);
-    // }
 }
