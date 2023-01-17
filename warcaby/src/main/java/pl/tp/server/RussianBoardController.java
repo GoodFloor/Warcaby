@@ -121,20 +121,9 @@ public class RussianBoardController extends BoardController {
                         || enemiesCount > 1) {
                     continue;
                 }
-
-                // for (int k = 0; k < killableEnemyPlace.length; k++) {
-                // int enemyX = killableEnemyPlace[k][0];
-                // int enemyY = killableEnemyPlace[k][1];
-                // if (tempBoard[enemyY][enemyX] != null
-                // && tempBoard[enemyY][enemyX].getColor() != tempBoard[posY][posX].getColor())
-                // {
-                // return true;
-                // }
-                // }
             }
         }
         return false;
-
     }
 
     @Override

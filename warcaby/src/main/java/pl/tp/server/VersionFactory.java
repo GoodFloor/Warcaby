@@ -13,6 +13,8 @@ public class VersionFactory implements VersionFactoryInterface {
                 return new EnglishGameController();
             case 3:
                 return new RussianGameController();
+            case 4:
+                return new PolishGameController();
             default:
                 return null;
         }
