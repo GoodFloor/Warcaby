@@ -33,6 +33,13 @@ public abstract class BoardController {
     protected abstract void calculateMandatory();
 
     /**
+     * Sprawdzanie, czy pionek może zostać damką w tym momencie tury
+     * 
+     * @return Zwraca prawdę, jeśli może zostać damką.
+     */
+    protected abstract boolean canBecomeQueen();
+
+    /**
      * Konstruktor ustawiający początkowe parametry i resetujący planszę
      */
     public BoardController() {
@@ -197,7 +204,8 @@ public abstract class BoardController {
             if (tempBoard[posY2][posX2].isStartingAtBottom()) {
                 sideToBecomeQueen = board.getHeight() - 1;
             }
-            if (board.isTurnOver() && posY2 == sideToBecomeQueen) {
+
+            if (canBecomeQueen() && posY2 == sideToBecomeQueen) {
                 tempBoard[posY2][posX2].upgradePiece();
             }
         } catch (IncorrectPositionException e) {

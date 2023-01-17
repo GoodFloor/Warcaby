@@ -38,8 +38,10 @@ public class RussianBoardController extends BoardController {
         temp[0][4].setColor(PieceColorEnum.White);
         temp[1][1] = new RussianPiece();
         temp[1][1].setColor(PieceColorEnum.White);
-        temp[0][2] = new RussianPiece();
-        temp[0][2].setColor(PieceColorEnum.White);
+        temp[3][1] = new RussianPiece();
+        temp[3][1].setColor(PieceColorEnum.White);
+        temp[1][3] = new RussianPiece();
+        temp[1][3].setColor(PieceColorEnum.White);
         temp[6][0] = new RussianPiece();
         temp[6][0].setColor(PieceColorEnum.White);
         temp[3][3] = new RussianPiece();
@@ -59,8 +61,8 @@ public class RussianBoardController extends BoardController {
         temp[4][4].setColor(PieceColorEnum.Red);
         temp[3][7] = new RussianPiece();
         temp[3][7].setColor(PieceColorEnum.Red);
-        temp[3][5] = new RussianPiece();
-        temp[3][5].setColor(PieceColorEnum.Red);
+        // temp[3][5] = new RussianPiece();
+        // temp[3][5].setColor(PieceColorEnum.Red);
         temp[4][2] = new RussianPiece();
         temp[4][2].setColor(PieceColorEnum.Red);
 
@@ -149,5 +151,10 @@ public class RussianBoardController extends BoardController {
                 }
             }
         }
+    }
+
+    @Override
+    protected boolean canBecomeQueen() {
+        return true;
     }
 }

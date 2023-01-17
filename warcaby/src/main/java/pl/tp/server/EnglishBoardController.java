@@ -113,4 +113,12 @@ public class EnglishBoardController extends BoardController {
             }
         }
     }
+
+    @Override
+    protected boolean canBecomeQueen() {
+        if (board.isTurnOver()) {
+            return true;
+        }
+        return false;
+    }
 }
