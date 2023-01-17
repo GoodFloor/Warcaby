@@ -26,20 +26,21 @@ public class GameController {
             isGameRunning = true;
             while(isGameRunning) {
                 String line = server.getLine();
+                System.out.println(line);
                 if(SocketCommandsEnum.drawBoard.toString().equals(line)) {
                     boardSize = Integer.parseInt(server.getLine());
                     gui = new TerminalView(boardSize);
                 } 
-                else if(line == SocketCommandsEnum.printPieces.toString()) {
+                else if(SocketCommandsEnum.printPieces.toString().equals(line)) {
                     gui.updatePieces(server.getBoard(boardSize));
                 } 
-                else if(line == SocketCommandsEnum.getMove.toString()) {
+                else if(SocketCommandsEnum.getMove.toString().equals(line)) {
                     String[] move = gui.getMove();
                     server.sendMoveRequest(move[0], move[1]);
                 } 
-                else if(line == SocketCommandsEnum.alert.toString()) {
+                else if(SocketCommandsEnum.alert.toString().equals(line)) {
                     gui.printMessage(server.getLine());
-                }                
+                }            
             }
         } catch (ServerErrorException serverDown) {
             this.end();
