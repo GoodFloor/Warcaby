@@ -1,7 +1,7 @@
 package pl.tp.server;
 
 /**
- * Klasa damy w angielskiej wersji gry
+ * Klasa damy w rosyjskiej wersji gry
  * 
  * Produkt konkretny we wzorcu Abstract Factory
  */
