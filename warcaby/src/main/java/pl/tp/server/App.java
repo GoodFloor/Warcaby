@@ -26,7 +26,7 @@ public class App {
         // }
 
         VersionFactoryInterface factory = new VersionFactory();
-        GameController game = factory.getGame(2);
+        GameController game = factory.getGame(3);
 
         game.run();
     }
