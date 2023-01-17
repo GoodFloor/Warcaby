@@ -73,9 +73,6 @@ public class EnglishBoardController extends BoardController {
         AbstractPiece[][] tempBoard = board.getPieces();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (i < 0 || i >= tempBoard.length || j < 0 || j >= tempBoard.length) {
-                    continue;
-                }
                 // jeśli na sprawdzanym miejscu stoi pionek
                 if (tempBoard[j][i] != null) {
                     continue;

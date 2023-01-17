@@ -1,6 +1,7 @@
 package pl.tp.server;
 
 import pl.tp.PieceColorEnum;
+import pl.tp.PieceStateEnum;
 
 /**
  * Klasa obsługująca działania na planszy
@@ -37,8 +38,8 @@ public class RussianBoardController extends BoardController {
         temp[0][4].setColor(PieceColorEnum.White);
         temp[1][1] = new RussianPiece();
         temp[1][1].setColor(PieceColorEnum.White);
-        temp[1][3] = new RussianPiece();
-        temp[1][3].setColor(PieceColorEnum.White);
+        temp[0][2] = new RussianPiece();
+        temp[0][2].setColor(PieceColorEnum.White);
         temp[6][0] = new RussianPiece();
         temp[6][0].setColor(PieceColorEnum.White);
         temp[3][3] = new RussianPiece();
@@ -48,14 +49,18 @@ public class RussianBoardController extends BoardController {
         temp[7][7].setColor(PieceColorEnum.Red);
         temp[7][5] = new RussianPiece();
         temp[7][5].setColor(PieceColorEnum.Red);
-        temp[7][3] = new RussianPiece();
-        temp[7][3].setColor(PieceColorEnum.Red);
-        temp[6][2] = new RussianPiece();
-        temp[6][2].setColor(PieceColorEnum.Red);
+        // temp[7][3] = new RussianPiece();
+        // temp[7][3].setColor(PieceColorEnum.Red);
+        // temp[6][2] = new RussianPiece();
+        // temp[6][2].setColor(PieceColorEnum.White);
         temp[6][4] = new RussianPiece();
         temp[6][4].setColor(PieceColorEnum.Red);
+        temp[4][4] = new RussianPiece();
+        temp[4][4].setColor(PieceColorEnum.Red);
         temp[3][7] = new RussianPiece();
         temp[3][7].setColor(PieceColorEnum.Red);
+        temp[3][5] = new RussianPiece();
+        temp[3][5].setColor(PieceColorEnum.Red);
         temp[4][2] = new RussianPiece();
         temp[4][2].setColor(PieceColorEnum.Red);
 
@@ -73,9 +78,6 @@ public class RussianBoardController extends BoardController {
         AbstractPiece[][] tempBoard = board.getPieces();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (i < 0 || i >= tempBoard.length || j < 0 || j >= tempBoard.length) {
-                    continue;
-                }
                 // jeśli na sprawdzanym miejscu stoi pionek
                 if (tempBoard[j][i] != null) {
                     continue;
@@ -88,17 +90,49 @@ public class RussianBoardController extends BoardController {
                 } catch (Exception e) {
                     continue;
                 }
-                for (int k = 0; k < killableEnemyPlace.length; k++) {
-                    int enemyX = killableEnemyPlace[k][0];
-                    int enemyY = killableEnemyPlace[k][1];
-                    if (tempBoard[enemyY][enemyX] != null
-                            && tempBoard[enemyY][enemyX].getColor() != tempBoard[posY][posX].getColor()) {
-                        return true;
+
+                boolean blocked = false;
+                int enemiesCount = 0;
+                for (int[] possibleEnemy : killableEnemyPlace) {
+                    int possibleEnemyX = possibleEnemy[0];
+                    int possibleEnemyY = possibleEnemy[1];
+                    // pionek sojusznika pomiędzy
+                    if (tempBoard[possibleEnemyY][possibleEnemyX] != null
+                            && tempBoard[possibleEnemyY][possibleEnemyX].getColor() == tempBoard[posY][posX]
+                                    .getColor()) {
+                        blocked = true;
+                        break;
+                    }
+                    if (tempBoard[possibleEnemyY][possibleEnemyX] != null
+                            && tempBoard[possibleEnemyY][possibleEnemyX].getColor() != tempBoard[posY][posX]
+                                    .getColor()) {
+                        enemiesCount++;
                     }
                 }
+                if (blocked) {
+                    continue;
+                }
+                if (enemiesCount == 1) {
+                    return true;
+                } else if ((enemiesCount == 0 && tempBoard[posY][posX].getStateName() == PieceStateEnum.Pawn
+                        && killableEnemyPlace.length > 0)
+                        || enemiesCount > 1) {
+                    continue;
+                }
+
+                // for (int k = 0; k < killableEnemyPlace.length; k++) {
+                // int enemyX = killableEnemyPlace[k][0];
+                // int enemyY = killableEnemyPlace[k][1];
+                // if (tempBoard[enemyY][enemyX] != null
+                // && tempBoard[enemyY][enemyX].getColor() != tempBoard[posY][posX].getColor())
+                // {
+                // return true;
+                // }
+                // }
             }
         }
         return false;
+
     }
 
     @Override
