@@ -41,26 +41,39 @@ public abstract class GameController {
         setStartMessage();
         isGameRunning = true;
         isWhiteTurn = true;
-        gameView.printMessage(startMessage);
+        gameView.printMessage(startMessage, -1);
         gameView.start();
+        boolean firstTry = true;
 
         while (isGameRunning) {
             gameView.printBoard(boardController.translateBoard());
-            if (isWhiteTurn)
-                gameView.printMessage("Ruch białych");
-            else
-                gameView.printMessage("Ruch czarnych");
-
+            if (firstTry && isWhiteTurn) {
+                gameView.printMessage("Ruch białych", -1);
+                gameView.printMessage("Twój ruch", 1);
+                gameView.printMessage("Czekanie na przeciwnika", 2);
+            }
+            else if (firstTry) {
+                gameView.printMessage("Ruch czarnych", -1);
+                gameView.printMessage("Twój ruch", 2);
+                gameView.printMessage("Czekanie na przeciwnika", 1);
+            }
+            firstTry = false;
             String move[] = gameView.getMove(isWhiteTurn);
             try {
                 boardController.movePiece(move[0], move[1]);
             } catch (IncorrectPositionException e) {
-                gameView.printMessage("Błędny ruch - spróbuj ponownie");
+                if (isWhiteTurn) {
+                    gameView.printMessage("Błędny ruch - spróbuj ponownie", 1);                    
+                }
+                else {
+                    gameView.printMessage("Błędny ruch - spróbuj ponownie", 2);
+                }
                 continue;
             }
             if (boardController.isGameOver() != null) {
                 break;
             } else if (boardController.isTurnOver()) {
+                firstTry = true;
                 isWhiteTurn = !isWhiteTurn;
                 boardController.startNextTurn();
             }

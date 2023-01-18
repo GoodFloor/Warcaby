@@ -22,7 +22,7 @@ public class TerminalView implements GameView {
     }
 
     @Override
-    public void printMessage(String message) {
+    public void printMessage(String message, int toPlayer) {
         System.out.println(message);
     }
 

@@ -14,7 +14,7 @@ public interface GameView {
      * 
      * @param message komunikat do wyświetlenia
      */
-    void printMessage(String message);
+    void printMessage(String message, int toPlayer);
 
     /**
      * Wyświetlenie komunikatu o błędzie

@@ -28,16 +28,17 @@ public class App {
                     gui.drawBoard(server.getBoard());
                 }
                 else if(SocketCommandsEnum.getMove.toString().equals(command)) {
-                    gui.printMessage("Wykonaj ruch!");
+                    //gui.printMessage("Wykonaj ruch!");
                     String[] move = gui.getMove();
                     server.movePiece(move[0], move[1]);
                 }
                 else if(SocketCommandsEnum.wait.toString().equals(command)) {
-                    gui.printMessage("Oczekiwanie na drugiego gracza");
+                    //gui.printMessage("Oczekiwanie na drugiego gracza");
                     gui.endMove();
                 }
                 else {
                     System.out.println(command);
+                    gui.printMessage(command);
                 }
             }
         } catch (Exception e) {

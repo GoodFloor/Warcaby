@@ -34,11 +34,18 @@ public class SocketView implements GameView{
         }
     }
     @Override
-    public void printMessage(String message) {
-        terminalView.printMessage(message);
-
-        // TODO Auto-generated method stub
-        
+    public void printMessage(String message, int toPlayer) {
+        if (toPlayer == 1) {
+            outputPlayer1.println(message);
+        } 
+        else if (toPlayer == 2) {
+            outputPlayer2.println(message);
+        } 
+        else if (toPlayer == 0) {
+            outputPlayer1.println(message);
+            outputPlayer2.println(message);
+        }
+        terminalView.printMessage(message, toPlayer);        
     }
 
     @Override
@@ -79,7 +86,6 @@ public class SocketView implements GameView{
                 outputPlayer2.println(SocketCommandsEnum.wait.toString());
                 outputPlayer1.println(SocketCommandsEnum.getMove.toString());
                 temp[0] = inputPlayer1.readLine();
-                System.out.println("From: " + temp[0]);
                 temp[1] = inputPlayer1.readLine();
             }
             else {
