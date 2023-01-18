@@ -57,8 +57,10 @@ public class PolishBoardController extends BoardController {
         temp[6][4].setColor(PieceColorEnum.Red);
         temp[3][7] = new PolishPiece();
         temp[3][7].setColor(PieceColorEnum.Red);
-        temp[4][2] = new PolishPiece();
-        temp[4][2].setColor(PieceColorEnum.Red);
+        // temp[4][2] = new PolishPiece();
+        // temp[4][2].setColor(PieceColorEnum.Red);
+        temp[2][4] = new PolishPiece();
+        temp[2][4].setColor(PieceColorEnum.Red);
 
         board.setHeight(10);
         board.setWidth(10);
@@ -126,19 +128,92 @@ public class PolishBoardController extends BoardController {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 try {
-                    int enemiesCount = analyseMove(boardState, posX, posY, i, j);
-
-                    if (enemiesCount == 1) {
-                        AbstractPiece[][] tempBoard = boardState;
-                        tempBoard[j][i] = tempBoard[posY][posX];
-                        tempBoard[posY][posX] = null;
-                        calculateBestMandatory(tempBoard, i, j, size);
+                    // Sprawdzamy czy miejsce docelowe nie jest zajęte
+                    if (boardState[j][i] != null) {
+                        continue;
                     }
+
+                    if ((i + j) % 2 == 1) {
+                        continue;
+                    }
+
+                    // Sprawdzamy czy podany ruch jest możliwy i czy aby go wykonać musimy zbić
+                    // przeciwnika
+                    int[][] neededEnemyPosition;
+                    // System.out.println(i + " " + j);
+                    // System.out.println(boardState[posY][posX]);
+
+                    neededEnemyPosition = boardState[posX][posY].canGoTo(posX, posY, j, i);
+
+                    // Jeżeli przeskakujemy o więcej niż 1 pole to sprawdzamy czy pomiędzy nimi jest
+                    // przeciwnik, jeśli tak to go usuwamy
+                    int enemiesCount = 0;
+                    int enemyX = 0;
+                    int enemyY = 0;
+                    for (int[] possibleEnemy : neededEnemyPosition) {
+                        int possibleEnemyX = possibleEnemy[1];
+                        int possibleEnemyY = possibleEnemy[0];
+                        // System.out.println("X: " + possibleEnemyX);
+                        // System.out.println("Y: " + possibleEnemyY);
+
+                        if (boardState[possibleEnemyY][possibleEnemyX] != null) {
+                            // System.out.println("Jest pionek w odpowiednim miejscu");
+                            if (boardState[possibleEnemyY][possibleEnemyX].getColor() == boardState[posX][posY]
+                                    .getColor()) {
+                                continue;
+                            }
+                            enemiesCount++;
+                            enemyX = possibleEnemyX;
+                            enemyY = possibleEnemyY;
+                        }
+                        // if (boardState[possibleEnemyY][possibleEnemyX] != null
+                        // && boardState[possibleEnemyY][possibleEnemyX].getColor() != boardState[j][i]
+                        // .getColor()) {
+
+                        // }
+                    }
+                    if (enemiesCount == 0 || enemiesCount > 1) {
+                        System.out.println("Enemies count: " + enemiesCount);
+                        continue;
+                    } else if (enemiesCount == 1) {
+                        System.out.println("Enemies count: " + enemiesCount);
+                        AbstractPiece[][] tempBoard = boardState.clone();
+
+                        AbstractPiece deleted = boardState[enemyY][enemyX];
+                        boardState[enemyY][enemyX] = null;
+                        boardState[j][i] = boardState[posX][posY];
+                        boardState[posX][posY] = null;
+
+                        calculateBestMandatory(boardState, j, i, size + 1);
+
+                        boardState[posX][posY] = boardState[j][i];
+                        boardState[j][i] = null;
+                        boardState[enemyY][enemyX] = deleted;
+                        // } else if ((enemiesCount == 0 && boardState[posY][posX].getStateName() ==
+                        // PieceStateEnum.Pawn
+                        // && neededEnemyPosition.length > 0)
+                        // || enemiesCount > 1) {
+                        // return;
+                    }
+                    // Przesuwamy pionek
+
+                    // int enemiesCount = analyseMove(boardState, posX, posY, i, j);
+
+                    // if (enemiesCount == 1) {
+                    // AbstractPiece[][] tempBoard = boardState;
+                    // tempBoard[j][i] = tempBoard[posY][posX];
+                    // tempBoard[posY][posX] = null;
+                    // calculateBestMandatory(tempBoard, i, j, size);
+                    // }
                 } catch (IncorrectPositionException e) {
                     continue;
+                    // } catch (NullPointerException e) {
+                    // continue;
                 }
             }
         }
+        System.out.println("ZAKOŃCZONO");
+        return;
 
     }
 
@@ -160,6 +235,7 @@ public class PolishBoardController extends BoardController {
         for (int[] piece : board.getMandatoryUsePieces()) {
             int posX = piece[0];
             int posY = piece[1];
+            // System.out.println(tempBoard);
             calculateBestMandatory(tempBoard, posX, posY, 1);
         }
 

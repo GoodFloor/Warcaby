@@ -28,8 +28,8 @@ public abstract class GameController {
      * Konstruktor ustawiający parametry początkowe
      */
     public GameController() {
-        // this.gameView = new TerminalView();
-        this.gameView = new SocketView();
+        this.gameView = new TerminalView();
+        // this.gameView = new SocketView();
         isGameRunning = false;
     }
 
@@ -51,8 +51,7 @@ public abstract class GameController {
                 gameView.printMessage("Ruch białych", -1);
                 gameView.printMessage("Twój ruch", 1);
                 gameView.printMessage("Czekanie na przeciwnika", 2);
-            }
-            else if (firstTry) {
+            } else if (firstTry) {
                 gameView.printMessage("Ruch czarnych", -1);
                 gameView.printMessage("Twój ruch", 2);
                 gameView.printMessage("Czekanie na przeciwnika", 1);
@@ -63,9 +62,8 @@ public abstract class GameController {
                 boardController.movePiece(move[0], move[1]);
             } catch (IncorrectPositionException e) {
                 if (isWhiteTurn) {
-                    gameView.printMessage("Błędny ruch - spróbuj ponownie", 1);                    
-                }
-                else {
+                    gameView.printMessage("Błędny ruch - spróbuj ponownie", 1);
+                } else {
                     gameView.printMessage("Błędny ruch - spróbuj ponownie", 2);
                 }
                 continue;
