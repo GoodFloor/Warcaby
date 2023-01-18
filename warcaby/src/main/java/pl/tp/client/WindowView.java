@@ -22,7 +22,10 @@ public class WindowView extends Frame implements View{
     private boolean isMyMove;
     private boolean isDrawResponseSet;
     private boolean drawResponse;
+    private SquareStateEnum[][] lastKnownBoardState;
+    private boolean exited;
     public WindowView() {
+        exited = false;
         isMyMove = false;
         movesBuffer = new String[2];
         howManyMovesBuffered = 0;
@@ -75,6 +78,8 @@ public class WindowView extends Frame implements View{
 
     @Override
     public void close() {
+        exited = true;
+        howManyMovesBuffered = 2;
         dispose();        
     }
 
@@ -92,6 +97,7 @@ public class WindowView extends Frame implements View{
 
     @Override
     public void drawBoard(SquareStateEnum[][] pieces) {
+        lastKnownBoardState = pieces;
         board.renderBoard(pieces);
     }
 
@@ -160,6 +166,7 @@ public class WindowView extends Frame implements View{
         acceptDrawBtn.setVisible(false);
         rejectDrawBtn.setVisible(false);
         board.setVisible(true);
+        this.drawBoard(lastKnownBoardState);
         repaint();
         return drawResponse;
 
@@ -180,5 +187,10 @@ public class WindowView extends Frame implements View{
 
     @Override
     public void endDrawDiscussion() {
+    }
+
+    @Override
+    public boolean isExited() {
+        return exited;
     }
 }

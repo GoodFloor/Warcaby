@@ -13,4 +13,5 @@ public interface View {
     boolean getDrawResponse();
     void endDrawDiscussion();
     void endGame(String message);
+    boolean isExited();
 }

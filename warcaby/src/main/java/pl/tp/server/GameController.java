@@ -60,7 +60,8 @@ public abstract class GameController {
                     gameView.printMessage("Czekanie na przeciwnika", 1);
                 }
                 firstTry = false;
-                String move[] = gameView.getMove(isWhiteTurn);
+                String move[] = new String[2];
+                move = gameView.getMove(isWhiteTurn);
                 while (SocketCommandsEnum.proposeDraw.toString().equals(move[0])) {
                     if(gameView.discussDraw(isWhiteTurn)) {
                         isGameRunning = false;
@@ -68,6 +69,11 @@ public abstract class GameController {
                     }
                     move = gameView.getMove(isWhiteTurn);
                 }
+                if (move[0] == null || SocketCommandsEnum.exit.toString().equals(move[0])) {
+                    System.out.println("STOP");
+                    gameView.printMessage(SocketCommandsEnum.exit.toString(), 0);
+                    isGameRunning = false;
+                }  
                 if (!isGameRunning) {
                     break;
                 }
@@ -90,8 +96,6 @@ public abstract class GameController {
                     boardController.startNextTurn();
                 }
             }
-        } catch (ClientDisconnectedException disconnected) {
-            gameView.printMessage(SocketCommandsEnum.exit.toString(), 0);
         } catch (Exception e) {
             // TODO: handle exception
         }

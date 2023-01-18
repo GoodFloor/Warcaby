@@ -18,6 +18,10 @@ public class App {
                 isPlayer1 = false;
             }
             while(true) {
+                if (gui.isExited()) {
+                    server.endConnection();
+                    break;
+                }
                 String command = server.getLine();
                 if(SocketCommandsEnum.drawBoard.toString().equals(command)) {
                     int size = Integer.parseInt(server.getLine());
@@ -52,7 +56,7 @@ public class App {
                     }
                 }
                 else if(SocketCommandsEnum.exit.toString().equals(command)) {
-                    gui.close();
+                    break;
                 }
                 else {
                     System.out.println(command);
@@ -64,6 +68,11 @@ public class App {
         }
         server.endConnection();
         System.out.println("Zakończono połączenie");
+        try {
+            Thread.sleep(10000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         gui.printMessage("Utracono połączenie z serwerem");
         try {
             Thread.sleep(10000);

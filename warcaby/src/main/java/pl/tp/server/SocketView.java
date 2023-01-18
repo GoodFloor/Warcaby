@@ -94,6 +94,7 @@ public class SocketView implements GameView{
                 temp[0] = inputPlayer2.readLine();
                 temp[1] = inputPlayer2.readLine();
             }
+            System.out.println(temp[0] + "; " + temp[1]);
             if (temp[0] == null || SocketCommandsEnum.exit.toString().equals(temp[0])) {
                 throw new ClientDisconnectedException();
             }
