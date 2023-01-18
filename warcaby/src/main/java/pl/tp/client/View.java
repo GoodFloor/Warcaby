@@ -9,4 +9,8 @@ public interface View {
     void printMessage(String message);
     String[] getMove();
     void endMove();
+    void drawProposed();
+    boolean getDrawResponse();
+    void endDrawDiscussion();
+    void endGame(String message);
 }

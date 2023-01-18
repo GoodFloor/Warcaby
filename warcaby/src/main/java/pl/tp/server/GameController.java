@@ -1,5 +1,7 @@
 package pl.tp.server;
 
+import pl.tp.SocketCommandsEnum;
+
 /**
  * Klasa obsługująca konkretną rozgrywkę
  * 
@@ -59,6 +61,12 @@ public abstract class GameController {
             }
             firstTry = false;
             String move[] = gameView.getMove(isWhiteTurn);
+            while (SocketCommandsEnum.proposeDraw.toString().equals(move[0])) {
+                if(gameView.discussDraw(isWhiteTurn)) {
+                    break;
+                }
+                move = gameView.getMove(isWhiteTurn);
+            }
             try {
                 boardController.movePiece(move[0], move[1]);
             } catch (IncorrectPositionException e) {

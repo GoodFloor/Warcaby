@@ -47,4 +47,9 @@ public interface GameView {
      */
     void end();
 
+    /*
+     * Obsługa prośby o uznanie remisu
+     */
+    boolean discussDraw(boolean fromPlayer1);
+
 }

@@ -16,9 +16,6 @@ public class BoardLayer extends JPanel implements ActionListener {
     private ImageIcon blackWhite;
     private ImageIcon blackRedQueen;
     private ImageIcon blackWhiteQueen;
-    private String[] movesBuffer;
-    private boolean isMyMove;
-    private int howManyMovesBuffered;
     private WindowView parent;
 
 
@@ -31,17 +28,11 @@ public class BoardLayer extends JPanel implements ActionListener {
         blackWhite = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackWhite.png");
         blackRedQueen = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackRedQueen.png");
         blackWhiteQueen = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackWhiteQueen.png");
-        movesBuffer = new String[2];
-        isMyMove = false;
-        howManyMovesBuffered = 0;
     }
 
     public void drawNew(int size) {
         this.removeAll();
         this.size = size;
-        movesBuffer = new String[2];
-        isMyMove = false;
-        howManyMovesBuffered = 0;
     }
     public void renderBoard(SquareStateEnum[][] board) {
         this.removeAll();
@@ -76,40 +67,7 @@ public class BoardLayer extends JPanel implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        if(isMyMove && howManyMovesBuffered < 2) {
-            addToBuffer(arg0.getActionCommand());
-        }
-    }
-    private void addToBuffer(String position) {
-        movesBuffer[howManyMovesBuffered] = position;
-        howManyMovesBuffered ++;
-        if (howManyMovesBuffered == 1) {
-            parent.printMessage(position + "->");
-        }
-        else if (howManyMovesBuffered == 2) {
-            parent.printMessage(movesBuffer[0] + "->" + position);
-        }
-        
-    }
-    public String[] getMove() {
-        isMyMove = true;
-        while (true) {
-            if (howManyMovesBuffered == 2) {
-                howManyMovesBuffered = 0;
-                return movesBuffer;
-            }
-            else {
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        
-    }
-    public void disableMove() {
-        isMyMove = false;
+        parent.addToBuffer(arg0.getActionCommand());
     }
     public int getBoardSize() {
         return size;

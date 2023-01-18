@@ -139,5 +139,33 @@ public class SocketView implements GameView{
         }
         
     }
-    
+    @Override
+    public boolean discussDraw(boolean fromPlayer1) {
+        try {
+            PrintWriter sourceOut;
+            PrintWriter destinationOut;
+            BufferedReader destinationIn;
+            if (fromPlayer1) {
+                sourceOut = outputPlayer1;
+                destinationOut = outputPlayer2;
+                destinationIn = inputPlayer2;
+            }
+            else {
+                sourceOut = outputPlayer2;
+                destinationOut = outputPlayer1;
+                destinationIn = inputPlayer1;
+            }
+            sourceOut.println(SocketCommandsEnum.wait.toString());
+            destinationOut.println(SocketCommandsEnum.proposeDraw.toString());
+            String result = destinationIn.readLine();
+            sourceOut.println(result);
+            sourceOut.close();
+            destinationIn.close();
+            destinationOut.close();
+            return SocketCommandsEnum.acceptDraw.toString().equals(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }      
+    }    
 }
