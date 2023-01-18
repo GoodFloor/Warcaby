@@ -11,7 +11,7 @@ import java.net.Socket;
 import pl.tp.SocketCommandsEnum;
 import pl.tp.SquareStateEnum;
 
-public class SocketView implements GameView{
+public class SocketView implements GameView {
     private ServerSocket serverSocket;
     private Socket socketPlayer1;
     private Socket socketPlayer2;
@@ -19,7 +19,6 @@ public class SocketView implements GameView{
     private BufferedReader inputPlayer2;
     private PrintWriter outputPlayer1;
     private PrintWriter outputPlayer2;
-    private TerminalView terminalView;
     private boolean boardNotDrawn;
 
     SocketView() {
@@ -27,37 +26,33 @@ public class SocketView implements GameView{
             serverSocket = new ServerSocket(4444);
             System.out.println("Server is listening on port 4444");
             boardNotDrawn = true;
-            terminalView = new TerminalView();
             System.out.println(SocketCommandsEnum.player1.toString());
         } catch (Exception e) {
             System.out.println("Błąd uruchomienia serwera");
         }
     }
+
     @Override
     public void printMessage(String message, int toPlayer) {
         if (toPlayer == 1) {
             outputPlayer1.println(message);
-        } 
-        else if (toPlayer == 2) {
+        } else if (toPlayer == 2) {
             outputPlayer2.println(message);
-        } 
-        else if (toPlayer == 0) {
+        } else if (toPlayer == 0) {
             outputPlayer1.println(message);
             outputPlayer2.println(message);
         }
-        terminalView.printMessage(message, toPlayer);        
+
+        System.out.println(message);
     }
 
     @Override
     public void printException(Exception e) {
-        terminalView.printException(e);
-        // TODO Auto-generated method stub
-        
+        System.out.println(e.getStackTrace());
     }
 
     @Override
     public void printBoard(SquareStateEnum[][] boardContent) {
-        terminalView.printBoard(boardContent);
         int size = boardContent.length;
         if (boardNotDrawn) {
             outputPlayer1.println(SocketCommandsEnum.drawBoard.toString());
@@ -75,20 +70,19 @@ public class SocketView implements GameView{
             }
             outputPlayer1.printf("\n");
             outputPlayer2.printf("\n");
-        }        
+        }
     }
 
     @Override
     public String[] getMove(boolean fromPlayer1) throws ClientDisconnectedException {
         String[] temp = new String[2];
         try {
-            if(fromPlayer1) {
+            if (fromPlayer1) {
                 outputPlayer2.println(SocketCommandsEnum.wait.toString());
                 outputPlayer1.println(SocketCommandsEnum.getMove.toString());
                 temp[0] = inputPlayer1.readLine();
                 temp[1] = inputPlayer1.readLine();
-            }
-            else {
+            } else {
                 outputPlayer1.println(SocketCommandsEnum.wait.toString());
                 outputPlayer2.println(SocketCommandsEnum.getMove.toString());
                 temp[0] = inputPlayer2.readLine();
@@ -106,9 +100,8 @@ public class SocketView implements GameView{
 
     @Override
     public void start() {
-        terminalView.start();
         try {
-            //Oczekiwanie na gracza 1
+            // Oczekiwanie na gracza 1
             socketPlayer1 = serverSocket.accept();
             System.out.println("Gracz 1 dołączył!");
             InputStream in1 = socketPlayer1.getInputStream();
@@ -117,8 +110,7 @@ public class SocketView implements GameView{
             outputPlayer1 = new PrintWriter(out1, true);
             outputPlayer1.println(SocketCommandsEnum.player1.toString());
 
-
-            //Oczekiwanie na gracza 2
+            // Oczekiwanie na gracza 2
             socketPlayer2 = serverSocket.accept();
             System.out.println("Gracz 2 dołączył");
             InputStream in2 = socketPlayer2.getInputStream();
@@ -133,15 +125,15 @@ public class SocketView implements GameView{
 
     @Override
     public void end() {
-        terminalView.end();
         try {
             socketPlayer1.close();
             socketPlayer2.close();
         } catch (Exception e) {
             System.out.println("Nieudana próba zamknięcia połączenia z klientem");
         }
-        
+
     }
+
     @Override
     public boolean discussDraw(boolean fromPlayer1) {
         try {
@@ -152,8 +144,7 @@ public class SocketView implements GameView{
                 sourceOut = outputPlayer1;
                 destinationOut = outputPlayer2;
                 destinationIn = inputPlayer2;
-            }
-            else {
+            } else {
                 sourceOut = outputPlayer2;
                 destinationOut = outputPlayer1;
                 destinationIn = inputPlayer1;
@@ -167,6 +158,6 @@ public class SocketView implements GameView{
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }      
-    }    
+        }
+    }
 }
