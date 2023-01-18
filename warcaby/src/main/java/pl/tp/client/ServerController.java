@@ -37,6 +37,7 @@ public class ServerController {
     public void movePiece(String sourceXY, String destinationXY) {
         output.println(sourceXY);
         output.println(destinationXY);
+        System.out.println("Wysłano");
     }
     public void endConnection() {
         output.println(SocketCommandsEnum.exit.toString());

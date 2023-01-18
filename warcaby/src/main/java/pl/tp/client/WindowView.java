@@ -7,9 +7,8 @@ import java.awt.event.WindowEvent;
 import pl.tp.SquareStateEnum;
 
 public class WindowView extends Frame implements View{
-    BoardLayer board;
-    Panel pieces;
-    Label message;
+    private BoardLayer board;
+    private Label message;
     public WindowView() {
         setSize(200, 50);
         setTitle("Warcaby");
@@ -17,9 +16,6 @@ public class WindowView extends Frame implements View{
         setVisible(true);
         board = new BoardLayer();
         board.setBounds(0, 50, 200, 100);
-        pieces = new Panel();
-        pieces.setBounds(0, 50, 200, 100);
-        pieces.setBackground(Color.green);
         message = new Label("Oczekiwanie na serwer");
         message.setBounds(0, 25, 200, 25);
         add(message);
@@ -44,7 +40,6 @@ public class WindowView extends Frame implements View{
         setSize(size * 50, size * 50 + 50);    
         board.setBounds(0, 50, size * 50, size * 50);
         board.drawNew(size);
-        pieces.setBounds(0, 50, size * 50, size * 50);
         message.setBounds(0, 25, size * 50, 25);
     }
 
@@ -56,6 +51,16 @@ public class WindowView extends Frame implements View{
     @Override
     public void printMessage(String message) {
         this.message.setText(message);
+    }
+
+    @Override
+    public String[] getMove() {
+        return board.getMove();
+    }
+
+    @Override
+    public void endMove() {
+        board.disableMove();
     }
     
 }

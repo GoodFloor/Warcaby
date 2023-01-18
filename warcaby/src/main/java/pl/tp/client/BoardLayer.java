@@ -1,20 +1,24 @@
 package pl.tp.client;
 
-import javax.swing.ImageIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import pl.tp.SquareStateEnum;
 
-public class BoardLayer extends JPanel {
+public class BoardLayer extends JPanel implements ActionListener {
     private int size;
-    ImageIcon white;
-    ImageIcon blackEmpty;
-    ImageIcon blackRed;
-    ImageIcon blackWhite;
-    ImageIcon blackRedQueen;
-    ImageIcon blackWhiteQueen;
+    private ImageIcon white;
+    private ImageIcon blackEmpty;
+    private ImageIcon blackRed;
+    private ImageIcon blackWhite;
+    private ImageIcon blackRedQueen;
+    private ImageIcon blackWhiteQueen;
+    private String[] movesBuffer;
+    private boolean isMyMove;
+    private int howManyMovesBuffered;
 
 
     public BoardLayer() {
@@ -25,11 +29,17 @@ public class BoardLayer extends JPanel {
         blackWhite = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackWhite.png");
         blackRedQueen = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackRedQueen.png");
         blackWhiteQueen = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackWhiteQueen.png");
+        movesBuffer = new String[2];
+        isMyMove = false;
+        howManyMovesBuffered = 0;
     }
 
     public void drawNew(int size) {
         this.removeAll();
         this.size = size;
+        movesBuffer = new String[2];
+        isMyMove = false;
+        howManyMovesBuffered = 0;
     }
     public void renderBoard(SquareStateEnum[][] board) {
         this.removeAll();
@@ -54,11 +64,43 @@ public class BoardLayer extends JPanel {
                 else {
                     texture = white;
                 }
-                Field field = new Field(j, i);
+                Field field = new Field(j, i, this);
                 field.setIcon(texture);
+                field.addActionListener(this);
                 this.add(field);
             }
         }
         this.repaint();
     }
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+        if(isMyMove && howManyMovesBuffered < 2) {
+            movesBuffer[howManyMovesBuffered] = arg0.getActionCommand();
+            howManyMovesBuffered++;
+        }
+    }
+    public String[] getMove() {
+        isMyMove = true;
+        while (true) {
+            if (howManyMovesBuffered == 2) {
+                howManyMovesBuffered = 0;
+                return movesBuffer;
+            }
+            else {
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
+    }
+    public void disableMove() {
+        isMyMove = false;
+    }
+    public int getBoardSize() {
+        return size;
+    }
+
 }

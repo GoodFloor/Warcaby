@@ -79,6 +79,7 @@ public class SocketView implements GameView{
                 outputPlayer2.println(SocketCommandsEnum.wait.toString());
                 outputPlayer1.println(SocketCommandsEnum.getMove.toString());
                 temp[0] = inputPlayer1.readLine();
+                System.out.println(temp[0]);
                 temp[1] = inputPlayer1.readLine();
             }
             else {

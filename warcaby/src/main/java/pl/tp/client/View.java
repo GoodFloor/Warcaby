@@ -7,4 +7,6 @@ public interface View {
     void newBoard(int size);
     void drawBoard(SquareStateEnum[][] pieces);
     void printMessage(String message);
+    String[] getMove();
+    void endMove();
 }
