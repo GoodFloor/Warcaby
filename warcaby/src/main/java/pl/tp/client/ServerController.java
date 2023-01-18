@@ -15,7 +15,7 @@ public class ServerController {
     public ServerController() {
         try {
             socket = new Socket("localhost", 4444);
-            output = new PrintWriter(socket.getOutputStream());
+            output = new PrintWriter(socket.getOutputStream(), true);
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,7 +37,6 @@ public class ServerController {
     public void movePiece(String sourceXY, String destinationXY) {
         output.println(sourceXY);
         output.println(destinationXY);
-        System.out.println("Wysłano");
     }
     public void endConnection() {
         output.println(SocketCommandsEnum.exit.toString());

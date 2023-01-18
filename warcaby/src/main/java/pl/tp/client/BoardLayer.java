@@ -19,10 +19,12 @@ public class BoardLayer extends JPanel implements ActionListener {
     private String[] movesBuffer;
     private boolean isMyMove;
     private int howManyMovesBuffered;
+    private WindowView parent;
 
 
-    public BoardLayer() {
+    public BoardLayer(WindowView parent) {
         size = 0;
+        this.parent = parent;
         white = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/white.png");
         blackEmpty = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackEmpty.png");
         blackRed = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackRed.png");
@@ -75,9 +77,19 @@ public class BoardLayer extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if(isMyMove && howManyMovesBuffered < 2) {
-            movesBuffer[howManyMovesBuffered] = arg0.getActionCommand();
-            howManyMovesBuffered++;
+            addToBuffer(arg0.getActionCommand());
         }
+    }
+    private void addToBuffer(String position) {
+        movesBuffer[howManyMovesBuffered] = position;
+        howManyMovesBuffered ++;
+        if (howManyMovesBuffered == 1) {
+            parent.printMessage(position + "->");
+        }
+        else if (howManyMovesBuffered == 2) {
+            parent.printMessage(movesBuffer[0] + "->" + position);
+        }
+        
     }
     public String[] getMove() {
         isMyMove = true;

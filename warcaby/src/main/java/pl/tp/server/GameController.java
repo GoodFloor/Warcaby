@@ -28,8 +28,8 @@ public abstract class GameController {
      * Konstruktor ustawiający parametry początkowe
      */
     public GameController() {
-        this.gameView = new TerminalView();
-        // this.gameView = new SocketView();
+        // this.gameView = new TerminalView();
+        this.gameView = new SocketView();
         isGameRunning = false;
     }
 

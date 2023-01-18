@@ -31,10 +31,10 @@ public class App {
                     gui.printMessage("Wykonaj ruch!");
                     String[] move = gui.getMove();
                     server.movePiece(move[0], move[1]);
-                    System.out.println(move[0] + ", " + move[1]);
                 }
                 else if(SocketCommandsEnum.wait.toString().equals(command)) {
                     gui.printMessage("Oczekiwanie na drugiego gracza");
+                    gui.endMove();
                 }
                 else {
                     System.out.println(command);

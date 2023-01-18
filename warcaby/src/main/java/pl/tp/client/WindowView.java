@@ -14,7 +14,7 @@ public class WindowView extends Frame implements View{
         setTitle("Warcaby");
         setLayout(null);
         setVisible(true);
-        board = new BoardLayer();
+        board = new BoardLayer(this);
         board.setBounds(0, 50, 200, 100);
         message = new Label("Oczekiwanie na serwer");
         message.setBounds(0, 25, 200, 25);

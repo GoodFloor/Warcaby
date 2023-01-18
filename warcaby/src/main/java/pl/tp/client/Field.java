@@ -7,9 +7,11 @@ public class Field extends JButton {
     public Field(int posX, int posY, BoardLayer parent) {
         this.parent = parent;
         this.setBounds(posX * 50, posY * 50, 50, 50);
-        char x = (char)(posX + 1 + 48);
-        char y = (char)(parent.getBoardSize() - posY - 1 + 65);
-        String position = y + "" + x;
+        int maxXY = parent.getBoardSize();
+
+        String y = Integer.toString(maxXY - posY);
+        char x = (char)(posX + 65);
+        String position = x + "" + y;
         this.setActionCommand(position);
     }
 }
