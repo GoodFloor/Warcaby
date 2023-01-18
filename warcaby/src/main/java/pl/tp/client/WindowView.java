@@ -11,6 +11,9 @@ import javax.swing.JButton;
 import pl.tp.SocketCommandsEnum;
 import pl.tp.SquareStateEnum;
 
+/**
+ * Klasa konkretna implementująca interfejs View oraz obsługująca widok związany z oknem awt 
+ */
 public class WindowView extends Frame implements View{
     private BoardLayer board;
     private Label message;
@@ -24,6 +27,9 @@ public class WindowView extends Frame implements View{
     private boolean drawResponse;
     private SquareStateEnum[][] lastKnownBoardState;
     private boolean exited;
+    /**
+     * Domyślny konstruktor ustawiający podstawowe parametry takie jak rozmiar i zawartość okna
+     */
     public WindowView() {
         exited = false;
         isMyMove = false;
@@ -141,6 +147,9 @@ public class WindowView extends Frame implements View{
             }
         }
     }
+    /**
+     * Obsługa wciśnięcia przycisku do proponowania remisu
+     */
     public void proposeDraw() {
         if (isMyMove) {
             movesBuffer[0] = SocketCommandsEnum.proposeDraw.toString();
@@ -148,12 +157,14 @@ public class WindowView extends Frame implements View{
             howManyMovesBuffered = 2;
         }
     }
+    @Override
     public void drawProposed() {
         acceptDrawBtn.setVisible(true);
         rejectDrawBtn.setVisible(true);
         board.setVisible(false);
         repaint();
     }
+    @Override
     public boolean getDrawResponse() {
         while (!isDrawResponseSet) {
             try {
@@ -171,22 +182,25 @@ public class WindowView extends Frame implements View{
         return drawResponse;
 
     }
+    @Override
     public void endGame(String message) {
         this.endMove();
         this.printMessage(message);
     }
+    /**
+     * Obsługa przycisku odrzucającego propozycję remisu
+     */
     private void rejectDraw() {
         drawResponse = false;
         isDrawResponseSet = true; 
         
     }
+    /**
+     * Obsługa przycisku akceptującego propozycję remisu
+     */
     private void acceptDraw() {
         drawResponse = true;
         isDrawResponseSet = true;        
-    }
-
-    @Override
-    public void endDrawDiscussion() {
     }
 
     @Override

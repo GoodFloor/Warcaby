@@ -8,11 +8,17 @@ import java.net.Socket;
 import pl.tp.SocketCommandsEnum;
 import pl.tp.SquareStateEnum;
 
-public class ServerController {
+/**
+ * Klasa obsługująca połączenie klienta z serwerem - View w modelu MVC
+ */
+public class ServerView {
     private Socket socket;
     private PrintWriter output;
     private BufferedReader input;
-    public ServerController() {
+    /**
+     * Konstruktor ustawiający podstawowe parametry połączenia z serwerem
+     */
+    public ServerView() {
         try {
             socket = new Socket("localhost", 4444);
             output = new PrintWriter(socket.getOutputStream(), true);
@@ -21,6 +27,12 @@ public class ServerController {
             e.printStackTrace();
         }
     }
+    /**
+     * Metoda odczytująca polecenie wysłane przez serwer
+     * @return Polecenie do wykonania
+     * @throws ServerDownException Wyjątek jeżeli serwer został zamknięty
+     * @throws Exception Wyjątek przy nieudanej próbie odczytu linii z bufora
+     */
     public String getLine() throws ServerDownException, Exception {
         try {
             String text = input.readLine();
@@ -34,10 +46,18 @@ public class ServerController {
             throw e;
         }
     }
+    /**
+     * Metoda wysyłająca serwerowi prośbę o przesunięcie pionka
+     * @param sourceXY Pozycja źródłowa zakodowana polami na planszy(np. A6)
+     * @param destinationXY Pozycja docelowa pionka
+     */
     public void movePiece(String sourceXY, String destinationXY) {
         output.println(sourceXY);
         output.println(destinationXY);
     }
+    /**
+     * Metoda zamykająca połączenie z serwerem
+     */
     public void endConnection() {
         output.println(SocketCommandsEnum.exit.toString());
         try {
@@ -48,6 +68,11 @@ public class ServerController {
             e.printStackTrace();
         }
     }
+    /**
+     * Metoda pomocnicza do odczytu obecnego stanu planszy - zamienia linię ordynałów na jednowymiarową tablicę enumów z zakodowanymi odpowiednimi stanami planszy
+     * @param line Linia zawierająca liczby porządkowe enumeracji odczytana z serwera
+     * @return Tablica enumów ze stanami poszczególnych pól w tym rzędzie
+     */
     private SquareStateEnum[] textToEnum(String line) {
         int size = line.length();
         SquareStateEnum[] result = new SquareStateEnum[size];
@@ -57,6 +82,11 @@ public class ServerController {
         }
         return result;
     }
+    /**
+     * Funkcja odczytująca stan planszy z serwera
+     * @return Tablica dwuwymiarowa z zakodowanymi polami na planszy i ich stanami
+     * @throws Exception Wyjątek zwracany w przypadku błędu odczytu linii
+     */
     public SquareStateEnum[][] getBoard() throws Exception {
         try {
             String line = this.getLine();
@@ -72,6 +102,10 @@ public class ServerController {
             throw e;
         }
     }
+    /**
+     * Funkcja zwracająca do serwera odpowiedź na zapytanie o uznanie remisu
+     * @param isAccepted Czy użytkownik zgodził się na remis
+     */
     public void sendDrawResponse(boolean isAccepted) {
         if (isAccepted) {
             output.println(SocketCommandsEnum.acceptDraw.toString());

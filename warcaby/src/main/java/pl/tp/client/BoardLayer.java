@@ -8,6 +8,10 @@ import javax.swing.JPanel;
 
 import pl.tp.SquareStateEnum;
 
+
+/**
+ * Klasa obsługująca wyświetlanie i obsługiwanie planszy
+ */
 public class BoardLayer extends JPanel implements ActionListener {
     private int size;
     private ImageIcon white;
@@ -19,21 +23,33 @@ public class BoardLayer extends JPanel implements ActionListener {
     private WindowView parent;
 
 
+    /**
+     * Konstruktor nowej warstwy wyświetlającej planszę
+     * @param parent Rodzic - WindowView któremu będziemy przekazywać który pionek został wybrany
+     */
     public BoardLayer(WindowView parent) {
         size = 0;
         this.parent = parent;
-        white = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/white.png");
-        blackEmpty = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackEmpty.png");
-        blackRed = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackRed.png");
-        blackWhite = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackWhite.png");
-        blackRedQueen = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackRedQueen.png");
-        blackWhiteQueen = new ImageIcon("/home/goodfloor/Obrazy/Warcaby/blackWhiteQueen.png");
+        white = new ImageIcon(getClass().getResource("textures/white.png"));
+        blackEmpty = new ImageIcon(getClass().getResource("textures/blackEmpty.png"));
+        blackRed = new ImageIcon(getClass().getResource("textures/blackRed.png"));
+        blackWhite = new ImageIcon(getClass().getResource("textures/blackWhite.png"));
+        blackRedQueen = new ImageIcon(getClass().getResource("textures/blackRedQueen.png"));
+        blackWhiteQueen = new ImageIcon(getClass().getResource("textures/blackWhiteQueen.png"));
     }
 
+    /**
+     * Metoda usuwająca całą zawartość planszy i zapisująca nowy rozmiar planszy
+     * @param size Ilość pól na jednym boku planszy
+     */
     public void drawNew(int size) {
         this.removeAll();
         this.size = size;
     }
+    /**
+     * Metoda renderująca planszę na podstawie argumentu
+     * @param board Tablica ze statusem każdego pola na planszy
+     */
     public void renderBoard(SquareStateEnum[][] board) {
         this.removeAll();
         for (int i = 0; i < size; i++) {
@@ -69,6 +85,10 @@ public class BoardLayer extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         parent.addToBuffer(arg0.getActionCommand());
     }
+    /**
+     * Funkcja zwracająca obecnie przechowywany rozmiar planszy
+     * @return Ilość pól na jednym boku planszy
+     */
     public int getBoardSize() {
         return size;
     }
