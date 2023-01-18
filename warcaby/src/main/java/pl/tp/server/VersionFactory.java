@@ -7,13 +7,13 @@ public class VersionFactory implements VersionFactoryInterface {
     @Override
     public GameController getGame(int versionNr) {
         switch (versionNr) {
-            case 1:
+            case 0:
                 return new ClassicGameController();
-            case 2:
+            case 1:
                 return new EnglishGameController();
-            case 3:
+            case 2:
                 return new RussianGameController();
-            case 4:
+            case 3:
                 return new PolishGameController();
             default:
                 return null;

@@ -11,19 +11,19 @@ public class App {
      * @param args tablica argumentów przekazywanych do aplikacji
      */
     public static void main(String[] args) {
-        // if (args.length != 1) {
-        // System.out.println("Podaj wersję warcabów do uruchomienia!");
-        // return;
-        // }
-        // try {
-        // int version = Integer.parseInt(args[0]);
-        // VersionFactoryInterface factory = new VersionFactory();
-        // GameController game = factory.getGame(version);
+        if (args.length != 1) {
+            System.out.println("Podaj wersję warcabów do uruchomienia!");
+            return;
+        }
+        try {
+            int version = Integer.parseInt(args[0]);
+            VersionFactoryInterface factory = new VersionFactory();
+            GameController game = factory.getGame(version);
 
-        // game.run();
-        // } catch (Exception e) {
-        // System.out.println("Niepoprawna wersja");
-        // }
+            game.run();
+        } catch (Exception e) {
+            System.out.println("Niepoprawna wersja");
+        }
 
         VersionFactoryInterface factory = new VersionFactory();
         GameController game = factory.getGame(3);
