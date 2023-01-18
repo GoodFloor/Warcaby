@@ -79,7 +79,7 @@ public class SocketView implements GameView{
     }
 
     @Override
-    public String[] getMove(boolean fromPlayer1) {
+    public String[] getMove(boolean fromPlayer1) throws ClientDisconnectedException {
         String[] temp = new String[2];
         try {
             if(fromPlayer1) {
@@ -93,6 +93,9 @@ public class SocketView implements GameView{
                 outputPlayer2.println(SocketCommandsEnum.getMove.toString());
                 temp[0] = inputPlayer2.readLine();
                 temp[1] = inputPlayer2.readLine();
+            }
+            if (temp[0] == null || SocketCommandsEnum.exit.toString().equals(temp[0])) {
+                throw new ClientDisconnectedException();
             }
         } catch (Exception e) {
             System.out.println("Błąd odczytu danych od klienta");
@@ -156,12 +159,10 @@ public class SocketView implements GameView{
                 destinationIn = inputPlayer1;
             }
             sourceOut.println(SocketCommandsEnum.wait.toString());
+            destinationOut.println("Zaproponowano remis zaakceptować?");
             destinationOut.println(SocketCommandsEnum.proposeDraw.toString());
             String result = destinationIn.readLine();
             sourceOut.println(result);
-            sourceOut.close();
-            destinationIn.close();
-            destinationOut.close();
             return SocketCommandsEnum.acceptDraw.toString().equals(result);
         } catch (Exception e) {
             e.printStackTrace();

@@ -30,8 +30,8 @@ public abstract class GameController {
      * Konstruktor ustawiający parametry początkowe
      */
     public GameController() {
-        this.gameView = new TerminalView();
-        // this.gameView = new SocketView();
+        // this.gameView = new TerminalView();
+        this.gameView = new SocketView();
         isGameRunning = false;
     }
 
@@ -47,43 +47,55 @@ public abstract class GameController {
         gameView.start();
         boolean firstTry = true;
 
-        while (isGameRunning) {
-            gameView.printBoard(boardController.translateBoard());
-            if (firstTry && isWhiteTurn) {
-                gameView.printMessage("Ruch białych", -1);
-                gameView.printMessage("Twój ruch", 1);
-                gameView.printMessage("Czekanie na przeciwnika", 2);
-            } else if (firstTry) {
-                gameView.printMessage("Ruch czarnych", -1);
-                gameView.printMessage("Twój ruch", 2);
-                gameView.printMessage("Czekanie na przeciwnika", 1);
-            }
-            firstTry = false;
-            String move[] = gameView.getMove(isWhiteTurn);
-            while (SocketCommandsEnum.proposeDraw.toString().equals(move[0])) {
-                if(gameView.discussDraw(isWhiteTurn)) {
+        try {
+            while (isGameRunning) {
+                gameView.printBoard(boardController.translateBoard());
+                if (firstTry && isWhiteTurn) {
+                    gameView.printMessage("Ruch białych", -1);
+                    gameView.printMessage("Twój ruch", 1);
+                    gameView.printMessage("Czekanie na przeciwnika", 2);
+                } else if (firstTry) {
+                    gameView.printMessage("Ruch czarnych", -1);
+                    gameView.printMessage("Twój ruch", 2);
+                    gameView.printMessage("Czekanie na przeciwnika", 1);
+                }
+                firstTry = false;
+                String move[] = gameView.getMove(isWhiteTurn);
+                while (SocketCommandsEnum.proposeDraw.toString().equals(move[0])) {
+                    if(gameView.discussDraw(isWhiteTurn)) {
+                        isGameRunning = false;
+                        break;
+                    }
+                    move = gameView.getMove(isWhiteTurn);
+                }
+                if (!isGameRunning) {
                     break;
                 }
-                move = gameView.getMove(isWhiteTurn);
-            }
-            try {
-                boardController.movePiece(move[0], move[1]);
-            } catch (IncorrectPositionException e) {
-                if (isWhiteTurn) {
-                    gameView.printMessage("Błędny ruch - spróbuj ponownie", 1);
-                } else {
-                    gameView.printMessage("Błędny ruch - spróbuj ponownie", 2);
+                try {
+                    boardController.movePiece(move[0], move[1]);
+                } catch (IncorrectPositionException e) {
+                    if (isWhiteTurn) {
+                        gameView.printMessage("Błędny ruch - spróbuj ponownie", 1);
+                    } else {
+                        gameView.printMessage("Błędny ruch - spróbuj ponownie", 2);
+                    }
+                    continue;
                 }
-                continue;
+                if (boardController.isGameOver() != null) {
+                    gameView.printMessage(boardController.isGameOver(), 0);
+                    break;
+                } else if (boardController.isTurnOver()) {
+                    firstTry = true;
+                    isWhiteTurn = !isWhiteTurn;
+                    boardController.startNextTurn();
+                }
             }
-            if (boardController.isGameOver() != null) {
-                break;
-            } else if (boardController.isTurnOver()) {
-                firstTry = true;
-                isWhiteTurn = !isWhiteTurn;
-                boardController.startNextTurn();
-            }
+        } catch (ClientDisconnectedException disconnected) {
+            gameView.printMessage(SocketCommandsEnum.exit.toString(), 0);
+        } catch (Exception e) {
+            // TODO: handle exception
         }
+        
 
         gameView.end();
     }

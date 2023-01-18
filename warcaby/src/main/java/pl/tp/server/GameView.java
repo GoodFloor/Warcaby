@@ -35,7 +35,7 @@ public interface GameView {
      * 
      * @return tablica zawierająca pozycję początkową i docelową pionka
      */
-    String[] getMove(boolean fromPlayer1);
+    String[] getMove(boolean fromPlayer1) throws ClientDisconnectedException;
 
     /**
      * Rozpoczęcie gry u użytkownika

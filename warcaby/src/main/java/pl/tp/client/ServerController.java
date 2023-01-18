@@ -74,9 +74,9 @@ public class ServerController {
     }
     public void sendDrawResponse(boolean isAccepted) {
         if (isAccepted) {
-            output.println(SocketCommandsEnum.acceptDraw);
+            output.println(SocketCommandsEnum.acceptDraw.toString());
         } else {
-            output.println(SocketCommandsEnum.rejectDraw);            
+            output.println(SocketCommandsEnum.rejectDraw.toString());            
         }
     }
 

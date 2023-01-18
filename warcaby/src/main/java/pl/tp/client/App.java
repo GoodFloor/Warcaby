@@ -51,6 +51,9 @@ public class App {
                         e.printStackTrace();
                     }
                 }
+                else if(SocketCommandsEnum.exit.toString().equals(command)) {
+                    gui.close();
+                }
                 else {
                     System.out.println(command);
                     gui.printMessage(command);
@@ -61,6 +64,11 @@ public class App {
         }
         server.endConnection();
         System.out.println("Zakończono połączenie");
+        try {
+            Thread.sleep(10000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         gui.close();
     }
 }
