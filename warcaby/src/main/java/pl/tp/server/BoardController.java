@@ -40,11 +40,26 @@ public abstract class BoardController {
     protected abstract boolean canBecomeQueen();
 
     /**
+     * Fonkcja rekurencyjna sprawdzająca najlepsze możliwe bicie
+     * 
+     * @param boardState tablica przechowująca pionki na planszy
+     * @param posX       pozycja X pionka którego możliwość bić badamy
+     * @param posY       pozycja Y pionka którego możliwość bić badamy
+     * @param size       długość bicia
+     * 
+     * @return Zwraca najdłuższe bicie.
+     */
+    protected int calculateBestMandatory(AbstractPiece[][] boardState, int posX, int posY, int size) {
+        return 1;
+    }
+
+    /**
      * Konstruktor ustawiający początkowe parametry i resetujący planszę
      */
     public BoardController() {
         board = new Board();
         board.setTurnOver(false);
+        board.setBestMoveLength(0);
         resetBoard();
     }
 
@@ -164,9 +179,33 @@ public abstract class BoardController {
                     enemyY = possibleEnemyY;
                 }
             }
-            if (enemiesCount == 0 && isPieceInMandatory) {
+            if ((enemiesCount == 0 && isPieceInMandatory)) {
                 System.out.println("Wybrany ruch nie wykorzystuje bicia");
                 throw new IncorrectPositionException();
+            } else if (isPieceInMandatory) {
+                AbstractPiece deleted = tempBoard[enemyY][enemyX];
+                tempBoard[enemyY][enemyX] = null;
+                tempBoard[posY2][posX2] = tempBoard[posY1][posX1];
+                tempBoard[posY1][posX1] = null;
+
+                if (calculateBestMandatory(tempBoard, posY2, posX2, 0) < board.getBestMoveLength() - 1) {
+                    tempBoard[posY1][posX1] = tempBoard[posY2][posX2];
+                    tempBoard[posY2][posX2] = null;
+                    tempBoard[enemyY][enemyX] = deleted;
+                    System.out.println("Wybrany ruch nie wykorzystuje najlepszego bicia");
+                    throw new IncorrectPositionException();
+                }
+                tempBoard[posY1][posX1] = tempBoard[posY2][posX2];
+                tempBoard[posY2][posX2] = null;
+
+                if (tempBoard[posY1][posX1].getColor() == PieceColorEnum.White) {
+                    board.setNoRedRemaining(board.getNoRedRemaining() - 1);
+                } else {
+                    board.setNoWhiteRemaining(board.getNoWhiteRemaining() - 1);
+                }
+
+                board.setBestMoveLength(board.getBestMoveLength() - 1);
+
             } else if (enemiesCount == 1) {
                 if (tempBoard[enemyY][enemyX].getColor() == PieceColorEnum.Red) {
                     board.setNoRedRemaining(board.getNoRedRemaining() - 1);
@@ -197,6 +236,7 @@ public abstract class BoardController {
                     System.out.println("Poruszaj się nadal pionkiem (" + posY2 + "; " + posX2 + ")");
 
                     board.setMandatoryUsePieces(temp);
+                    // calculateBestMandatory(tempBoard, posY2, posX2, 1);
                     board.setTurnOver(false);
                 }
             }

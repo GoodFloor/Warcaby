@@ -69,6 +69,8 @@ public class PolishBoardController extends BoardController {
         board.setNoWhiteRemaining(20);
         board.setNoRedRemaining(20);
         board.setWhiteTurn(true);
+
+        board.setBestMoveLength(0);
     }
 
     @Override
@@ -122,8 +124,10 @@ public class PolishBoardController extends BoardController {
         return false;
     }
 
-    private void calculateBestMandatory(AbstractPiece[][] boardState, int posX, int posY, int size) {
+    @Override
+    protected int calculateBestMandatory(AbstractPiece[][] boardState, int posX, int posY, int size) {
         System.out.println(size + ". " + posX + " " + posY);
+        int maxSize = size;
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -166,54 +170,35 @@ public class PolishBoardController extends BoardController {
                             enemyX = possibleEnemyX;
                             enemyY = possibleEnemyY;
                         }
-                        // if (boardState[possibleEnemyY][possibleEnemyX] != null
-                        // && boardState[possibleEnemyY][possibleEnemyX].getColor() != boardState[j][i]
-                        // .getColor()) {
-
-                        // }
                     }
                     if (enemiesCount == 0 || enemiesCount > 1) {
-                        System.out.println("Enemies count: " + enemiesCount);
+                        // System.out.println("Enemies count: " + enemiesCount);
                         continue;
                     } else if (enemiesCount == 1) {
-                        System.out.println("Enemies count: " + enemiesCount);
-                        AbstractPiece[][] tempBoard = boardState.clone();
+                        // System.out.println("Enemies count: " + enemiesCount);
 
                         AbstractPiece deleted = boardState[enemyY][enemyX];
                         boardState[enemyY][enemyX] = null;
                         boardState[j][i] = boardState[posX][posY];
                         boardState[posX][posY] = null;
 
-                        calculateBestMandatory(boardState, j, i, size + 1);
+                        int innerSize = calculateBestMandatory(boardState, j, i, size + 1);
 
+                        if (innerSize > maxSize) {
+                            maxSize = innerSize;
+                        }
                         boardState[posX][posY] = boardState[j][i];
                         boardState[j][i] = null;
                         boardState[enemyY][enemyX] = deleted;
-                        // } else if ((enemiesCount == 0 && boardState[posY][posX].getStateName() ==
-                        // PieceStateEnum.Pawn
-                        // && neededEnemyPosition.length > 0)
-                        // || enemiesCount > 1) {
-                        // return;
+
                     }
-                    // Przesuwamy pionek
-
-                    // int enemiesCount = analyseMove(boardState, posX, posY, i, j);
-
-                    // if (enemiesCount == 1) {
-                    // AbstractPiece[][] tempBoard = boardState;
-                    // tempBoard[j][i] = tempBoard[posY][posX];
-                    // tempBoard[posY][posX] = null;
-                    // calculateBestMandatory(tempBoard, i, j, size);
-                    // }
                 } catch (IncorrectPositionException e) {
                     continue;
-                    // } catch (NullPointerException e) {
-                    // continue;
                 }
             }
         }
-        System.out.println("ZAKOŃCZONO");
-        return;
+        // System.out.println("ZAKOŃCZONO");
+        return maxSize;
 
     }
 
@@ -232,12 +217,43 @@ public class PolishBoardController extends BoardController {
             }
         }
 
-        for (int[] piece : board.getMandatoryUsePieces()) {
+        int maxSize = 0;
+        int[] sizes = new int[board.getMandatoryUsePieces().length];
+        for (int i = 0; i < board.getMandatoryUsePieces().length; i++) {
+            int[] piece = board.getMandatoryUsePieces()[i];
+
             int posX = piece[0];
             int posY = piece[1];
-            // System.out.println(tempBoard);
-            calculateBestMandatory(tempBoard, posX, posY, 1);
+            int s = calculateBestMandatory(tempBoard, posX, posY, 0);
+
+            if (maxSize < s) {
+                maxSize = s;
+            }
+            sizes[i] = s;
         }
+
+        board.setBestMoveLength(maxSize);
+
+        // int count = 0;
+        // for (int i = 0; i < sizes.length; i++) {
+        // if (sizes[i] == maxSize) {
+        // count++;
+        // }
+        // }
+
+        // int[][] temp = new int[count][2];
+        // int j = 0;
+        // for (int i = 0; i < board.getMandatoryUsePieces().length; i++) {
+        // if (sizes[i] == maxSize) {
+        // temp[j][0] = board.getMandatoryUsePieces()[i][0];
+        // temp[j][1] = board.getMandatoryUsePieces()[i][1];
+        // j++;
+        // }
+        // }
+
+        // board.setMandatoryUsePieces(temp);
+
+        System.out.println(maxSize);
 
     }
 

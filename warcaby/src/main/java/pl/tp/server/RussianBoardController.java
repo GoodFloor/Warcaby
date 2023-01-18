@@ -124,6 +124,7 @@ public class RussianBoardController extends BoardController {
             }
         }
         return false;
+
     }
 
     @Override

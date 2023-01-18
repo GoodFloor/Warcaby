@@ -14,6 +14,25 @@ public class Board {
     private boolean isTurnOver;
     private boolean whiteTurn;
     private int[][] mandatoryUsePieces;
+    private int bestMoveLength;
+
+    /**
+     * Pobieranie informacji o długości najlepszego ruchu
+     * 
+     * @return Zwraca długość najlepszego ruchu
+     */
+    public int getBestMoveLength() {
+        return bestMoveLength;
+    }
+
+    /**
+     * Ustawianie długości najlepszego ruchu
+     * 
+     * @param bestMoveLength długość najlepszego ruchu
+     */
+    public void setBestMoveLength(int bestMoveLength) {
+        this.bestMoveLength = bestMoveLength;
+    }
 
     /**
      * Pobieranie informacji o szerokości planszy
