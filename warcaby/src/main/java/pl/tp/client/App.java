@@ -64,6 +64,7 @@ public class App {
         }
         server.endConnection();
         System.out.println("Zakończono połączenie");
+        gui.printMessage("Utracono połączenie z serwerem");
         try {
             Thread.sleep(10000);
         } catch (Exception e) {

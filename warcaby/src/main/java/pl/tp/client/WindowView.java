@@ -180,7 +180,5 @@ public class WindowView extends Frame implements View{
 
     @Override
     public void endDrawDiscussion() {
-        remove(acceptDrawBtn);
-        remove(rejectDrawBtn);
     }
 }
