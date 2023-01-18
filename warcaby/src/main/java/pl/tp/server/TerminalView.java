@@ -90,4 +90,10 @@ public class TerminalView implements GameView {
         System.out.println(e);
     }
 
+    @Override
+    public boolean discussDraw(boolean fromPlayer1) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

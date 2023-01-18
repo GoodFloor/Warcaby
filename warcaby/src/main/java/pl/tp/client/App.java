@@ -28,13 +28,31 @@ public class App {
                     gui.drawBoard(server.getBoard());
                 }
                 else if(SocketCommandsEnum.getMove.toString().equals(command)) {
-                    //gui.printMessage("Wykonaj ruch!");
                     String[] move = gui.getMove();
                     server.movePiece(move[0], move[1]);
                 }
                 else if(SocketCommandsEnum.wait.toString().equals(command)) {
-                    //gui.printMessage("Oczekiwanie na drugiego gracza");
                     gui.endMove();
+                }
+                else if(SocketCommandsEnum.proposeDraw.toString().equals(command)) {
+                    System.out.println("Draw proposed!");
+                    gui.drawProposed();
+                    server.sendDrawResponse(gui.getDrawResponse());
+                }
+                else if(SocketCommandsEnum.acceptDraw.toString().equals(command)) {
+                    gui.endGame("Remis");
+                }
+                else if(SocketCommandsEnum.rejectDraw.toString().equals(command)) {
+                    gui.printMessage("Odrzucono propozycję remisu");
+                    gui.endDrawDiscussion();
+                    try {
+                        Thread.sleep(2000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if(SocketCommandsEnum.exit.toString().equals(command)) {
+                    gui.close();
                 }
                 else {
                     System.out.println(command);
@@ -46,6 +64,12 @@ public class App {
         }
         server.endConnection();
         System.out.println("Zakończono połączenie");
+        gui.printMessage("Utracono połączenie z serwerem");
+        try {
+            Thread.sleep(10000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         gui.close();
     }
 }

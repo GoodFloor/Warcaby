@@ -329,9 +329,9 @@ public abstract class BoardController {
      */
     public String isGameOver() {
         if (board.getNoWhiteRemaining() == 0) {
-            return "White win!";
-        } else if (board.getNoRedRemaining() == 0) {
             return "Red win!";
+        } else if (board.getNoRedRemaining() == 0) {
+            return "White win!";
         } else {
             return null;
         }
