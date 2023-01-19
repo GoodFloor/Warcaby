@@ -30,8 +30,8 @@ public abstract class GameController {
      * Konstruktor ustawiający parametry początkowe
      */
     public GameController() {
-        this.gameView = new TerminalView();
-        // this.gameView = new SocketView();
+        // this.gameView = new TerminalView();
+        this.gameView = new SocketView();
         isGameRunning = false;
     }
 
@@ -61,6 +61,7 @@ public abstract class GameController {
                 }
                 firstTry = false;
                 String move[] = new String[2];
+
                 move = gameView.getMove(isWhiteTurn);
                 while (SocketCommandsEnum.proposeDraw.toString().equals(move[0])) {
                     if (gameView.discussDraw(isWhiteTurn)) {
@@ -73,7 +74,7 @@ public abstract class GameController {
                     System.out.println("STOP");
                     gameView.printMessage(SocketCommandsEnum.exit.toString(), 0);
                     isGameRunning = false;
-                }  
+                }
                 if (!isGameRunning) {
                     break;
                 }

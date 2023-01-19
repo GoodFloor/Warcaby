@@ -6,12 +6,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import pl.tp.server.EnglishBoardController;
 import pl.tp.server.IncorrectPositionException;
+import pl.tp.server.RussianBoardController;
 
-public class EnglishVersionTest {
+public class RussianVersionTest {
 
     @Test
-    public void checkEnglishBoardStartTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+    public void checkRussianBoardStartTest() {
+        RussianBoardController boardC = new RussianBoardController();
 
         SquareStateEnum[][] board = boardC.translateBoard();
 
@@ -25,7 +26,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveWhiteOkTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        RussianBoardController boardC = new RussianBoardController();
 
         try {
             boardC.movePiece("A3", "B4");
@@ -40,19 +41,8 @@ public class EnglishVersionTest {
     }
 
     @Test
-    public void wrongInputTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
-
-        try {
-            boardC.movePiece("hej", "B4");
-        } catch (Exception e) {
-            assertTrue(e != null);
-        }
-    }
-
-    @Test
     public void moveWhiteToWhiteTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        RussianBoardController boardC = new RussianBoardController();
 
         try {
             boardC.movePiece("A3", "B3");
@@ -63,7 +53,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveWhiteToOccupiedTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        RussianBoardController boardC = new RussianBoardController();
 
         try {
             boardC.movePiece("A0", "B1");
@@ -74,7 +64,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveRedWhenWhiteTurnTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        RussianBoardController boardC = new RussianBoardController();
 
         try {
             boardC.movePiece("B6", "C5");
@@ -85,7 +75,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveObligatoryOkTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        RussianBoardController boardC = new RussianBoardController();
 
         try {
             boardC.movePiece("C3", "D4");
@@ -105,7 +95,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveWrongWayObligatoryTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        RussianBoardController boardC = new RussianBoardController();
 
         try {
             boardC.movePiece("C3", "D4");
@@ -131,7 +121,7 @@ public class EnglishVersionTest {
 
     @Test
     public void makeQueenTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        RussianBoardController boardC = new RussianBoardController();
 
         try {
             boardC.movePiece("A3", "B4");
@@ -158,7 +148,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveQueenOkTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        RussianBoardController boardC = new RussianBoardController();
 
         try {
             boardC.movePiece("A3", "B4");
@@ -190,7 +180,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveQueenNotOkTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        RussianBoardController boardC = new RussianBoardController();
 
         try {
             boardC.movePiece("A3", "B4");
@@ -214,5 +204,104 @@ public class EnglishVersionTest {
             assertTrue(e != null);
         }
     }
+
+    @Test
+    public void moveMultipleQueenTest() {
+        RussianBoardController boardC = new RussianBoardController();
+
+        try {
+            boardC.movePiece("A3", "B4");
+            boardC.movePiece("D6", "E5");
+            boardC.movePiece("B4", "A5");
+            boardC.movePiece("C7", "D6");
+            boardC.movePiece("A5", "C7");
+            boardC.movePiece("D8", "B6");
+            boardC.movePiece("C3", "B4");
+            boardC.movePiece("H6", "G5");
+            boardC.movePiece("B4", "A5");
+            boardC.movePiece("G5", "H4");
+            boardC.movePiece("A5", "C7");
+            boardC.movePiece("F6", "G5");
+            boardC.movePiece("C7", "D8");
+            boardC.movePiece("A7", "B6");
+            boardC.movePiece("D8", "F6");
+            boardC.movePiece("F6", "C3");
+
+        } catch (IncorrectPositionException e) {
+            assertTrue(e != null);
+        }
+    }
+
+    // @Test
+    // public void moveAboveTwoQueenTest() {
+    // RussianBoardController boardC = new RussianBoardController();
+
+    // try {
+    // boardC.movePiece("A3", "B4");
+    // boardC.movePiece("D6", "E5");
+    // boardC.movePiece("B4", "A5");
+    // boardC.movePiece("C7", "D6");
+    // boardC.movePiece("A5", "C7");
+    // boardC.movePiece("D8", "B6");
+    // boardC.movePiece("C3", "B4");
+    // boardC.movePiece("H6", "G5");
+    // boardC.movePiece("B4", "A5");
+    // boardC.movePiece("G5", "H4");
+    // boardC.movePiece("A5", "C7");
+    // boardC.movePiece("F6", "G5");
+    // boardC.movePiece("C7", "D8");
+    // boardC.movePiece("A7", "B6");
+    // boardC.movePiece("D8", "F6");
+    // boardC.movePiece("F6", "C3");
+    // boardC.movePiece("B6", "C5");
+    // boardC.movePiece("B3", "A2");
+    // boardC.movePiece("G7", "H6");
+    // boardC.movePiece("C3", "B4");
+    // boardC.movePiece("F8", "G7");
+    // // boardC.movePiece("C7", "A5");
+    // // boardC.movePiece("B4", "E7");
+
+    // // boardC.movePiece("F6", "C3");
+    // // boardC.movePiece("F6", "C3");
+    // // boardC.movePiece("B6", "C");
+
+    // } catch (IncorrectPositionException e) {
+    // assertTrue(e == null);
+    // }
+    // }
+
+    // @Test
+    // public void moveOkQueenTest() {
+    // RussianBoardController boardC = new RussianBoardController();
+
+    // try {
+    // boardC.movePiece("A3", "B4");
+    // boardC.movePiece("D6", "E5");
+    // boardC.movePiece("B4", "A5");
+    // boardC.movePiece("C7", "D6");
+    // boardC.movePiece("A5", "C7");
+    // boardC.movePiece("D8", "B6");
+    // boardC.movePiece("C3", "B4");
+    // boardC.movePiece("H6", "G5");
+    // boardC.movePiece("B4", "A5");
+    // boardC.movePiece("G5", "H4");
+    // boardC.movePiece("A5", "C7");
+    // boardC.movePiece("F6", "G5");
+    // boardC.movePiece("C7", "D8");
+    // boardC.movePiece("A7", "B6");
+    // boardC.movePiece("D8", "F6");
+    // boardC.movePiece("F6", "C3");
+    // boardC.movePiece("B6", "C5");
+    // boardC.movePiece("C3", "A6");
+    // boardC.movePiece("G7", "H6");
+    // boardC.movePiece("A5", "C7");
+    // boardC.movePiece("C5", "B6");
+    // boardC.movePiece("C7", "A5");
+    // // assertTrue(true);
+
+    // } catch (IncorrectPositionException e) {
+    // assertEquals(e, null);
+    // }
+    // }
 
 }

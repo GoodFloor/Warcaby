@@ -4,55 +4,43 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import pl.tp.server.EnglishBoardController;
 import pl.tp.server.IncorrectPositionException;
+import pl.tp.server.PolishBoardController;
 
-public class EnglishVersionTest {
+public class PolishVersionTest {
 
     @Test
-    public void checkEnglishBoardStartTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+    public void checkPolishBoardStartTest() {
+        PolishBoardController boardC = new PolishBoardController();
 
         SquareStateEnum[][] board = boardC.translateBoard();
 
-        assertEquals(board.length, 8);
+        assertEquals(board.length, 10);
         assertEquals(board[0][0], SquareStateEnum.White);
         assertEquals(board[0][1], SquareStateEnum.BlackRed);
         assertEquals(board[1][0], SquareStateEnum.BlackRed);
         assertEquals(board[1][1], SquareStateEnum.White);
-        assertEquals(board[7][0], SquareStateEnum.BlackWhite);
+        assertEquals(board[9][0], SquareStateEnum.BlackWhite);
     }
 
     @Test
     public void moveWhiteOkTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
-            boardC.movePiece("A3", "B4");
+            boardC.movePiece("B4", "A5");
         } catch (Exception e) {
         }
 
         SquareStateEnum[][] board = boardC.translateBoard();
 
-        assertEquals(board.length, 8);
-        assertEquals(board[5][0], SquareStateEnum.BlackEmpty);
-        assertEquals(board[4][1], SquareStateEnum.BlackWhite);
-    }
-
-    @Test
-    public void wrongInputTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
-
-        try {
-            boardC.movePiece("hej", "B4");
-        } catch (Exception e) {
-            assertTrue(e != null);
-        }
+        assertEquals(board[6][1], SquareStateEnum.BlackEmpty);
+        assertEquals(board[5][0], SquareStateEnum.BlackWhite);
     }
 
     @Test
     public void moveWhiteToWhiteTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
             boardC.movePiece("A3", "B3");
@@ -63,7 +51,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveWhiteToOccupiedTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
             boardC.movePiece("A0", "B1");
@@ -74,10 +62,10 @@ public class EnglishVersionTest {
 
     @Test
     public void moveRedWhenWhiteTurnTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
-            boardC.movePiece("B6", "C5");
+            boardC.movePiece("C5", "B4");
         } catch (IncorrectPositionException e) {
             assertTrue(e != null);
         }
@@ -85,7 +73,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveObligatoryOkTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
             boardC.movePiece("C3", "D4");
@@ -105,7 +93,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveWrongWayObligatoryTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
             boardC.movePiece("C3", "D4");
@@ -118,7 +106,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveDespiteObligatoryTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
             boardC.movePiece("C3", "D4");
@@ -131,7 +119,7 @@ public class EnglishVersionTest {
 
     @Test
     public void makeQueenTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
             boardC.movePiece("A3", "B4");
@@ -158,7 +146,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveQueenOkTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
             boardC.movePiece("A3", "B4");
@@ -190,7 +178,7 @@ public class EnglishVersionTest {
 
     @Test
     public void moveQueenNotOkTest() {
-        EnglishBoardController boardC = new EnglishBoardController();
+        PolishBoardController boardC = new PolishBoardController();
 
         try {
             boardC.movePiece("A3", "B4");
@@ -214,5 +202,4 @@ public class EnglishVersionTest {
             assertTrue(e != null);
         }
     }
-
 }

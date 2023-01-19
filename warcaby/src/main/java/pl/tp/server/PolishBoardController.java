@@ -18,49 +18,49 @@ public class PolishBoardController extends BoardController {
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                // if ((i + j) % 2 == 1) {
+                if ((i + j) % 2 == 1) {
+                    temp[i][j] = null;
+                } else if (i < 4) {
+                    temp[i][j] = new PolishPiece();
+                    temp[i][j].setColor(PieceColorEnum.White);
+                } else if (i > 5) {
+                    temp[i][j] = new PolishPiece();
+                    temp[i][j].setColor(PieceColorEnum.Red);
+                } else {
+                    temp[i][j] = null;
+                }
                 // temp[i][j] = null;
-                // } else if (i < 4) {
-                // temp[i][j] = new PolishPiece();
-                // temp[i][j].setColor(PieceColorEnum.White);
-                // } else if (i > 5) {
-                // temp[i][j] = new PolishPiece();
-                // temp[i][j].setColor(PieceColorEnum.Red);
-                // } else {
-                // temp[i][j] = null;
-                // }
-                temp[i][j] = null;
             }
         }
-        temp[0][0] = new PolishPiece();
-        temp[0][0].setColor(PieceColorEnum.White);
-        temp[0][4] = new PolishPiece();
-        temp[0][4].setColor(PieceColorEnum.White);
-        temp[1][1] = new PolishPiece();
-        temp[1][1].setColor(PieceColorEnum.White);
-        temp[1][3] = new PolishPiece();
-        temp[1][3].setColor(PieceColorEnum.White);
-        temp[8][0] = new PolishPiece();
-        temp[8][0].setColor(PieceColorEnum.White);
-        temp[3][3] = new PolishPiece();
-        temp[3][3].setColor(PieceColorEnum.White);
+        // temp[0][0] = new PolishPiece();
+        // temp[0][0].setColor(PieceColorEnum.White);
+        // temp[0][4] = new PolishPiece();
+        // temp[0][4].setColor(PieceColorEnum.White);
+        // temp[1][1] = new PolishPiece();
+        // temp[1][1].setColor(PieceColorEnum.White);
+        // temp[1][3] = new PolishPiece();
+        // temp[1][3].setColor(PieceColorEnum.White);
+        // temp[8][0] = new PolishPiece();
+        // temp[8][0].setColor(PieceColorEnum.White);
+        // temp[3][3] = new PolishPiece();
+        // temp[3][3].setColor(PieceColorEnum.White);
 
-        temp[7][7] = new PolishPiece();
-        temp[7][7].setColor(PieceColorEnum.Red);
-        temp[7][5] = new PolishPiece();
-        temp[7][5].setColor(PieceColorEnum.Red);
-        temp[7][3] = new PolishPiece();
-        temp[7][3].setColor(PieceColorEnum.Red);
-        temp[6][2] = new PolishPiece();
-        temp[6][2].setColor(PieceColorEnum.Red);
-        temp[6][4] = new PolishPiece();
-        temp[6][4].setColor(PieceColorEnum.Red);
-        temp[3][7] = new PolishPiece();
-        temp[3][7].setColor(PieceColorEnum.Red);
-        // temp[4][2] = new PolishPiece();
-        // temp[4][2].setColor(PieceColorEnum.Red);
-        temp[2][4] = new PolishPiece();
-        temp[2][4].setColor(PieceColorEnum.Red);
+        // temp[7][7] = new PolishPiece();
+        // temp[7][7].setColor(PieceColorEnum.Red);
+        // temp[7][5] = new PolishPiece();
+        // temp[7][5].setColor(PieceColorEnum.Red);
+        // temp[7][3] = new PolishPiece();
+        // temp[7][3].setColor(PieceColorEnum.Red);
+        // temp[6][2] = new PolishPiece();
+        // temp[6][2].setColor(PieceColorEnum.Red);
+        // temp[6][4] = new PolishPiece();
+        // temp[6][4].setColor(PieceColorEnum.Red);
+        // temp[3][7] = new PolishPiece();
+        // temp[3][7].setColor(PieceColorEnum.Red);
+        // // temp[4][2] = new PolishPiece();
+        // // temp[4][2].setColor(PieceColorEnum.Red);
+        // temp[2][4] = new PolishPiece();
+        // temp[2][4].setColor(PieceColorEnum.Red);
 
         board.setHeight(10);
         board.setWidth(10);
