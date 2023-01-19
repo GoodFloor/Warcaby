@@ -17,47 +17,47 @@ public class EnglishBoardController extends BoardController {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                // if ((i + j) % 2 == 1) {
+                if ((i + j) % 2 == 1) {
+                    temp[i][j] = null;
+                } else if (i < 3) {
+                    temp[i][j] = new EnglishPiece();
+                    temp[i][j].setColor(PieceColorEnum.White);
+                } else if (i > 4) {
+                    temp[i][j] = new EnglishPiece();
+                    temp[i][j].setColor(PieceColorEnum.Red);
+                } else {
+                    temp[i][j] = null;
+                }
                 // temp[i][j] = null;
-                // } else if (i < 3) {
-                // temp[i][j] = new EnglishPiece();
-                // temp[i][j].setColor(PieceColorEnum.White);
-                // } else if (i > 4) {
-                // temp[i][j] = new EnglishPiece();
-                // temp[i][j].setColor(PieceColorEnum.Red);
-                // } else {
-                // temp[i][j] = null;
-                // }
-                temp[i][j] = null;
             }
         }
-        temp[0][0] = new EnglishPiece();
-        temp[0][0].setColor(PieceColorEnum.White);
-        temp[0][4] = new EnglishPiece();
-        temp[0][4].setColor(PieceColorEnum.White);
-        temp[1][1] = new EnglishPiece();
-        temp[1][1].setColor(PieceColorEnum.White);
-        temp[1][3] = new EnglishPiece();
-        temp[1][3].setColor(PieceColorEnum.White);
-        temp[6][0] = new EnglishPiece();
-        temp[6][0].setColor(PieceColorEnum.White);
-        temp[3][3] = new EnglishPiece();
-        temp[3][3].setColor(PieceColorEnum.White);
+        // temp[0][0] = new EnglishPiece();
+        // temp[0][0].setColor(PieceColorEnum.White);
+        // temp[0][4] = new EnglishPiece();
+        // temp[0][4].setColor(PieceColorEnum.White);
+        // temp[1][1] = new EnglishPiece();
+        // temp[1][1].setColor(PieceColorEnum.White);
+        // temp[1][3] = new EnglishPiece();
+        // temp[1][3].setColor(PieceColorEnum.White);
+        // temp[6][0] = new EnglishPiece();
+        // temp[6][0].setColor(PieceColorEnum.White);
+        // temp[3][3] = new EnglishPiece();
+        // temp[3][3].setColor(PieceColorEnum.White);
 
-        temp[7][7] = new EnglishPiece();
-        temp[7][7].setColor(PieceColorEnum.Red);
-        temp[7][5] = new EnglishPiece();
-        temp[7][5].setColor(PieceColorEnum.Red);
-        temp[7][3] = new EnglishPiece();
-        temp[7][3].setColor(PieceColorEnum.Red);
-        temp[6][2] = new EnglishPiece();
-        temp[6][2].setColor(PieceColorEnum.Red);
-        temp[6][4] = new EnglishPiece();
-        temp[6][4].setColor(PieceColorEnum.Red);
-        temp[3][7] = new EnglishPiece();
-        temp[3][7].setColor(PieceColorEnum.Red);
-        temp[4][2] = new EnglishPiece();
-        temp[4][2].setColor(PieceColorEnum.Red);
+        // temp[7][7] = new EnglishPiece();
+        // temp[7][7].setColor(PieceColorEnum.Red);
+        // temp[7][5] = new EnglishPiece();
+        // temp[7][5].setColor(PieceColorEnum.Red);
+        // temp[7][3] = new EnglishPiece();
+        // temp[7][3].setColor(PieceColorEnum.Red);
+        // temp[6][2] = new EnglishPiece();
+        // temp[6][2].setColor(PieceColorEnum.Red);
+        // temp[6][4] = new EnglishPiece();
+        // temp[6][4].setColor(PieceColorEnum.Red);
+        // temp[3][7] = new EnglishPiece();
+        // temp[3][7].setColor(PieceColorEnum.Red);
+        // temp[4][2] = new EnglishPiece();
+        // temp[4][2].setColor(PieceColorEnum.Red);
 
         board.setHeight(8);
         board.setWidth(8);
