@@ -29,7 +29,7 @@ public class PolishBoardController extends BoardController {
                 } else {
                     temp[i][j] = null;
                 }
-                // temp[i][j] = null;
+                //temp[i][j] = null;
             }
         }
         // temp[0][0] = new PolishPiece();
