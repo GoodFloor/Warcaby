@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>450</x>
+      <y>990</y>
+      <w>370</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>pl.tp.client::Field
+--
+~parent: BoardLayer
+--
++Field(int posX, int posY, BoardLayer parent): ctor
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>440</x>
+      <y>0</y>
+      <w>420</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>pl.tp.client::ServerView
+--
+-socket: Socket
+-output: PrintWriter
+-input: BufferedReader
+--
++ServerView(): ctor
++getLine(): String
++movePiece(String sourceXY, String destinationXY): void
++endConnection(): void
+-textToEnum(String line): SquareStateEnum[]
++getBoard(): SquareStateEnum[][]
++sendDrawResponse(boolean isAccepted): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>530</x>
+      <y>280</y>
+      <w>200</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>pl.tp.client::App
+--
+--
++main(String[] args): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>470</x>
+      <y>400</y>
+      <w>350</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+pl.tp.client::View
+--
+--
+~close(): void
+~newBoard(int size): void
+~drawBoard(SquareStateEnum[][] pieces): void
+~printMessage(String message): void
+~getMove(): String[]
+~endMove(): void
+~drawProposed(): void
+~getDrawResponse(): boolean
+~endGame(String message): void
+~isExited(): boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>910</x>
+      <y>400</y>
+      <w>350</w>
+      <h>520</h>
+    </coordinates>
+    <panel_attributes>pl.tp.client::WindowView
+--
+-board: BoardLayer
+-message: Label
+-drawProposal: JButton
+-acceptDrawBtn: JButton
+-rejectDrawBtn: JButton
+-movesBuffer: String[]
+-howManyMovesBuffered: int
+-isMyMove: boolean
+-isDrawResponseSet: boolean
+-drawResponse: boolean
+-lastKnownBoardState: SquareStateEnum[][]
+-exited: boolean
+--
++WindowView(): ctor
++close(): void
++newBoard(int size): void
++drawBoard(SquareStateEnum[][] pieces): void
++printMessage(String message): void
++getMove(): String[]
++endMove(): void
++addToBuffer(String position): void
++proposeDraw(): void
++drawProposed(): void
++getDrawResponse(): boolean
++endGame(String message): void
+-rejectDraw(): void
+-acceptDraw(): void
++isExited(): boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>660</y>
+      <w>360</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>pl.tp.client::BoardLayer
+--
+-size: int
+-white: ImageIcon
+-blackEmpty: ImageIcon
+-blackRed: ImageIcon
+-blackWhite: ImageIcon
+-blackRedQueen: ImageIcon
+-blackWhiteQueen: ImageIcon
+-parent: WindowView
+--
++BoardLayer(WindowView parent): ctor
++drawNew(int size): void
++renderBoard(SquareStateEnum[][] board): void
++actionPerformed(ActionEvent arg0): void
++getBoardSize(): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>220</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>340</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>500</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>730</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>620</x>
+      <y>930</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+</diagram>
