@@ -4,3 +4,6 @@
 
 /warcaby/target/site/*
 !/warcaby/target/site/apidocs
+
+/.vscode
+/.idea
