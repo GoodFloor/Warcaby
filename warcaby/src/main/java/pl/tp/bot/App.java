@@ -21,17 +21,10 @@ public class App {
                     break;
                 }
                 String command = server.getLine();
-                // if (SocketCommandsEnum.drawBoard.toString().equals(command)) {
-                // int size = Integer.parseInt(server.getLine());
-                // gui.newBoard(size);
-                // // } else if (SocketCommandsEnum.printPieces.toString().equals(command)) {
-                // // gui.drawBoard(server.getBoard());
-                // } else
                 if (SocketCommandsEnum.getMove.toString().equals(command)) {
                     String[] move = gui.getMove();
                     server.movePiece(move[0], move[1]);
-                    // } else if (SocketCommandsEnum.wait.toString().equals(command)) {
-                    // gui.endMove();
+                    ;
                 } else if (SocketCommandsEnum.proposeDraw.toString().equals(command)) {
                     System.out.println("Draw proposed!");
                     server.sendDrawResponse(gui.getDrawResponse());

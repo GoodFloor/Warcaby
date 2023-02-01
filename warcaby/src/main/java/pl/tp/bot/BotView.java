@@ -1,7 +1,5 @@
 package pl.tp.bot;
 
-import pl.tp.SquareStateEnum;
-
 public class BotView {
     boolean isExited;
     String move;
@@ -33,21 +31,9 @@ public class BotView {
         return result;
     }
 
-    // @Override
-    // public void endMove() {
-    // // TODO Auto-generated method stub
-
-    // }
-
     public boolean getDrawResponse() {
         return true;
     }
-
-    // @Override
-    // public void endGame(String message) {
-    // // TODO Auto-generated method stub
-
-    // }
 
     public boolean isExited() {
         return isExited;
