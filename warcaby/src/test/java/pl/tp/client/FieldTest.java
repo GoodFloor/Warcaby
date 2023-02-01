@@ -2,8 +2,6 @@ package pl.tp.client;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.BufferedReader;
-
 import org.junit.Test;
 
 

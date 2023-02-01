@@ -15,6 +15,7 @@ public abstract class GameController {
     protected Boolean isGameRunning;
     protected Boolean isWhiteTurn;
     protected String startMessage;
+    protected MovesHistory history;
 
     /**
      * Ustawienie konkretnego rodzaju planszy
@@ -30,9 +31,10 @@ public abstract class GameController {
      * Konstruktor ustawiający parametry początkowe
      */
     public GameController() {
-        // this.gameView = new TerminalView();
-        this.gameView = new SocketView();
+         this.gameView = new TerminalView();
+        //this.gameView = new SocketView();
         isGameRunning = false;
+        history = new MovesHistory(0);//TODO: Przekaż id obecnej gry
     }
 
     /**
@@ -80,6 +82,7 @@ public abstract class GameController {
                 }
                 try {
                     boardController.movePiece(move[0], move[1]);
+                    history.addMove(move[0], move[1]);
                 } catch (IncorrectPositionException e) {
                     if (isWhiteTurn) {
                         gameView.printMessage("Błędny ruch - spróbuj ponownie", 1);
