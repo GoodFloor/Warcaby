@@ -1,4 +1,4 @@
-package pl.tp.client;
+package pl.tp.bot;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

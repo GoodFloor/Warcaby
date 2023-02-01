@@ -27,6 +27,8 @@ public class EnglishVersionTest {
     public void moveWhiteOkTest() {
         EnglishBoardController boardC = new EnglishBoardController();
 
+        boolean movable = boardC.canMovePiece("A3", "B4");
+
         try {
             boardC.movePiece("A3", "B4");
         } catch (Exception e) {
@@ -34,6 +36,7 @@ public class EnglishVersionTest {
 
         SquareStateEnum[][] board = boardC.translateBoard();
 
+        assertEquals(true, movable);
         assertEquals(board.length, 8);
         assertEquals(board[5][0], SquareStateEnum.BlackEmpty);
         assertEquals(board[4][1], SquareStateEnum.BlackWhite);
@@ -43,11 +46,15 @@ public class EnglishVersionTest {
     public void wrongInputTest() {
         EnglishBoardController boardC = new EnglishBoardController();
 
+        boolean movable = boardC.canMovePiece("hej", "B4");
+
         try {
             boardC.movePiece("hej", "B4");
         } catch (Exception e) {
             assertTrue(e != null);
         }
+
+        assertEquals(false, movable);
     }
 
     @Test

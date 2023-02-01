@@ -30,8 +30,8 @@ public abstract class GameController {
      * Konstruktor ustawiający parametry początkowe
      */
     public GameController() {
-        // this.gameView = new TerminalView();
-        this.gameView = new SocketView();
+        this.gameView = new TerminalView();
+        // this.gameView = new SocketView();
         isGameRunning = false;
     }
 
@@ -50,6 +50,9 @@ public abstract class GameController {
         try {
             while (isGameRunning) {
                 gameView.printBoard(boardController.translateBoard());
+                String[] randomMove = boardController.getRandomMove();
+                gameView.printMessage(randomMove[0] + ";" + randomMove[1], 2);
+
                 if (firstTry && isWhiteTurn) {
                     gameView.printMessage("Ruch białych", -1);
                     gameView.printMessage("Twój ruch", 1);

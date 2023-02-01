@@ -4,6 +4,9 @@ import pl.tp.PieceColorEnum;
 import pl.tp.PieceStateEnum;
 import pl.tp.SquareStateEnum;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * Klasa obsługująca działania na planszy
  * 
@@ -102,6 +105,14 @@ public abstract class BoardController {
             System.out.println("Niezgodny Y");
             throw new IncorrectPositionException();
         }
+    }
+
+    public String encodePosition(int x, int y) {
+        String result = "";
+        result += (char) (x + 65);
+        result += (y + 1);
+
+        return result;
     }
 
     /**
@@ -255,6 +266,125 @@ public abstract class BoardController {
             throw new IncorrectPositionException();
         }
 
+    }
+
+    /**
+     * Sprawdzanie możliwości wykonania ruchu
+     * 
+     * @param pos1 pozycja początkowa
+     * @param pos2 pozycja docelowa
+     * @return zwraca prawdę, jeśli ruch jest możliwy
+     */
+    public boolean canMovePiece(String pos1, String pos2) {
+
+        try {
+            // Konwertujemy miejsce źródłowe pionka i miejsce docelowe pionka
+            int posX1 = this.decodePositionX(pos1);
+            int posY1 = this.decodePositionY(pos1);
+            int posX2 = this.decodePositionX(pos2);
+            int posY2 = this.decodePositionY(pos2);
+
+            // Pobieramy zawartość planszy
+            AbstractPiece[][] tempBoard = board.getPieces();
+
+            // Sprawdzamy czy na miejscu źródłowym jest pionek i czy miejsce docelowe jest
+            // puste
+            if (tempBoard[posY1][posX1] == null || tempBoard[posY2][posX2] != null) {
+                return false;
+            }
+            // Sprawdzamy czy pionek źródłowy jest w dobrym kolorze
+            if ((board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.White)
+                    || (!board.isWhiteTurn() && tempBoard[posY1][posX1].getColor() != PieceColorEnum.Red)) {
+                return false;
+            }
+            // Sprawdzamy czy podany pionek jest pośród pionków którymi trzeba się ruszyć
+            boolean isPieceInMandatory = false;
+            if (board.getMandatoryUsePieces().length > 0) {
+                for (int[] mandatoryPiece : board.getMandatoryUsePieces()) {
+                    if (mandatoryPiece[0] == posY1 && mandatoryPiece[1] == posX1) {
+                        isPieceInMandatory = true;
+                        break;
+                    }
+                }
+                if (!isPieceInMandatory) {
+                    return false;
+                }
+            }
+            // Sprawdzamy czy podany ruch jest możliwy i czy aby go wykonać musimy zbić
+            // przeciwnika
+            int[][] neededEnemyPosition;
+            neededEnemyPosition = tempBoard[posY1][posX1].canGoTo(posX1, posY1, posX2, posY2);
+
+            // Jeżeli przeskakujemy o więcej niż 1 pole to sprawdzamy czy pomiędzy nimi jest
+            // przeciwnik, jeśli tak to go usuwamy
+            int enemiesCount = 0;
+
+            for (int[] possibleEnemy : neededEnemyPosition) {
+                int possibleEnemyX = possibleEnemy[0];
+                int possibleEnemyY = possibleEnemy[1];
+                if (tempBoard[possibleEnemyY][possibleEnemyX] != null
+                        && tempBoard[possibleEnemyY][possibleEnemyX].getColor() == tempBoard[posY1][posX1].getColor()) {
+                    return false;
+                }
+                if (tempBoard[possibleEnemyY][possibleEnemyX] != null
+                        && tempBoard[possibleEnemyY][possibleEnemyX].getColor() != tempBoard[posY1][posX1].getColor()) {
+                    enemiesCount++;
+                }
+            }
+            if ((enemiesCount == 0 && isPieceInMandatory)) {
+                return false;
+
+            } else if (isPieceInMandatory) {
+                return true;
+            } else if (enemiesCount == 1) {
+                return true;
+            } else if ((enemiesCount == 0 && tempBoard[posY1][posX1].getStateName() == PieceStateEnum.Pawn
+                    && neededEnemyPosition.length > 0)
+                    || enemiesCount > 1) {
+                return false;
+            }
+            return true;
+
+        } catch (IncorrectPositionException e) {
+            // System.out.println("! Error position");
+            return false;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // System.out.println("! Error index");
+            return false;
+        }
+    }
+
+    public String[] getRandomMove() {
+        // String[] result = new String[2];
+        String[][] possibilities = new String[5][2];
+        int count = 0;
+
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getHeight(); j++) {
+                for (int k = 0; k < board.getHeight(); k++) {
+                    for (int l = 0; l < board.getHeight(); l++) {
+                        String pos1 = encodePosition(i, j);
+                        String pos2 = encodePosition(k, l);
+
+                        if (canMovePiece(pos1, pos2)) {
+                            possibilities[count][0] = pos1;
+                            possibilities[count][1] = pos2;
+
+                            count++;
+
+                            if (count == 5) {
+                                int nr = ThreadLocalRandom.current().nextInt(0, 5);
+                                return possibilities[nr];
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        int nr = ThreadLocalRandom.current().nextInt(0, count);
+        return possibilities[nr];
     }
 
     /**
