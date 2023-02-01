@@ -8,17 +8,17 @@
             org.hibernate.dialect.MySQLDialect
         </property>
         <property name="hibernate.connection.driver_class">
-            com.mysql.cj.jdbc.Driver
+            com.mysql.jdbc.Driver
         </property>
         <property name = "hibernate.connection.url">
-			jdbc:mysql://localhost:3306/warcaby?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useSSL=false
+			jdbc:mysql://localhost:3306/warcaby
 		</property>
         <property name="hibernate.connection.username">
-            warcaby_serwer
+            root
         </property>
-        <property name="hibernate.connection.password">
+        <!-- <property name="hibernate.connection.password">
             warcaby
-        </property>
+        </property> -->
 
         <mapping resource="MovesHistory.hbm.xml"/>
         <mapping resource="MovesHistoryEntry.hbm.xml"/>
